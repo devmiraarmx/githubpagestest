@@ -246,58 +246,127 @@
             color: var(--primary-color);
         }
 
-        /* Estilos para calculadora */
-        .calculator {
+        /* Estilos para minicotizador */
+        .mini-quoter {
             background-color: #fff;
             border-radius: 1rem;
-            padding: 1.5rem;
             box-shadow: var(--card-shadow);
         }
 
-        .calculator-display {
-            background-color: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 0.5rem;
-            padding: 1rem;
-            margin-bottom: 1rem;
+        .quoter-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .quoter-item-details {
+            flex: 1;
+        }
+
+        .quoter-item-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .quoter-item-subtitle {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .quoter-item-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-control {
+            width: 60px;
+            text-align: center;
+            margin: 0 0.5rem;
+        }
+
+        .price-control {
+            width: 90px;
             text-align: right;
-            font-size: 1.5rem;
-            font-weight: 500;
+            margin: 0 0.5rem;
         }
 
-        .calculator-keys {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0.5rem;
+        .discount-control {
+            width: 60px;
+            text-align: center;
+            margin: 0 0.5rem;
         }
 
-        .calculator-key {
-            padding: 1rem;
-            border: none;
-            border-radius: 0.5rem;
-            background-color: #f8f9fa;
+        .remove-item {
+            color: var(--danger-color);
+            cursor: pointer;
+            margin-left: 0.5rem;
             font-size: 1.25rem;
-            transition: all 0.2s;
         }
 
-        .calculator-key:hover {
-            background-color: #e9ecef;
+        .quoter-summary {
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-radius: 0 0 1rem 1rem;
         }
 
-        .calculator-key.operator {
-            background-color: #e9ecef;
-            color: var(--primary-color);
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-row.total {
             font-weight: 700;
+            font-size: 1.25rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
         }
 
-        .calculator-key.equal {
-            background-color: var(--primary-color);
-            color: white;
+        .action-button {
+            margin-top: 1rem;
+            width: 100%;
         }
 
-        .calculator-key.clear {
-            background-color: var(--danger-color);
-            color: white;
+        .warehouse-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .suggestions-dropdown {
+            position: absolute;
+            width: 100%;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: var(--card-shadow);
+            z-index: 100;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .suggestion-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f8fafc;
+        }
+
+        .suggestion-code {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .suggestion-description {
+            font-size: 0.875rem;
+            color: #64748b;
         }
 
         /* Responsive adjustments */
@@ -385,6 +454,13 @@
                                 <h6 class="mb-3">Existencias por Almacén</h6>
                                 <div id="detail-warehouses"></div>
                             </div>
+                            
+                            <!-- Botón para agregar al cotizador -->
+                            <div class="mt-4">
+                                <button id="add-to-quote-btn" class="btn btn-primary w-100" onclick="addCurrentProductToQuoter()">
+                                    <i class="fas fa-plus-circle me-2"></i>Agregar al Cotizador
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -422,38 +498,45 @@
                 <div id="results-container" class="row g-4 fade-in"></div>
             </div>
             
-            <!-- Columna derecha: Calculadora -->
+            <!-- Columna derecha: Minicotizador -->
             <div class="col-12 col-lg-4">
-                <div class="calculator card-item">
+                <div class="card-item mini-quoter">
                     <div class="card-header">
-                        <h5 class="text-primary mb-0">Calculadora</h5>
+                        <h5 class="text-primary mb-0">Mini Cotizador</h5>
                     </div>
-                    <div class="card-body">
-                        <div class="calculator-display" id="calculator-display">0</div>
-                        <div class="calculator-keys">
-                            <button class="calculator-key clear" onclick="calculatorClear()">C</button>
-                            <button class="calculator-key" onclick="calculatorBackspace()"><i class="fas fa-backspace"></i></button>
-                            <button class="calculator-key operator" onclick="calculatorOperation('%')">%</button>
-                            <button class="calculator-key operator" onclick="calculatorOperation('/')">/</button>
+                    <div class="card-body p-0">
+                        <!-- Lista de productos en el cotizador -->
+                        <div id="quoter-items" class="quoter-items">
+                            <!-- Los items se generarán dinámicamente con JavaScript -->
+                            <div class="p-4 text-center text-muted">
+                                <i class="fas fa-shopping-cart mb-3" style="font-size: 2rem;"></i>
+                                <p>No hay productos agregados al cotizador.</p>
+                                <p class="small">Busque y seleccione productos para agregarlos.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Resumen del cotizador -->
+                        <div id="quoter-summary" class="quoter-summary" style="display: none;">
+                            <div class="summary-row">
+                                <div>Subtotal:</div>
+                                <div id="subtotal-amount">$0.00</div>
+                            </div>
+                            <div class="summary-row">
+                                <div>Descuento:</div>
+                                <div id="discount-amount">-$0.00</div>
+                            </div>
+                            <div class="summary-row total">
+                                <div>Total:</div>
+                                <div id="total-amount">$0.00</div>
+                            </div>
                             
-                            <button class="calculator-key" onclick="calculatorInput('7')">7</button>
-                            <button class="calculator-key" onclick="calculatorInput('8')">8</button>
-                            <button class="calculator-key" onclick="calculatorInput('9')">9</button>
-                            <button class="calculator-key operator" onclick="calculatorOperation('*')">×</button>
-                            
-                            <button class="calculator-key" onclick="calculatorInput('4')">4</button>
-                            <button class="calculator-key" onclick="calculatorInput('5')">5</button>
-                            <button class="calculator-key" onclick="calculatorInput('6')">6</button>
-                            <button class="calculator-key operator" onclick="calculatorOperation('-')">-</button>
-                            
-                            <button class="calculator-key" onclick="calculatorInput('1')">1</button>
-                            <button class="calculator-key" onclick="calculatorInput('2')">2</button>
-                            <button class="calculator-key" onclick="calculatorInput('3')">3</button>
-                            <button class="calculator-key operator" onclick="calculatorOperation('+')">+</button>
-                            
-                            <button class="calculator-key" onclick="calculatorInput('0')">0</button>
-                            <button class="calculator-key" onclick="calculatorInput('.')">.</button>
-                            <button class="calculator-key equal" onclick="calculatorCalculate()" style="grid-column: span 2;">=</button>
+                            <!-- Botones de acción -->
+                            <button class="btn btn-primary action-button" onclick="generateQuote()">
+                                <i class="fas fa-file-invoice-dollar me-2"></i>Generar Cotización
+                            </button>
+                            <button class="btn btn-outline-danger action-button mt-2" onclick="clearQuoter()">
+                                <i class="fas fa-trash-alt me-2"></i>Limpiar Cotizador
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -490,6 +573,7 @@
             filteredInventory: [],
             warehouses: new Set(),
             selectedProduct: null,
+            quoterItems: [],
             statistics: {
                 totalInventory: 0
             }
@@ -774,6 +858,240 @@
             detailElement.style.display = 'block';
         }
 
+        // Funciones para el mini cotizador
+        function addCurrentProductToQuoter() {
+            if (!state.selectedProduct) return;
+            
+            const product = state.selectedProduct;
+            
+            // Verificar si el producto ya está en el cotizador
+            const existingItem = state.quoterItems.find(item => item.code === product.Codigo);
+            
+            if (existingItem) {
+                // Incrementar la cantidad si ya existe
+                existingItem.quantity++;
+            } else {
+                // Agregar nuevo item al cotizador
+                const price = typeof product.PrecioVenta === 'number' 
+                    ? product.PrecioVenta 
+                    : parseFloat((product.PrecioVenta || '0').replace(/[^0-9.]/g, '')) || 0;
+                
+                state.quoterItems.push({
+                    code: product.Codigo,
+                    description: product.Descripcion,
+                    price: price,
+                    originalPrice: price,
+                    quantity: 1,
+                    discount: 0,
+                    totalWarehouseStock: product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0)
+                });
+            }
+            
+            // Actualizar la UI del cotizador
+            renderQuoter();
+            
+            // Mostrar mensaje de éxito
+            showSuccess(`"${product.Descripcion}" agregado al cotizador`);
+        }
+        
+        function renderQuoter() {
+            const quoterItemsContainer = document.getElementById('quoter-items');
+            const quoterSummary = document.getElementById('quoter-summary');
+            
+            if (state.quoterItems.length === 0) {
+                // Mostrar mensaje de que no hay productos
+                quoterItemsContainer.innerHTML = `
+                    <div class="p-4 text-center text-muted">
+                        <i class="fas fa-shopping-cart mb-3" style="font-size: 2rem;"></i>
+                        <p>No hay productos agregados al cotizador.</p>
+                        <p class="small">Busque y seleccione productos para agregarlos.</p>
+                    </div>
+                `;
+                quoterSummary.style.display = 'none';
+                return;
+            }
+            
+            // Mostrar los items del cotizador
+            quoterItemsContainer.innerHTML = state.quoterItems.map((item, index) => {
+                const itemTotal = calculateItemTotal(item);
+                const formattedOriginalPrice = item.originalPrice.toFixed(2);
+                
+                return `
+                    <div class="quoter-item">
+                        <div class="quoter-item-details">
+                            <div class="quoter-item-title">${item.description}</div>
+                            <div class="quoter-item-subtitle">${item.code}</div>
+                        </div>
+                        <div class="quoter-item-controls">
+                            <input type="number" min="1" max="${item.totalWarehouseStock}" value="${item.quantity}" 
+                                   class="form-control quantity-control" 
+                                   onchange="updateQuoterItemQuantity(${index}, this.value)">
+                            <input type="number" min="0" step="0.01" value="${formattedOriginalPrice}" 
+                                   class="form-control price-control" 
+                                   onchange="updateQuoterItemPrice(${index}, this.value)">
+                            <input type="number" min="0" max="100" value="${item.discount}" 
+                                   class="form-control discount-control" 
+                                   onchange="updateQuoterItemDiscount(${index}, this.value)">
+                            <span class="remove-item" onclick="removeQuoterItem(${index})">
+                                <i class="fas fa-trash-alt"></i>
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Mostrar el resumen
+            quoterSummary.style.display = 'block';
+            
+            // Calcular totales
+            const { subtotal, discountAmount, total } = calculateQuoterTotals();
+            
+            // Actualizar el resumen
+            document.getElementById('subtotal-amount').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('discount-amount').textContent = `-$${discountAmount.toFixed(2)}`;
+            document.getElementById('total-amount').textContent = `$${total.toFixed(2)}`;
+        }
+        
+        function calculateItemTotal(item) {
+            const baseAmount = item.price * item.quantity;
+            const discountAmount = baseAmount * (item.discount / 100);
+            return baseAmount - discountAmount;
+        }
+        
+        function calculateQuoterTotals() {
+            // Subtotal (sin descuentos)
+            const subtotal = state.quoterItems.reduce((total, item) => {
+                return total + (item.price * item.quantity);
+            }, 0);
+            
+            // Total de descuentos
+            const discountAmount = state.quoterItems.reduce((total, item) => {
+                const itemTotal = item.price * item.quantity;
+                const itemDiscount = itemTotal * (item.discount / 100);
+                return total + itemDiscount;
+            }, 0);
+            
+            // Total final
+            const total = subtotal - discountAmount;
+            
+            return { subtotal, discountAmount, total };
+        }
+        
+        function updateQuoterItemQuantity(index, quantity) {
+            quantity = parseInt(quantity) || 1;
+            if (quantity < 1) quantity = 1;
+            
+            const item = state.quoterItems[index];
+            if (item) {
+                // Limitar a la cantidad disponible
+                if (quantity > item.totalWarehouseStock) {
+                    quantity = item.totalWarehouseStock;
+                    showWarning(`Solo hay ${item.totalWarehouseStock} unidades disponibles.`);
+                }
+                
+                item.quantity = quantity;
+                renderQuoter();
+            }
+        }
+        
+        function updateQuoterItemPrice(index, price) {
+            price = parseFloat(price) || 0;
+            if (price < 0) price = 0;
+            
+            const item = state.quoterItems[index];
+            if (item) {
+                item.originalPrice = price;
+                item.price = price;
+                renderQuoter();
+            }
+        }
+        
+        function updateQuoterItemDiscount(index, discount) {
+            discount = parseFloat(discount) || 0;
+            if (discount < 0) discount = 0;
+            if (discount > 100) discount = 100;
+            
+            const item = state.quoterItems[index];
+            if (item) {
+                item.discount = discount;
+                renderQuoter();
+            }
+        }
+        
+        function removeQuoterItem(index) {
+            if (index >= 0 && index < state.quoterItems.length) {
+                const removedItem = state.quoterItems[index];
+                state.quoterItems.splice(index, 1);
+                renderQuoter();
+                showSuccess(`"${removedItem.description}" eliminado del cotizador`);
+            }
+        }
+        
+        function clearQuoter() {
+            if (state.quoterItems.length === 0) return;
+            
+            if (confirm('¿Está seguro de que desea vaciar el cotizador?')) {
+                state.quoterItems = [];
+                renderQuoter();
+                showSuccess('Cotizador limpiado correctamente');
+            }
+        }
+        
+        function generateQuote() {
+            if (state.quoterItems.length === 0) {
+                showWarning('Agregue productos al cotizador para generar una cotización');
+                return;
+            }
+            
+            // Obtener fecha actual formateada
+            const now = new Date();
+            const formattedDate = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+            
+            // Calcular totales
+            const { subtotal, discountAmount, total } = calculateQuoterTotals();
+            
+            // Crear texto de la cotización
+            let quoteText = `COTIZACIÓN\n`;
+            quoteText += `Fecha: ${formattedDate}\n\n`;
+            quoteText += `PRODUCTOS:\n`;
+            
+            state.quoterItems.forEach((item, index) => {
+                const itemTotal = calculateItemTotal(item);
+                quoteText += `${index + 1}. ${item.description} (${item.code})\n`;
+                quoteText += `   Cantidad: ${item.quantity}\n`;
+                quoteText += `   Precio: $${item.price.toFixed(2)}\n`;
+                if (item.discount > 0) {
+                    quoteText += `   Descuento: ${item.discount}%\n`;
+                }
+                quoteText += `   Subtotal: $${itemTotal.toFixed(2)}\n\n`;
+            });
+            
+            quoteText += `RESUMEN:\n`;
+            quoteText += `Subtotal: $${subtotal.toFixed(2)}\n`;
+            quoteText += `Descuento: -$${discountAmount.toFixed(2)}\n`;
+            quoteText += `TOTAL: $${total.toFixed(2)}\n\n`;
+            
+            // Crear un elemento textarea para copiar al portapapeles
+            const textArea = document.createElement('textarea');
+            textArea.value = quoteText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                // Copiar al portapapeles
+                document.execCommand('copy');
+                showSuccess('Cotización generada y copiada al portapapeles');
+            } catch (err) {
+                showError('No se pudo copiar la cotización');
+                console.error('Error al copiar:', err);
+            }
+            
+            document.body.removeChild(textArea);
+            
+            // Mostrar la cotización en una alerta
+            alert(quoteText);
+        }
+
         // Funciones de utilidad
         function getStockClass(stock) {
             if (stock <= config.api.stockThresholds.low) return 'low-stock';
@@ -794,10 +1112,10 @@
             document.getElementById('loader').style.display = 'none';
         }
 
-        function showError(message) {
+        function showNotification(message, type) {
             // Crear un elemento de alerta elegante
             const alertElement = document.createElement('div');
-            alertElement.className = 'alert alert-danger alert-dismissible fade show';
+            alertElement.className = `alert alert-${type} alert-dismissible fade show`;
             alertElement.role = 'alert';
             alertElement.style.position = 'fixed';
             alertElement.style.top = '20px';
@@ -808,99 +1126,46 @@
             alertElement.style.maxWidth = '500px';
             alertElement.style.width = '90%';
             
+            // Icono según el tipo
+            let icon;
+            switch (type) {
+                case 'success':
+                    icon = 'fa-check-circle';
+                    break;
+                case 'warning':
+                    icon = 'fa-exclamation-triangle';
+                    break;
+                case 'danger':
+                    icon = 'fa-exclamation-circle';
+                    break;
+                default:
+                    icon = 'fa-info-circle';
+            }
+            
             alertElement.innerHTML = `
-                <i class="fas fa-exclamation-circle me-2"></i>
-                <strong>Error:</strong> ${message}
+                <i class="fas ${icon} me-2"></i>
+                ${message}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             `;
             
             document.body.appendChild(alertElement);
             
-            // Eliminar la alerta después de 8 segundos
+            // Eliminar la alerta después de 4 segundos
             setTimeout(() => {
                 alertElement.remove();
-            }, 8000);
+            }, 4000);
         }
-
-        // Funciones de la calculadora
-        let calculatorState = {
-            displayValue: '0',
-            firstOperand: null,
-            waitingForSecondOperand: false,
-            operator: null
-        };
-
-        function calculatorInput(digit) {
-            const { displayValue, waitingForSecondOperand } = calculatorState;
-            
-            if (waitingForSecondOperand) {
-                calculatorState.displayValue = digit;
-                calculatorState.waitingForSecondOperand = false;
-            } else {
-                // Sobrescribir 'displayValue' si el valor actual es '0'
-                calculatorState.displayValue = displayValue === '0' ? digit : displayValue + digit;
-            }
-            updateCalculatorDisplay();
+        
+        function showSuccess(message) {
+            showNotification(message, 'success');
         }
-
-        function calculatorOperation(nextOperator) {
-            const { firstOperand, displayValue, operator } = calculatorState;
-            const inputValue = parseFloat(displayValue);
-            
-            if (firstOperand === null) {
-                calculatorState.firstOperand = inputValue;
-            } else if (operator) {
-                const result = calculate(firstOperand, inputValue, operator);
-                calculatorState.displayValue = String(result);
-                calculatorState.firstOperand = result;
-            }
-            
-            calculatorState.waitingForSecondOperand = true;
-            calculatorState.operator = nextOperator;
-            updateCalculatorDisplay();
+        
+        function showWarning(message) {
+            showNotification(message, 'warning');
         }
-
-        function calculatorCalculate() {
-            if (!calculatorState.firstOperand || !calculatorState.operator) return;
-            
-            const { firstOperand, displayValue, operator } = calculatorState;
-            const secondOperand = parseFloat(displayValue);
-            
-            const result = calculate(firstOperand, secondOperand, operator);
-            
-            calculatorState.displayValue = String(result);
-            calculatorState.firstOperand = result;
-            calculatorState.waitingForSecondOperand = false;
-            calculatorState.operator = null;
-            updateCalculatorDisplay();
-        }
-
-        function calculate(firstOperand, secondOperand, operator) {
-            switch (operator) {
-                case '+': return firstOperand + secondOperand;
-                case '-': return firstOperand - secondOperand;
-                case '*': return firstOperand * secondOperand;
-                case '/': return firstOperand / secondOperand;
-                case '%': return (firstOperand * secondOperand) / 100;
-                default: return secondOperand;
-            }
-        }
-
-        function calculatorClear() {
-            calculatorState.displayValue = '0';
-            calculatorState.firstOperand = null;
-            calculatorState.waitingForSecondOperand = false;
-            calculatorState.operator = null;
-            updateCalculatorDisplay();
-        }
-
-        function calculatorBackspace() {
-            calculatorState.displayValue = calculatorState.displayValue.toString().slice(0, -1) || '0';
-            updateCalculatorDisplay();
-        }
-
-        function updateCalculatorDisplay() {
-            document.getElementById('calculator-display').textContent = calculatorState.displayValue;
+        
+        function showError(message) {
+            showNotification(message, 'danger');
         }
 
         // Inicializar tooltips y otros componentes de Bootstrap si es necesario
