@@ -150,6 +150,12 @@
             color: var(--primary-color);
         }
 
+        .stat-subtitle {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
         .login-container {
             max-width: 400px;
             margin: 4rem auto;
@@ -263,21 +269,27 @@
 
         .quoter-item {
             display: flex;
+            align-items: center;
             padding: 0.75rem;
             border-bottom: 1px solid #eee;
         }
 
         .quoter-item-details {
             flex: 2;
+            padding-right: 0.5rem;
         }
 
         .quoter-item-title {
             font-weight: 600;
             margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .quoter-item-subtitle {
-            font-size: 0.875rem;
+            font-size: 0.8rem;
             color: #64748b;
         }
 
@@ -288,24 +300,24 @@
         }
 
         .quantity-control {
-            width: 60px;
-            text-align: center;
-            margin: 0 0.5rem;
             flex: 1;
+            text-align: center;
+            padding: 0.375rem 0.5rem;
+            font-size: 0.875rem;
         }
 
         .price-control {
-            width: 90px;
-            text-align: right;
-            margin: 0 0.5rem;
             flex: 1;
+            text-align: right;
+            padding: 0.375rem 0.5rem;
+            font-size: 0.875rem;
         }
 
         .discount-control {
-            width: 60px;
-            text-align: center;
-            margin: 0 0.5rem;
             flex: 1;
+            text-align: center;
+            padding: 0.375rem 0.5rem;
+            font-size: 0.875rem;
         }
 
         .remove-item {
@@ -428,6 +440,7 @@
                 <div class="stat-card">
                     <div class="stat-title">Total del Inventario</div>
                     <div class="stat-value text-info" id="total-inventory">-</div>
+                    <div class="stat-subtitle" id="inventory-subtitle"></div>
                 </div>
             </div>
         </div>
@@ -690,6 +703,7 @@
             }, 0);
             
             document.getElementById('total-inventory').textContent = totalInventory.toLocaleString();
+            document.getElementById('inventory-subtitle').textContent = '';
         }
 
         function initializeWarehouses() {
@@ -855,35 +869,60 @@
             
             // Mostrar el panel de detalles
             detailElement.style.display = 'block';
+            
+            // Actualizar el total de inventario para mostrar subtotal del producto
+            const totalProductStock = product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0);
+            document.getElementById('total-inventory').textContent = totalProductStock.toLocaleString();
+            document.getElementById('inventory-subtitle').textContent = `Existencias totales de ${product.Codigo}`;
+            
+            // Guardar el producto seleccionado en el estado
+            state.selectedProduct = product;
         }
 
         // Funciones para el mini cotizador
         function addCurrentProductToQuoter() {
-            if (!state.selectedProduct) return;
+            if (!state.selectedProduct) {
+                showWarning('No hay producto seleccionado para agregar al cotizador');
+                return;
+            }
             
             const product = state.selectedProduct;
+            console.log('Agregando producto al cotizador:', product);
             
             // Verificar si el producto ya está en el cotizador
-            const existingItem = state.quoterItems.find(item => item.code === product.Codigo);
+            const existingItemIndex = state.quoterItems.findIndex(item => item.code === product.Codigo);
             
-            if (existingItem) {
+            if (existingItemIndex >= 0) {
                 // Incrementar la cantidad si ya existe
-                existingItem.quantity++;
+                state.quoterItems[existingItemIndex].quantity++;
+                console.log('Incrementando cantidad de producto existente');
             } else {
-                // Agregar nuevo item al cotizador
-                const price = typeof product.PrecioVenta === 'number' 
-                    ? product.PrecioVenta 
-                    : parseFloat((product.PrecioVenta || '0').replace(/[^0-9.]/g, '')) || 0;
+                // Determinar el precio (asegurarnos de que sea un número)
+                let numericPrice = 0;
+                if (typeof product.PrecioVenta === 'number') {
+                    numericPrice = product.PrecioVenta;
+                } else if (product.PrecioVenta) {
+                    // Extraer el valor numérico si es una cadena (por ejemplo "$75.00")
+                    const match = product.PrecioVenta.toString().match(/[\d.]+/g);
+                    if (match && match.length > 0) {
+                        numericPrice = parseFloat(match[0]);
+                    }
+                }
                 
+                // Calcular el stock total disponible
+                const totalStock = product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0);
+                
+                // Agregar el nuevo item
                 state.quoterItems.push({
                     code: product.Codigo,
                     description: product.Descripcion,
-                    price: price,
-                    originalPrice: price,
+                    price: numericPrice,
+                    originalPrice: numericPrice,
                     quantity: 1,
                     discount: 0,
-                    totalWarehouseStock: product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0)
+                    totalWarehouseStock: totalStock
                 });
+                console.log('Agregado nuevo producto al cotizador');
             }
             
             // Actualizar la UI del cotizador
@@ -894,10 +933,12 @@
         }
         
         function renderQuoter() {
+            console.log('Renderizando cotizador. Items:', state.quoterItems);
+            
             const quoterItemsContainer = document.getElementById('quoter-items');
             const quoterSummary = document.getElementById('quoter-summary');
             
-            if (state.quoterItems.length === 0) {
+            if (!state.quoterItems || state.quoterItems.length === 0) {
                 // Mostrar mensaje de que no hay productos
                 quoterItemsContainer.innerHTML = `
                     <div class="p-4 text-center text-muted">
@@ -918,7 +959,7 @@
                 return `
                     <div class="quoter-item">
                         <div class="quoter-item-details">
-                            <div class="quoter-item-title">${item.description}</div>
+                            <div class="quoter-item-title" title="${item.description}">${item.description}</div>
                             <div class="quoter-item-subtitle">${item.code}</div>
                         </div>
                         <div class="quoter-item-controls">
