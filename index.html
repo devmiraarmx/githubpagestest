@@ -35,6 +35,7 @@
             transition: all 0.3s ease;
             border: 1px solid rgba(0,0,0,0.05);
             height: 100%;
+            margin-bottom: 1.5rem;
         }
 
         .card-item:hover {
@@ -213,7 +214,6 @@
 
         /* Estilos para el panel detallado de producto */
         .product-detail {
-            display: none;
             animation: fadeIn 0.3s ease-out;
         }
 
@@ -244,6 +244,60 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: var(--primary-color);
+        }
+
+        /* Estilos para calculadora */
+        .calculator {
+            background-color: #fff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .calculator-display {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: 500;
+        }
+
+        .calculator-keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calculator-key {
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            background-color: #f8f9fa;
+            font-size: 1.25rem;
+            transition: all 0.2s;
+        }
+
+        .calculator-key:hover {
+            background-color: #e9ecef;
+        }
+
+        .calculator-key.operator {
+            background-color: #e9ecef;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .calculator-key.equal {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .calculator-key.clear {
+            background-color: var(--danger-color);
+            color: white;
         }
 
         /* Responsive adjustments */
@@ -286,27 +340,9 @@
 
     <!-- Main App -->
     <div id="app-container" class="app-container" style="display: none;">
-        <!-- Stats Section -->
-        <div class="stats-container row g-4 fade-in">
-            <div class="col-12 col-md-3">
-                <div class="stat-card">
-                    <div class="stat-title">Total de Productos</div>
-                    <div class="stat-value" id="total-products">-</div>
-                </div>
-            </div>
-            <div class="col-12 col-md-3">
-                <div class="stat-card">
-                    <div class="stat-title">Productos Bajo Stock</div>
-                    <div class="stat-value text-danger" id="low-stock-products">-</div>
-                </div>
-            </div>
-            <div class="col-12 col-md-3">
-                <div class="stat-card">
-                    <div class="stat-title">Total de Almacenes</div>
-                    <div class="stat-value text-success" id="total-warehouses">-</div>
-                </div>
-            </div>
-            <div class="col-12 col-md-3">
+        <!-- Sección de estadísticas - Solo Total del Inventario -->
+        <div class="stats-container row g-4 fade-in mb-4">
+            <div class="col-12">
                 <div class="stat-card">
                     <div class="stat-title">Total del Inventario</div>
                     <div class="stat-value text-info" id="total-inventory">-</div>
@@ -314,40 +350,10 @@
             </div>
         </div>
 
-        <!-- Filtros -->
-        <div class="filter-section fade-in">
-            <div class="row g-4">
-                <div class="col-12 col-md-5">
-                    <div class="search-container">
-                        <i class="fas fa-search search-icon"></i>
-                        <input type="search" id="search-input" class="search-input" 
-                               placeholder="Buscar por código o descripción..." list="suggestions">
-                        <datalist id="suggestions"></datalist>
-                    </div>
-                </div>
-                <div class="col-12 col-md-5">
-                    <select id="warehouse-filter" class="form-select search-input">
-                        <option value="">Todos los almacenes</option>
-                    </select>
-                </div>
-                <div class="col-12 col-md-2">
-                    <button id="search-button" class="btn btn-primary w-100">
-                        <i class="fas fa-search me-2"></i>Buscar
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Contenedor principal dividido en dos columnas -->
-        <div class="row g-4">
-            <!-- Columna de resultados -->
-            <div id="results-column" class="col-12 col-lg-8">
-                <div id="results-container" class="row g-4 fade-in"></div>
-            </div>
-            
-            <!-- Columna de detalles del producto seleccionado -->
-            <div id="details-column" class="col-12 col-lg-4">
-                <div id="product-detail" class="card-item product-detail">
+        <!-- Sección de detalles del producto (ahora arriba) -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div id="product-detail" class="card-item product-detail" style="display: none;">
                     <div class="card-header">
                         <h5 class="text-primary" id="detail-title">Detalles del Producto</h5>
                     </div>
@@ -384,6 +390,75 @@
                 </div>
             </div>
         </div>
+
+        <!-- Filtros -->
+        <div class="filter-section fade-in">
+            <div class="row g-4">
+                <div class="col-12 col-md-5">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="search" id="search-input" class="search-input" 
+                               placeholder="Buscar por código o descripción..." list="suggestions">
+                        <datalist id="suggestions"></datalist>
+                    </div>
+                </div>
+                <div class="col-12 col-md-5">
+                    <select id="warehouse-filter" class="form-select search-input">
+                        <option value="">Todos los almacenes</option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-2">
+                    <button id="search-button" class="btn btn-primary w-100">
+                        <i class="fas fa-search me-2"></i>Buscar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenedor principal -->
+        <div class="row g-4 mt-3">
+            <!-- Columna izquierda: Listado de productos -->
+            <div id="results-column" class="col-12 col-lg-8">
+                <div id="results-container" class="row g-4 fade-in"></div>
+            </div>
+            
+            <!-- Columna derecha: Calculadora -->
+            <div class="col-12 col-lg-4">
+                <div class="calculator card-item">
+                    <div class="card-header">
+                        <h5 class="text-primary mb-0">Calculadora</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="calculator-display" id="calculator-display">0</div>
+                        <div class="calculator-keys">
+                            <button class="calculator-key clear" onclick="calculatorClear()">C</button>
+                            <button class="calculator-key" onclick="calculatorBackspace()"><i class="fas fa-backspace"></i></button>
+                            <button class="calculator-key operator" onclick="calculatorOperation('%')">%</button>
+                            <button class="calculator-key operator" onclick="calculatorOperation('/')">/</button>
+                            
+                            <button class="calculator-key" onclick="calculatorInput('7')">7</button>
+                            <button class="calculator-key" onclick="calculatorInput('8')">8</button>
+                            <button class="calculator-key" onclick="calculatorInput('9')">9</button>
+                            <button class="calculator-key operator" onclick="calculatorOperation('*')">×</button>
+                            
+                            <button class="calculator-key" onclick="calculatorInput('4')">4</button>
+                            <button class="calculator-key" onclick="calculatorInput('5')">5</button>
+                            <button class="calculator-key" onclick="calculatorInput('6')">6</button>
+                            <button class="calculator-key operator" onclick="calculatorOperation('-')">-</button>
+                            
+                            <button class="calculator-key" onclick="calculatorInput('1')">1</button>
+                            <button class="calculator-key" onclick="calculatorInput('2')">2</button>
+                            <button class="calculator-key" onclick="calculatorInput('3')">3</button>
+                            <button class="calculator-key operator" onclick="calculatorOperation('+')">+</button>
+                            
+                            <button class="calculator-key" onclick="calculatorInput('0')">0</button>
+                            <button class="calculator-key" onclick="calculatorInput('.')">.</button>
+                            <button class="calculator-key equal" onclick="calculatorCalculate()" style="grid-column: span 2;">=</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Loader -->
@@ -400,7 +475,7 @@
                 password: '12345'
             },
             api: {
-                // Actualizar con URL del script publicado de Google Apps Script
+                // URL del script de Google Apps Script
                 url: 'https://script.google.com/macros/s/AKfycbw50VrxPKh7lHCArY1LhCClyGZWA_hjOYpnnqM7VSee7b1f3rS0HBpFQyUdXcIgWcuFVg/exec',
                 stockThresholds: {
                     low: 5,
@@ -416,9 +491,6 @@
             warehouses: new Set(),
             selectedProduct: null,
             statistics: {
-                totalProducts: 0,
-                lowStockProducts: 0,
-                totalWarehouses: 0,
                 totalInventory: 0
             }
         };
@@ -452,6 +524,8 @@
         async function loadInventoryData() {
             try {
                 showLoader();
+                console.log('Intentando conectar con la API en:', config.api.url);
+                
                 const response = await fetch(config.api.url);
                 
                 if (!response.ok) {
@@ -479,7 +553,21 @@
                     </div>`;
                 
             } catch(error) {
+                console.error('Error completo:', error);
+                
                 showError('Error al cargar los datos: ' + error.message);
+                
+                // Mostrar un mensaje de error en la interfaz
+                document.getElementById('results-container').innerHTML = `
+                    <div class="col-12">
+                        <div class="alert alert-danger text-center fade-in">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <strong>Error al cargar los datos:</strong> ${error.message}
+                            <button class="btn btn-outline-primary mt-3" onclick="loadInventoryData()">
+                                <i class="fas fa-sync-alt me-2"></i>Intentar nuevamente
+                            </button>
+                        </div>
+                    </div>`;
             } finally {
                 hideLoader();
             }
@@ -490,22 +578,10 @@
             initializeWarehouses();
             initializeSuggestions();
             setupEventListeners();
-            updateTotalStatistics();
+            updateInventoryTotal();
         }
 
-        function updateTotalStatistics() {
-            // Actualiza solo las estadísticas totales, sin filtrar
-            document.getElementById('total-warehouses').textContent = state.warehouses.size;
-            document.getElementById('total-products').textContent = state.inventory.length;
-            
-            const lowStockCount = state.inventory.reduce((count, item) => {
-                return count + item.Almacenes.filter(wh => 
-                    wh.Existencias > 0 && wh.Existencias <= config.api.stockThresholds.low
-                ).length;
-            }, 0);
-            
-            document.getElementById('low-stock-products').textContent = lowStockCount;
-            
+        function updateInventoryTotal() {
             // Calcula el total del inventario (suma de todas las existencias)
             const totalInventory = state.inventory.reduce((total, item) => {
                 return total + item.Almacenes.reduce((sum, wh) => {
@@ -551,7 +627,7 @@
         }
 
         function setupEventListeners() {
-            // Asociamos el evento de búsqueda al botón en lugar de a los inputs
+            // Asociamos el evento de búsqueda al botón
             document.getElementById('search-button').addEventListener('click', handleFilter);
             
             // Permitimos que la tecla Enter en el campo de búsqueda active la búsqueda
@@ -596,7 +672,15 @@
             
             setTimeout(() => {
                 showResults();
-                updateStatistics();
+                
+                // Mostrar automáticamente el detalle del primer producto
+                if (state.filteredInventory.length > 0) {
+                    showProductDetail(state.filteredInventory[0]);
+                } else {
+                    // Si no hay resultados, ocultamos el detalle del producto
+                    document.getElementById('product-detail').style.display = 'none';
+                }
+                
                 hideLoader();
             }, 100); // Pequeño retraso para asegurar que el loader se muestre
         }
@@ -616,11 +700,17 @@
                 return;
             }
 
-            // Mostrar los resultados
-            container.innerHTML = state.filteredInventory
+            // Mostrar los resultados ordenados por existencias totales (de mayor a menor)
+            const sortedInventory = [...state.filteredInventory].sort((a, b) => {
+                const totalA = a.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0);
+                const totalB = b.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0);
+                return totalB - totalA; // Ordenar de mayor a menor
+            });
+
+            container.innerHTML = sortedInventory
                 .filter(item => item.Almacenes.length > 0) // Solo items con almacenes
                 .map(item => `
-                <div class="col-12 col-md-6 col-lg-6 fade-in">
+                <div class="col-12 fade-in mb-3">
                     <div class="card-item" onclick="handleProductClick('${item.Codigo}')" style="cursor: pointer;">
                         <div class="card-header">
                             <h5 class="text-primary mb-2">${item.Codigo}</h5>
@@ -628,7 +718,7 @@
                         </div>
                         <div class="card-body">
                             <div class="warehouses-list">
-                                ${item.Almacenes.slice(0, 3).map(wh => `
+                                ${item.Almacenes.map(wh => `
                                     <div class="warehouse-item ${getStockClass(wh.Existencias)}">
                                         <div>
                                             <i class="fas fa-warehouse me-2"></i>
@@ -641,10 +731,6 @@
                                         </span>
                                     </div>
                                 `).join('')}
-                                ${item.Almacenes.length > 3 ? 
-                                    `<div class="text-center mt-2">
-                                        <small class="text-muted">+ ${item.Almacenes.length - 3} almacenes más</small>
-                                    </div>` : ''}
                             </div>
                         </div>
                     </div>
@@ -688,28 +774,6 @@
             detailElement.style.display = 'block';
         }
 
-        // Actualizar estadísticas
-        function updateStatistics() {
-            const stats = {
-                totalProducts: state.filteredInventory.filter(item => item.Almacenes.length > 0).length,
-                lowStockProducts: state.filteredInventory.reduce((count, item) => {
-                    return count + item.Almacenes.filter(wh => 
-                        wh.Existencias > 0 && wh.Existencias <= config.api.stockThresholds.low
-                    ).length;
-                }, 0),
-                totalInventory: state.filteredInventory.reduce((total, item) => {
-                    return total + item.Almacenes.reduce((sum, wh) => {
-                        return sum + (wh.Existencias || 0);
-                    }, 0);
-                }, 0)
-            };
-
-            // Actualizamos el DOM con los valores calculados
-            document.getElementById('total-products').textContent = stats.totalProducts;
-            document.getElementById('low-stock-products').textContent = stats.lowStockProducts;
-            document.getElementById('total-inventory').textContent = stats.totalInventory.toLocaleString();
-        }
-
         // Funciones de utilidad
         function getStockClass(stock) {
             if (stock <= config.api.stockThresholds.low) return 'low-stock';
@@ -731,8 +795,112 @@
         }
 
         function showError(message) {
-            // Puedes personalizar esto para mostrar un toast o una alerta más elegante
-            alert(message);
+            // Crear un elemento de alerta elegante
+            const alertElement = document.createElement('div');
+            alertElement.className = 'alert alert-danger alert-dismissible fade show';
+            alertElement.role = 'alert';
+            alertElement.style.position = 'fixed';
+            alertElement.style.top = '20px';
+            alertElement.style.left = '50%';
+            alertElement.style.transform = 'translateX(-50%)';
+            alertElement.style.zIndex = '9999';
+            alertElement.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+            alertElement.style.maxWidth = '500px';
+            alertElement.style.width = '90%';
+            
+            alertElement.innerHTML = `
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <strong>Error:</strong> ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            document.body.appendChild(alertElement);
+            
+            // Eliminar la alerta después de 8 segundos
+            setTimeout(() => {
+                alertElement.remove();
+            }, 8000);
+        }
+
+        // Funciones de la calculadora
+        let calculatorState = {
+            displayValue: '0',
+            firstOperand: null,
+            waitingForSecondOperand: false,
+            operator: null
+        };
+
+        function calculatorInput(digit) {
+            const { displayValue, waitingForSecondOperand } = calculatorState;
+            
+            if (waitingForSecondOperand) {
+                calculatorState.displayValue = digit;
+                calculatorState.waitingForSecondOperand = false;
+            } else {
+                // Sobrescribir 'displayValue' si el valor actual es '0'
+                calculatorState.displayValue = displayValue === '0' ? digit : displayValue + digit;
+            }
+            updateCalculatorDisplay();
+        }
+
+        function calculatorOperation(nextOperator) {
+            const { firstOperand, displayValue, operator } = calculatorState;
+            const inputValue = parseFloat(displayValue);
+            
+            if (firstOperand === null) {
+                calculatorState.firstOperand = inputValue;
+            } else if (operator) {
+                const result = calculate(firstOperand, inputValue, operator);
+                calculatorState.displayValue = String(result);
+                calculatorState.firstOperand = result;
+            }
+            
+            calculatorState.waitingForSecondOperand = true;
+            calculatorState.operator = nextOperator;
+            updateCalculatorDisplay();
+        }
+
+        function calculatorCalculate() {
+            if (!calculatorState.firstOperand || !calculatorState.operator) return;
+            
+            const { firstOperand, displayValue, operator } = calculatorState;
+            const secondOperand = parseFloat(displayValue);
+            
+            const result = calculate(firstOperand, secondOperand, operator);
+            
+            calculatorState.displayValue = String(result);
+            calculatorState.firstOperand = result;
+            calculatorState.waitingForSecondOperand = false;
+            calculatorState.operator = null;
+            updateCalculatorDisplay();
+        }
+
+        function calculate(firstOperand, secondOperand, operator) {
+            switch (operator) {
+                case '+': return firstOperand + secondOperand;
+                case '-': return firstOperand - secondOperand;
+                case '*': return firstOperand * secondOperand;
+                case '/': return firstOperand / secondOperand;
+                case '%': return (firstOperand * secondOperand) / 100;
+                default: return secondOperand;
+            }
+        }
+
+        function calculatorClear() {
+            calculatorState.displayValue = '0';
+            calculatorState.firstOperand = null;
+            calculatorState.waitingForSecondOperand = false;
+            calculatorState.operator = null;
+            updateCalculatorDisplay();
+        }
+
+        function calculatorBackspace() {
+            calculatorState.displayValue = calculatorState.displayValue.toString().slice(0, -1) || '0';
+            updateCalculatorDisplay();
+        }
+
+        function updateCalculatorDisplay() {
+            document.getElementById('calculator-display').textContent = calculatorState.displayValue;
         }
 
         // Inicializar tooltips y otros componentes de Bootstrap si es necesario
