@@ -253,15 +253,22 @@
             box-shadow: var(--card-shadow);
         }
 
+        .quoter-header {
+            padding: 1rem;
+            background-color: #f8fafc;
+            border-bottom: 1px solid #e9ecef;
+            font-weight: 600;
+            color: #64748b;
+        }
+
         .quoter-item {
             display: flex;
-            align-items: center;
             padding: 0.75rem;
             border-bottom: 1px solid #eee;
         }
 
         .quoter-item-details {
-            flex: 1;
+            flex: 2;
         }
 
         .quoter-item-title {
@@ -277,24 +284,28 @@
         .quoter-item-controls {
             display: flex;
             align-items: center;
+            flex: 3;
         }
 
         .quantity-control {
             width: 60px;
             text-align: center;
             margin: 0 0.5rem;
+            flex: 1;
         }
 
         .price-control {
             width: 90px;
             text-align: right;
             margin: 0 0.5rem;
+            flex: 1;
         }
 
         .discount-control {
             width: 60px;
             text-align: center;
             margin: 0 0.5rem;
+            flex: 1;
         }
 
         .remove-item {
@@ -302,6 +313,8 @@
             cursor: pointer;
             margin-left: 0.5rem;
             font-size: 1.25rem;
+            width: 30px;
+            text-align: center;
         }
 
         .quoter-summary {
@@ -449,12 +462,6 @@
                                 <div class="price" id="detail-price"></div>
                             </div>
                             
-                            <!-- Existencias por almacén -->
-                            <div class="mt-4">
-                                <h6 class="mb-3">Existencias por Almacén</h6>
-                                <div id="detail-warehouses"></div>
-                            </div>
-                            
                             <!-- Botón para agregar al cotizador -->
                             <div class="mt-4">
                                 <button id="add-to-quote-btn" class="btn btn-primary w-100" onclick="addCurrentProductToQuoter()">
@@ -505,6 +512,15 @@
                         <h5 class="text-primary mb-0">Mini Cotizador</h5>
                     </div>
                     <div class="card-body p-0">
+                        <!-- Encabezados del cotizador -->
+                        <div class="quoter-header d-flex p-2 bg-light border-bottom">
+                            <div style="flex: 2;">Producto</div>
+                            <div style="flex: 1; text-align: center;">Cantidad</div>
+                            <div style="flex: 1; text-align: center;">Precio</div>
+                            <div style="flex: 1; text-align: center;">Descuento</div>
+                            <div style="width: 40px;"></div>
+                        </div>
+                        
                         <!-- Lista de productos en el cotizador -->
                         <div id="quoter-items" class="quoter-items">
                             <!-- Los items se generarán dinámicamente con JavaScript -->
@@ -836,23 +852,6 @@
                 ? `$ ${product.PrecioVenta.toFixed(2)}` 
                 : product.PrecioVenta || 'No disponible';
             document.getElementById('detail-price').textContent = price;
-            
-            // Mostrar existencias por almacén
-            const warehousesContainer = document.getElementById('detail-warehouses');
-            warehousesContainer.innerHTML = product.Almacenes
-                .map(wh => `
-                    <div class="warehouse-item ${getStockClass(wh.Existencias)}">
-                        <div>
-                            <i class="fas fa-warehouse me-2"></i>
-                            <span>${wh.Almacen}</span>
-                        </div>
-                        <span class="stock-number">
-                            ${wh.Existencias}
-                            ${wh.Existencias <= config.api.stockThresholds.low ? 
-                                '<i class="fas fa-exclamation-circle ms-2"></i>' : ''}
-                        </span>
-                    </div>
-                `).join('');
             
             // Mostrar el panel de detalles
             detailElement.style.display = 'block';
