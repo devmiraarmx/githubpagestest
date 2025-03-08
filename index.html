@@ -211,6 +211,41 @@
             animation: fadeIn 0.3s ease-out;
         }
 
+        /* Estilos para el panel detallado de producto */
+        .product-detail {
+            display: none;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 0.75rem;
+        }
+
+        .info-label {
+            flex: 1;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .info-value {
+            flex: 2;
+            font-weight: 600;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .app-container {
@@ -279,7 +314,7 @@
             </div>
         </div>
 
-        <!-- Filters -->
+        <!-- Filtros -->
         <div class="filter-section fade-in">
             <div class="row g-4">
                 <div class="col-12 col-md-5">
@@ -303,8 +338,52 @@
             </div>
         </div>
 
-        <!-- Results -->
-        <div id="results-container" class="row g-4 fade-in"></div>
+        <!-- Contenedor principal dividido en dos columnas -->
+        <div class="row g-4">
+            <!-- Columna de resultados -->
+            <div id="results-column" class="col-12 col-lg-8">
+                <div id="results-container" class="row g-4 fade-in"></div>
+            </div>
+            
+            <!-- Columna de detalles del producto seleccionado -->
+            <div id="details-column" class="col-12 col-lg-4">
+                <div id="product-detail" class="card-item product-detail">
+                    <div class="card-header">
+                        <h5 class="text-primary" id="detail-title">Detalles del Producto</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="product-info">
+                            <div class="info-row">
+                                <div class="info-label">Código:</div>
+                                <div class="info-value" id="detail-code"></div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Descripción:</div>
+                                <div class="info-value" id="detail-description"></div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Unidades:</div>
+                                <div class="info-value">PZA</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Proveedor:</div>
+                                <div class="info-value" id="detail-supplier"></div>
+                            </div>
+                            <div class="price-section mt-3">
+                                <div class="info-label">Precio de Venta:</div>
+                                <div class="price" id="detail-price"></div>
+                            </div>
+                            
+                            <!-- Existencias por almacén -->
+                            <div class="mt-4">
+                                <h6 class="mb-3">Existencias por Almacén</h6>
+                                <div id="detail-warehouses"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Loader -->
@@ -314,14 +393,15 @@
         </div>
     </div>
     <script>
-        // Configuration
+        // Configuración
         const config = {
             credentials: {
                 username: 'admin',
                 password: '12345'
             },
             api: {
-                url: 'https://script.google.com/macros/s/AKfycbwEwQVs9YC4QzqFf9cCYF85G0X0e49pEAhEz0yDxF8eDpiphSlPjtSWYlf4r5ZSa6k/exec',
+                // Actualizar con URL del script publicado de Google Apps Script
+                url: 'https://script.google.com/macros/s/AKfycbw50VrxPKh7lHCArY1LhCClyGZWA_hjOYpnnqM7VSee7b1f3rS0HBpFQyUdXcIgWcuFVg/exec',
                 stockThresholds: {
                     low: 5,
                     medium: 10
@@ -329,11 +409,12 @@
             }
         };
 
-        // State management
+        // Gestión del estado
         let state = {
             inventory: [],
             filteredInventory: [],
             warehouses: new Set(),
+            selectedProduct: null,
             statistics: {
                 totalProducts: 0,
                 lowStockProducts: 0,
@@ -342,7 +423,7 @@
             }
         };
 
-        // Event Handlers
+        // Manejadores de eventos
         function handleLogin(event) {
             event.preventDefault();
             
@@ -357,8 +438,17 @@
                 showError('Credenciales incorrectas');
             }
         }
+        
+        // Función para manejar el clic en un producto
+        function handleProductClick(productCode) {
+            const product = state.inventory.find(item => item.Codigo === productCode);
+            if (product) {
+                state.selectedProduct = product;
+                showProductDetail(product);
+            }
+        }
 
-        // Data Loading
+        // Carga de datos
         async function loadInventoryData() {
             try {
                 showLoader();
@@ -395,7 +485,7 @@
             }
         }
 
-        // UI Initialization
+        // Inicialización de la UI
         function initializeUI() {
             initializeWarehouses();
             initializeSuggestions();
@@ -472,7 +562,7 @@
             });
         }
 
-        // Filtering
+        // Filtrado
         function handleFilter() {
             showLoader();
             
@@ -511,7 +601,7 @@
             }, 100); // Pequeño retraso para asegurar que el loader se muestre
         }
 
-        // Results Display
+        // Mostrar resultados
         function showResults() {
             const container = document.getElementById('results-container');
             
@@ -530,15 +620,15 @@
             container.innerHTML = state.filteredInventory
                 .filter(item => item.Almacenes.length > 0) // Solo items con almacenes
                 .map(item => `
-                <div class="col-12 col-md-6 col-lg-4 fade-in">
-                    <div class="card-item">
+                <div class="col-12 col-md-6 col-lg-6 fade-in">
+                    <div class="card-item" onclick="handleProductClick('${item.Codigo}')" style="cursor: pointer;">
                         <div class="card-header">
                             <h5 class="text-primary mb-2">${item.Codigo}</h5>
                             <p class="text-muted mb-0">${item.Descripcion}</p>
                         </div>
                         <div class="card-body">
                             <div class="warehouses-list">
-                                ${item.Almacenes.map(wh => `
+                                ${item.Almacenes.slice(0, 3).map(wh => `
                                     <div class="warehouse-item ${getStockClass(wh.Existencias)}">
                                         <div>
                                             <i class="fas fa-warehouse me-2"></i>
@@ -551,6 +641,10 @@
                                         </span>
                                     </div>
                                 `).join('')}
+                                ${item.Almacenes.length > 3 ? 
+                                    `<div class="text-center mt-2">
+                                        <small class="text-muted">+ ${item.Almacenes.length - 3} almacenes más</small>
+                                    </div>` : ''}
                             </div>
                         </div>
                     </div>
@@ -558,7 +652,43 @@
             `).join('');
         }
 
-        // Statistics Update
+        // Mostrar detalles de un producto
+        function showProductDetail(product) {
+            const detailElement = document.getElementById('product-detail');
+            
+            // Actualizar los datos en el panel de detalles
+            document.getElementById('detail-code').textContent = product.Codigo;
+            document.getElementById('detail-description').textContent = product.Descripcion;
+            document.getElementById('detail-supplier').textContent = product.Proveedor || 'No especificado';
+            
+            // Formatear el precio de venta
+            const price = typeof product.PrecioVenta === 'number' 
+                ? `$ ${product.PrecioVenta.toFixed(2)}` 
+                : product.PrecioVenta || 'No disponible';
+            document.getElementById('detail-price').textContent = price;
+            
+            // Mostrar existencias por almacén
+            const warehousesContainer = document.getElementById('detail-warehouses');
+            warehousesContainer.innerHTML = product.Almacenes
+                .map(wh => `
+                    <div class="warehouse-item ${getStockClass(wh.Existencias)}">
+                        <div>
+                            <i class="fas fa-warehouse me-2"></i>
+                            <span>${wh.Almacen}</span>
+                        </div>
+                        <span class="stock-number">
+                            ${wh.Existencias}
+                            ${wh.Existencias <= config.api.stockThresholds.low ? 
+                                '<i class="fas fa-exclamation-circle ms-2"></i>' : ''}
+                        </span>
+                    </div>
+                `).join('');
+            
+            // Mostrar el panel de detalles
+            detailElement.style.display = 'block';
+        }
+
+        // Actualizar estadísticas
         function updateStatistics() {
             const stats = {
                 totalProducts: state.filteredInventory.filter(item => item.Almacenes.length > 0).length,
@@ -580,7 +710,7 @@
             document.getElementById('total-inventory').textContent = stats.totalInventory.toLocaleString();
         }
 
-        // Utility Functions
+        // Funciones de utilidad
         function getStockClass(stock) {
             if (stock <= config.api.stockThresholds.low) return 'low-stock';
             if (stock <= config.api.stockThresholds.medium) return 'medium-stock';
@@ -605,7 +735,7 @@
             alert(message);
         }
 
-        // Initialize tooltips and other Bootstrap components if needed
+        // Inicializar tooltips y otros componentes de Bootstrap si es necesario
         document.addEventListener('DOMContentLoaded', () => {
             // Aquí puedes agregar inicializaciones adicionales si las necesitas
         });
