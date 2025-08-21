@@ -921,12 +921,12 @@
             }
         };
 
-        // ========================================
-        // ESTADO OPTIMIZADO DE LA APLICACIÓN
-        // ========================================
+        // Estado optimizado con fallback
         let state = {
             // Caché de productos
             productCache: new Map(),
+            // Datos completos (para fallback)
+            allInventoryData: null,
             // Producto seleccionado actualmente
             selectedProduct: null,
             // Items del cotizador
@@ -1047,7 +1047,7 @@
         }
 
         // ========================================
-        // API OPTIMIZADA PARA BÚSQUEDAS
+        // API OPTIMIZADA PARA BÚSQUEDAS (CON FALLBACK)
         // ========================================
         async function searchProduct(query, warehouse = '') {
             const startTime = performance.now();
@@ -1062,33 +1062,71 @@
                     return cachedResult;
                 }
 
-                // Construir URL con parámetros
-                const params = new URLSearchParams({
-                    action: 'search',
-                    query: query.trim(),
-                    warehouse: warehouse.trim(),
-                    limit: config.api.pageSize
-                });
+                // Intentar usar la API optimizada primero
+                try {
+                    const params = new URLSearchParams({
+                        action: 'search',
+                        query: query.trim(),
+                        warehouse: warehouse.trim(),
+                        limit: config.api.pageSize
+                    });
 
-                const response = await fetch(`${config.api.baseUrl}?${params}`);
-                
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
+                    const response = await fetch(`${config.api.baseUrl}?${params}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Error HTTP: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    // Verificar si la respuesta es del nuevo API
+                    if (data.results) {
+                        // Nuevo API optimizado
+                        productCache.set(cacheKey, data.results);
+                        measurePerformance(startTime, 'Búsqueda (API optimizada)');
+                        return data.results;
+                    } else {
+                        // Fallback al API original
+                        return await searchInOriginalData(query, warehouse, startTime);
+                    }
+                    
+                } catch (apiError) {
+                    console.log('API optimizada no disponible, usando fallback:', apiError.message);
+                    return await searchInOriginalData(query, warehouse, startTime);
                 }
-                
-                const data = await response.json();
-                
-                // Guardar en caché
-                productCache.set(cacheKey, data);
-                
-                measurePerformance(startTime, 'Búsqueda (API)');
-                return data;
                 
             } catch (error) {
                 console.error('Error en búsqueda:', error);
                 measurePerformance(startTime, 'Búsqueda (error)');
                 throw error;
             }
+        }
+
+        // Función de fallback para API original
+        async function searchInOriginalData(query, warehouse, startTime) {
+            // Cargar todos los datos si no están en caché
+            if (!state.allInventoryData) {
+                const response = await fetch(config.api.baseUrl);
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                state.allInventoryData = await response.json();
+            }
+
+            // Buscar en los datos cargados
+            const results = state.allInventoryData.filter(item => {
+                const matchesQuery = 
+                    item.Codigo.toLowerCase().includes(query.toLowerCase()) || 
+                    item.Descripcion.toLowerCase().includes(query.toLowerCase());
+                
+                const matchesWarehouse = !warehouse || 
+                    item.Almacenes.some(wh => wh.Almacen === warehouse);
+                
+                return matchesQuery && matchesWarehouse;
+            });
+
+            measurePerformance(startTime, 'Búsqueda (fallback)');
+            return results.slice(0, config.api.pageSize);
         }
 
         async function getProductByCode(code) {
@@ -1137,15 +1175,42 @@
                     return cachedWarehouses;
                 }
 
-                const params = new URLSearchParams({
-                    action: 'getWarehouses'
+                // Intentar API optimizada
+                try {
+                    const params = new URLSearchParams({
+                        action: 'getWarehouses'
+                    });
+
+                    const response = await fetch(`${config.api.baseUrl}?${params}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (Array.isArray(data)) {
+                            productCache.set('warehouses', data);
+                            return data;
+                        }
+                    }
+                } catch (e) {
+                    console.log('API de almacenes no disponible, usando fallback');
+                }
+
+                // Fallback: extraer almacenes de datos completos
+                if (!state.allInventoryData) {
+                    const response = await fetch(config.api.baseUrl);
+                    state.allInventoryData = await response.json();
+                }
+
+                const warehouses = new Set();
+                state.allInventoryData.forEach(item => {
+                    if (item.Almacenes) {
+                        item.Almacenes.forEach(wh => {
+                            if (wh.Almacen) warehouses.add(wh.Almacen);
+                        });
+                    }
                 });
 
-                const response = await fetch(`${config.api.baseUrl}?${params}`);
-                const data = await response.json();
-                
-                productCache.set('warehouses', data);
-                return data;
+                const warehouseList = Array.from(warehouses).sort();
+                productCache.set('warehouses', warehouseList);
+                return warehouseList;
                 
             } catch (error) {
                 console.error('Error obteniendo almacenes:', error);
