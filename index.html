@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión de Inventario - Versión Optimizada</title>
+    <title>Sistema de Gestión de Inventario</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -70,6 +70,18 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
         .search-container {
             position: relative;
             margin-bottom: 1rem;
@@ -101,15 +113,6 @@
             font-size: 1rem;
         }
 
-        .search-status {
-            position: absolute;
-            right: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-color);
-            font-size: 0.9rem;
-        }
-
         .login-container {
             max-width: 400px;
             margin: 4rem auto;
@@ -120,6 +123,12 @@
             border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
             padding: 2rem;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-5px);
         }
 
         .login-header {
@@ -131,6 +140,10 @@
             color: var(--primary-color);
             font-weight: 700;
             margin-bottom: 0.5rem;
+        }
+
+        .login-input {
+            margin-bottom: 1.25rem;
         }
 
         .form-control {
@@ -164,6 +177,28 @@
             background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            background-color: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            color: white;
+            background-color: var(--primary-color);
+        }
+
+        .btn-outline-danger {
+            color: var(--danger-color);
+            border-color: var(--danger-color);
+            background-color: transparent;
+        }
+
+        .btn-outline-danger:hover {
+            color: white;
+            background-color: var(--danger-color);
         }
 
         .loader {
@@ -203,65 +238,10 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Search results dropdown */
-        .search-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 0.75rem;
-            margin-top: 0.5rem;
-            max-height: 400px;
-            overflow-y: auto;
-            z-index: 1000;
-            box-shadow: var(--card-shadow);
-        }
-
-        .search-result-item {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-        }
-
-        .search-result-item:hover {
-            background-color: rgba(79, 70, 229, 0.05);
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .result-code {
-            font-weight: 600;
-            color: var(--primary-color);
-        }
-
-        .result-description {
+        .loader-text {
+            margin-top: 1rem;
             color: var(--text-color);
-            font-size: 0.9rem;
-        }
-
-        .result-stock {
-            float: right;
-            background: var(--success-color);
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
-        }
-
-        .no-results {
-            padding: 2rem;
-            text-align: center;
-            color: var(--text-muted);
-        }
-
-        /* Product detail styles */
-        .product-detail {
-            animation: fadeIn 0.4s ease-out;
+            font-weight: 500;
         }
 
         @keyframes fadeIn {
@@ -269,16 +249,45 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        .fade-in {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* Estilos para el panel detallado de producto */
+        .product-detail {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
         .info-row {
             display: flex;
-            padding: 0.75rem 0;
+            flex-direction: column;
             border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.75rem;
+        }
+
+        @media (min-width: 768px) {
+            .info-row {
+                flex-direction: row;
+            }
         }
 
         .info-label {
             width: 120px;
             font-weight: 500;
             color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .info-label {
+                margin-bottom: 0;
+            }
         }
 
         .info-value {
@@ -296,7 +305,7 @@
             background: rgba(79, 70, 229, 0.1);
         }
 
-        /* Mini quoter styles */
+        /* Estilos para minicotizador - MEJORADO */
         .mini-quoter {
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
@@ -314,6 +323,31 @@
             color: white;
             padding: 1rem;
             font-weight: 600;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+        }
+
+        .quoter-columns {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            font-weight: 600;
+            color: var(--text-color);
+            position: sticky;
+            top: 0;
+            background-color: var(--card-bg);
+            z-index: 10;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 576px) {
+            .quoter-columns {
+                grid-template-columns: 3fr 1fr 1.5fr 0.5fr;
+            }
+            
+            .quoter-columns div:nth-child(4) {
+                display: none;
+            }
         }
 
         .quoter-items-container {
@@ -321,13 +355,112 @@
             overflow-y: auto;
             min-height: 100px;
             max-height: 300px;
-            padding: 1rem;
+            padding-bottom: 0.5rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-light) var(--card-bg);
+        }
+
+        .quoter-items-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .quoter-items-container::-webkit-scrollbar-track {
+            background: var(--card-bg);
+        }
+
+        .quoter-items-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary-light);
+            border-radius: 20px;
+        }
+
+        .quoter-item {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
+            padding: 0.75rem 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            transition: background-color 0.2s ease;
+        }
+
+        @media (max-width: 576px) {
+            .quoter-item {
+                grid-template-columns: 3fr 1fr 1.5fr 0.5fr;
+            }
+            
+            .quoter-item > div:nth-child(4) {
+                display: none;
+            }
+        }
+
+        .quoter-item:hover {
+            background-color: rgba(79, 70, 229, 0.05);
+        }
+
+        .quoter-item:last-child {
+            border-bottom: none;
+        }
+
+        .quoter-item-detail {
+            display: flex;
+            flex-direction: column;
+            padding-right: 10px;
+        }
+
+        .quoter-item-title {
+            font-weight: 500;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .quoter-item-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .quantity-control, .price-control, .discount-control {
+            width: 90%;
+            padding: 0.4rem 0.3rem;
+            font-size: 0.85rem;
+            text-align: center;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        .quantity-control:focus, .price-control:focus, .discount-control:focus {
+            border-color: var(--primary-color);
+            outline: 0;
+            box-shadow: 0 0 0 0.15rem rgba(79, 70, 229, 0.15);
+        }
+
+        .remove-item {
+            color: var(--danger-color);
+            cursor: pointer;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+            transition: transform 0.2s ease;
+        }
+
+        .remove-item:hover {
+            color: #dc2626;
+            transform: scale(1.2);
         }
 
         .quoter-summary {
             padding: 1rem;
             background-color: rgba(79, 70, 229, 0.05);
             border-top: 1px solid var(--border-color);
+            position: sticky;
+            bottom: 0;
+            border-radius: 0 0 var(--border-radius) var(--border-radius);
         }
 
         .summary-row {
@@ -345,71 +478,86 @@
             border-top: 1px solid var(--border-color);
         }
 
-        /* Toast notifications */
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
+        .action-button {
+            margin-top: 1rem;
+            width: 100%;
         }
 
-        .toast {
-            padding: 1rem 1.25rem;
-            border-radius: 0.75rem;
-            background: var(--card-bg);
-            box-shadow: var(--card-shadow);
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            min-width: 300px;
-            max-width: 400px;
-            animation: slideIn 0.3s forwards;
-            border-left: 4px solid;
-        }
-
-        .toast.toast-success {
-            border-left-color: var(--success-color);
-        }
-
-        .toast.toast-warning {
-            border-left-color: var(--warning-color);
-        }
-
-        .toast.toast-error {
-            border-left-color: var(--danger-color);
-        }
-
-        .toast.toast-info {
-            border-left-color: var(--primary-color);
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(50px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .navbar {
-            background: var(--card-bg);
-            box-shadow: var(--card-shadow);
-            padding: 1rem;
-            margin-bottom: 2rem;
-            border-radius: var(--border-radius);
+        .inventory-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 1.5rem;
             border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
         }
 
-        .logo {
-            font-weight: 700;
-            font-size: 1.25rem;
+        .inventory-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .inventory-icon {
+            font-size: 2.5rem;
             color: var(--primary-color);
+            background: rgba(79, 70, 229, 0.1);
+            width: 60px;
+            height: 60px;
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .inventory-info {
+            text-align: right;
+        }
+
+        .inventory-total {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+
+        .inventory-title {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        .select-box {
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            width: 100%;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .select-box:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        .filter-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .filter-row {
+                flex-direction: row;
+            }
         }
 
         .main-container {
@@ -438,62 +586,374 @@
             transform: translateX(5px);
         }
 
-        .featured-products {
-            margin-top: 1rem;
+        .warehouse-name {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        .featured-product-item {
-            padding: 0.75rem;
+        .low-stock {
+            border-left: 4px solid var(--danger-color);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .medium-stock {
+            border-left: 4px solid var(--warning-color);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .stock-number {
+            font-weight: 600;
+            padding: 0.35rem 0.85rem;
+            border-radius: 1rem;
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .low-stock .stock-number {
+            color: var(--danger-color);
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .medium-stock .stock-number {
+            color: var(--warning-color);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .warehouse-list {
+            margin-top: 1.5rem;
+        }
+
+        /* Nuevos estilos para la barra de desplazamiento en lista de almacenes */
+        .warehouse-list-items {
+            max-height: 300px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-light) var(--card-bg);
+            padding-right: 5px;
+        }
+
+        .warehouse-list-items::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .warehouse-list-items::-webkit-scrollbar-track {
             background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
+            border-radius: 10px;
+        }
+
+        .warehouse-list-items::-webkit-scrollbar-thumb {
+            background-color: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        .warehouse-list-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .warehouse-list-title i {
+            color: var(--primary-color);
+        }
+
+        .results-container {
+            margin-top: 1.5rem;
+        }
+
+        .price-control[readonly] {
+            background-color: rgba(79, 70, 229, 0.05);
+            color: var(--text-color);
+            cursor: not-allowed;
+            border-color: var(--border-color);
+        }
+
+        /* Estilos para notificaciones toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            background: var(--card-bg);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 300px;
+            max-width: 400px;
+            animation: slideIn 0.3s forwards;
+            border-left: 4px solid;
+            transition: transform 0.3s ease;
+        }
+
+        .toast:hover {
+            transform: translateX(-5px);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(50px); }
+        }
+
+        .toast.toast-success {
+            border-left-color: var(--success-color);
+        }
+
+        .toast.toast-warning {
+            border-left-color: var(--warning-color);
+        }
+
+        .toast.toast-error {
+            border-left-color: var(--danger-color);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast-success .toast-icon {
+            color: var(--success-color);
+        }
+
+        .toast-warning .toast-icon {
+            color: var(--warning-color);
+        }
+
+        .toast-error .toast-icon {
+            color: var(--danger-color);
+        }
+
+        .toast-content {
+            flex: 1;
+        }
+
+        .toast-close {
+            color: var(--text-muted);
             cursor: pointer;
+            font-size: 1.25rem;
+            transition: color 0.2s ease;
+        }
+
+        .toast-close:hover {
+            color: var(--text-color);
+        }
+
+        .slideOut {
+            animation: slideOut 0.3s forwards;
+        }
+
+        /* Tema oscuro */
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(30deg);
+        }
+
+        /* Barra superior */
+        .navbar {
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
             transition: all 0.2s ease;
         }
 
-        .featured-product-item:hover {
-            background: rgba(79, 70, 229, 0.05);
-            border-color: var(--primary-color);
+        .nav-link:hover {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
         }
 
-        .loading-skeleton {
-            background: linear-gradient(90deg, 
-                var(--border-color) 25%, 
-                rgba(79, 70, 229, 0.1) 50%, 
-                var(--border-color) 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 0.25rem;
-            height: 20px;
-            margin: 0.5rem 0;
+        .nav-link i {
+            margin-right: 0.5rem;
         }
 
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .user-menu:hover {
+            background: rgba(79, 70, 229, 0.1);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .user-name {
+            font-weight: 500;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .user-name {
+                display: block;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        @media (max-width: 576px) {
+            .price {
+                font-size: 1.25rem;
+            }
+            
+            .inventory-total {
+                font-size: 1.5rem;
+            }
+            
+            .summary-row.total {
+                font-size: 1.1rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Animación para elementos que entran en pantalla */
+        .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .animate-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <!-- Toast Container -->
+    <!-- Toast Container para notificaciones -->
     <div id="toast-container" class="toast-container"></div>
 
+    <!-- Alternador de tema (claro/oscuro) -->
+    <div id="theme-toggle" class="theme-toggle" onclick="toggleTheme()">
+        <i id="theme-icon" class="fas fa-moon"></i>
+    </div>
+
     <!-- Login -->
-    <div id="login-container" class="login-container">
-        <div class="login-card">
+    <div id="login-container" class="login-container fade-in">
+        <div class="login-card animate-in visible">
             <div class="login-header">
-                <h3><i class="fas fa-cube me-2"></i>Sistema de Inventario</h3>
-                <p class="text-muted">Versión Optimizada</p>
+                <h3 class="mb-1"><i class="fas fa-cube me-2"></i>Sistema de Inventario</h3>
+                <p class="text-muted">Ingrese sus credenciales</p>
             </div>
             <form id="login-form" onsubmit="handleLogin(event)">
-                <div class="mb-3">
+                <div class="login-input">
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-user"></i></span>
                         <input type="text" id="username" class="form-control" placeholder="Usuario" required>
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="login-input">
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
                         <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
@@ -509,113 +969,158 @@
     <!-- Main App -->
     <div id="app-container" class="app-container" style="display: none;">
         <!-- Navbar -->
-        <div class="navbar">
+        <div class="navbar animate-in">
             <div class="logo">
                 <i class="fas fa-cubes"></i>
                 <span>Anfo Stock EcommPro</span>
             </div>
-            <div class="d-flex align-items-center gap-3">
-                <span id="total-products" class="badge bg-primary">0 productos</span>
-                <button class="btn btn-sm btn-outline-danger" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i> Salir
-                </button>
+            <div class="nav-links d-none d-md-flex">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-home"></i>Inicio
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-box"></i>Productos
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-warehouse"></i>Almacenes
+                </a>
+                <a href="#" class="nav-link">
+                    <i class="fas fa-file-invoice-dollar"></i>Cotizaciones
+                </a>
+            </div>
+            <div class="user-menu">
+                <div class="user-avatar">A</div>
+                <div class="user-name">Admin</div>
+                <i class="fas fa-chevron-down"></i>
             </div>
         </div>
 
-        <div class="main-container">
-            <!-- Search Bar -->
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="search-container">
-                        <i class="fas fa-search search-icon"></i>
-                        <input type="search" id="search-input" class="search-input" 
-                               placeholder="Buscar por código o descripción (mínimo 2 caracteres)..."
-                               autocomplete="off">
-                        <span id="search-status" class="search-status" style="display: none;">
-                            <i class="fas fa-spinner fa-spin"></i>
-                        </span>
-                        <!-- Search Results Dropdown -->
-                        <div id="search-results" class="search-results" style="display: none;"></div>
+        <!-- Resumen del Inventario -->
+        <div class="row mb-4">
+            <div class="col-md-6 mb-3 mb-md-0">
+                <div class="inventory-card animate-in">
+                    <div class="inventory-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="inventory-info">
+                        <div class="inventory-total" id="total-inventory">-</div>
+                        <div class="inventory-title">Existencias Totales</div>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <select id="warehouse-filter" class="form-control">
+            </div>
+            <div class="col-md-6">
+                <div class="inventory-card animate-in" style="animation-delay: 0.1s;">
+                    <div class="inventory-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="inventory-info">
+                        <div class="inventory-total" id="cotizador-title"> Mini Cotizador</div>
+                        <div class="inventory-title">Herramienta de precios</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-container animate-in" style="animation-delay: 0.2s;">
+            <!-- Search and Filter Bar -->
+            <div class="filter-row">
+                <div class="search-container" style="flex: 2;">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="search" id="search-input" class="search-input" 
+                           placeholder="Buscar por código o descripción..." list="suggestions">
+                    <datalist id="suggestions"></datalist>
+                </div>
+                <div style="flex: 1;">
+                    <select id="warehouse-filter" class="select-box">
                         <option value="">Todos los almacenes</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Quick Access / Featured Products -->
-            <div id="featured-section" class="featured-products mt-4">
-                <h6 class="mb-3"><i class="fas fa-fire me-2"></i>Productos Destacados</h6>
-                <div id="featured-products-list">
-                    <div class="loading-skeleton"></div>
-                    <div class="loading-skeleton"></div>
-                    <div class="loading-skeleton"></div>
-                </div>
-            </div>
-
-            <!-- Product Details & Mini Quoter -->
+            <!-- Main Content - Product Details & Mini Quoter -->
             <div class="row mt-4">
-                <div class="col-md-6">
-                    <div id="product-detail" class="product-detail" style="display: none;">
-                        <h5 class="mb-4"><i class="fas fa-info-circle text-primary me-2"></i>Detalles del Producto</h5>
+                <div class="col-md-6 mb-4 mb-md-0">
+                    <!-- Product Details -->
+                    <div id="product-detail" class="product-detail animate-in" style="animation-delay: 0.3s;">
+                        <h5 class="mb-4 d-flex align-items-center gap-2">
+                            <i class="fas fa-info-circle text-primary"></i>
+                            Detalles del Producto
+                        </h5>
                         <div class="product-info">
                             <div class="info-row">
                                 <div class="info-label">Código:</div>
-                                <div class="info-value" id="detail-code">-</div>
+                                <div class="info-value" id="detail-code"></div>
                             </div>
                             <div class="info-row">
                                 <div class="info-label">Descripción:</div>
-                                <div class="info-value" id="detail-description">-</div>
+                                <div class="info-value" id="detail-description"></div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Unidades:</div>
+                                <div class="info-value">PZA</div>
                             </div>
                             <div class="info-row">
                                 <div class="info-label">Proveedor:</div>
-                                <div class="info-value" id="detail-supplier">-</div>
+                                <div class="info-value" id="detail-supplier"></div>
                             </div>
                             <div class="info-row">
-                                <div class="info-label">Precio:</div>
-                                <div class="info-value price" id="detail-price">$0.00</div>
+                                <div class="info-label">Precio de Venta:</div>
+                                <div class="info-value price" id="detail-price"></div>
                             </div>
+                            
+                            <!-- Botón para agregar al cotizador -->
+                            <button id="add-to-quote-btn" class="btn btn-primary w-100 mt-3" onclick="addCurrentProductToQuoter()">
+                                <i class="fas fa-cart-plus me-2"></i>Agregar al Cotizador
+                            </button>
                         </div>
-                        <button class="btn btn-primary w-100 mt-3" onclick="addCurrentProductToQuoter()">
-                            <i class="fas fa-cart-plus me-2"></i>Agregar al Cotizador
-                        </button>
-                        
-                        <!-- Warehouse List -->
-                        <div id="warehouse-listing" class="mt-4"></div>
                     </div>
-                    
-                    <div id="no-product-selected" class="text-center p-5 text-muted">
-                        <i class="fas fa-search" style="font-size: 3rem;"></i>
-                        <p class="mt-3">Busque un producto para ver sus detalles</p>
-                    </div>
+
+                    <!-- Warehouse Listing (para mostrar las existencias) -->
+                    <div id="warehouse-listing" class="warehouse-list mt-4 animate-in" style="animation-delay: 0.4s;"></div>
                 </div>
                 
                 <div class="col-md-6">
-                    <div class="mini-quoter">
+                    <!-- Mini Quoter Content - VERSIÓN MEJORADA -->
+                    <div class="mini-quoter animate-in" style="animation-delay: 0.5s;">
                         <div class="quoter-header">
                             <i class="fas fa-calculator me-2"></i>Mini Cotizador
                         </div>
+                        <div class="quoter-columns">
+                            <div>Producto</div>
+                            <div class="text-center">Cant.</div>
+                            <div class="text-center">Precio</div>
+                            <div class="text-center">Desc. %</div>
+                            <div></div>
+                        </div>
+                        
+                        <!-- Quoter Items - Con scroll -->
                         <div class="quoter-items-container">
                             <div id="quoter-items">
-                                <div class="text-center p-4 text-muted">
-                                    <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
-                                    <p>El cotizador está vacío</p>
-                                </div>
+                                <!-- Items will be generated dynamically -->
                             </div>
                         </div>
-                        <div class="quoter-summary">
+                        
+                        <!-- Quoter Summary - Fijo en la parte inferior -->
+                        <div id="quoter-summary" class="quoter-summary">
                             <div class="summary-row">
                                 <div>Subtotal:</div>
                                 <div id="subtotal-amount">$0.00</div>
+                            </div>
+                            <div class="summary-row">
+                                <div>Descuento:</div>
+                                <div id="discount-amount">-$0.00</div>
                             </div>
                             <div class="summary-row total">
                                 <div>Total:</div>
                                 <div id="total-amount">$0.00</div>
                             </div>
-                            <button class="btn btn-primary w-100 mt-3" onclick="generateQuote()">
+                            
+                            <!-- Action Buttons -->
+                            <button class="btn btn-primary action-button" onclick="generateQuote()">
                                 <i class="fas fa-file-invoice-dollar me-2"></i>Generar Cotización
+                            </button>
+                            <button class="btn btn-outline-danger action-button mt-2" onclick="clearQuoter()">
+                                <i class="fas fa-trash-alt me-2"></i>Limpiar Cotizador
                             </button>
                         </div>
                     </div>
@@ -628,40 +1133,41 @@
     <div id="loader" class="loader" style="display: none;">
         <div class="loader-content">
             <div class="loader-spinner"></div>
-            <div class="loader-text">Cargando...</div>
+            <div class="loader-text">Cargando datos...</div>
         </div>
     </div>
-
+    
     <script>
-        // ==============================================
-        // CONFIGURACIÓN Y ESTADO
-        // ==============================================
+        // Configuración
         const config = {
             credentials: {
                 username: 'admin',
                 password: '12345'
             },
             api: {
-                baseUrl: 'https://script.google.com/macros/s/AKfycbyIKNc6o4c2ICJqnznaAuOYHBS6TEJA2Fm50emiH9wZb-eaR7VKE4qdeBBn02xWr2xmwA/exec',
-                minSearchLength: 2,
-                searchDelay: 500 // milisegundos
+                // URL del script de Google Apps Script
+                url: 'https://script.google.com/macros/s/AKfycbxvtZbYC-sYI9vHddWf3Hft2svOw3q7fgrVpJF6VpMi2yKCUQGN01LxzpUo8hJfpe4jkQ/exec',
+                stockThresholds: {
+                    low: 5,
+                    medium: 10
+                }
             }
         };
 
+        // Gestión del estado
         let state = {
+            inventory: [],
+            filteredInventory: [],
+            warehouses: new Set(),
             selectedProduct: null,
             quoterItems: [],
-            warehouses: [],
-            searchResults: [],
-            featuredProducts: [],
-            searchTimeout: null,
-            lastSearchTerm: '',
-            isSearching: false
+            statistics: {
+                totalInventory: 0
+            },
+            theme: 'light'
         };
 
-        // ==============================================
-        // FUNCIONES DE AUTENTICACIÓN
-        // ==============================================
+        // Manejadores de eventos
         function handleLogin(event) {
             event.preventDefault();
             
@@ -671,10 +1177,515 @@
             if (username === config.credentials.username && 
                 password === config.credentials.password) {
                 showApp();
-                initializeApp();
+                loadInventoryData();
             } else {
                 showToast('Credenciales incorrectas', 'error');
             }
+        }
+        
+        // Función para manejar el clic en un producto
+        function handleProductClick(productCode) {
+            const product = state.inventory.find(item => item.Codigo === productCode);
+            if (product) {
+                state.selectedProduct = product;
+                showProductDetail(product);
+            }
+        }
+
+        // Carga de datos
+        async function loadInventoryData() {
+            try {
+                showLoader();
+                
+                const response = await fetch(config.api.url);
+                
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (!Array.isArray(data)) {
+                    throw new Error("Formato de datos inválido");
+                }
+                
+                state.inventory = data;
+                initializeUI();
+                
+                // Seleccionar automáticamente el primer producto disponible
+                if (state.inventory.length > 0) {
+                    // Buscar el primer producto con existencias
+                    const productWithStock = state.inventory.find(item => 
+                        item.Almacenes && item.Almacenes.some(wh => wh.Existencias > 0)
+                    );
+                    
+                    if (productWithStock) {
+                        state.selectedProduct = productWithStock;
+                        showProductDetail(productWithStock);
+                    }
+                }
+                
+                // Iniciar animaciones
+                animateElements();
+                
+            } catch(error) {
+                console.error('Error al cargar datos:', error);
+                showToast('Error al cargar los datos: ' + error.message, 'error');
+            } finally {
+                hideLoader();
+            }
+        }
+
+        // Inicialización de la UI
+        function initializeUI() {
+            initializeWarehouses();
+            initializeSuggestions();
+            setupEventListeners();
+            updateInventoryTotal();
+            
+            // Inicializar el mini-cotizador
+            renderQuoter();
+        }
+
+        function updateInventoryTotal() {
+            // Calcula el total del inventario (suma de todas las existencias)
+            const totalInventory = state.inventory.reduce((total, item) => {
+                return total + item.Almacenes.reduce((sum, wh) => {
+                    return sum + (wh.Existencias || 0);
+                }, 0);
+            }, 0);
+            
+            document.getElementById('total-inventory').textContent = totalInventory.toLocaleString();
+        }
+
+        function initializeWarehouses() {
+            state.warehouses = new Set(
+                state.inventory.flatMap(item => 
+                    item.Almacenes.map(wh => wh.Almacen)
+                )
+            );
+            
+            const warehouseFilter = document.getElementById('warehouse-filter');
+            warehouseFilter.innerHTML = '<option value="">Todos los almacenes</option>';
+            
+            [...state.warehouses].sort().forEach(warehouse => {
+                const option = document.createElement('option');
+                option.value = warehouse;
+                option.textContent = warehouse;
+                warehouseFilter.appendChild(option);
+            });
+        }
+
+        function initializeSuggestions() {
+            const suggestions = new Set();
+            state.inventory.forEach(item => {
+                suggestions.add(item.Codigo);
+                suggestions.add(item.Descripcion);
+            });
+            
+            const datalist = document.getElementById('suggestions');
+            datalist.innerHTML = '';
+            suggestions.forEach(text => {
+                const option = document.createElement('option');
+                option.value = text;
+                datalist.appendChild(option);
+            });
+        }
+
+        function setupEventListeners() {
+            // Asociamos el evento de búsqueda al campo de entrada
+            document.getElementById('search-input').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    handleFilter();
+                }
+            });
+            
+            // También hacer búsqueda cuando cambia el almacén seleccionado
+            document.getElementById('warehouse-filter').addEventListener('change', handleFilter);
+            
+            // Observador de intersección para animaciones
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            // Aplicar observador a elementos con clase animate-in
+            document.querySelectorAll('.animate-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // Función para animar elementos cuando entran en viewport
+        function animateElements() {
+            const elements = document.querySelectorAll('.animate-in:not(.visible)');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('visible');
+                }, 100 * index);
+            });
+        }
+
+        // Filtrado
+        function handleFilter() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const selectedWarehouse = document.getElementById('warehouse-filter').value;
+            
+            showLoader();
+            
+            setTimeout(() => {
+                // Buscar productos que coincidan con el término de búsqueda
+                const matchingProduct = state.inventory.find(item => 
+                    (item.Codigo.toLowerCase().includes(searchTerm) || 
+                     item.Descripcion.toLowerCase().includes(searchTerm)) &&
+                    // Verificar que tenga existencias en el almacén seleccionado (si hay selección)
+                    (!selectedWarehouse || item.Almacenes.some(wh => 
+                        wh.Almacen === selectedWarehouse && wh.Existencias > 0
+                    ))
+                );
+                
+                if (matchingProduct) {
+                    state.selectedProduct = matchingProduct;
+                    showProductDetail(matchingProduct);
+                } else {
+                    // No se encontraron resultados
+                    showToast('No se encontraron productos que coincidan con su búsqueda', 'warning');
+                }
+                
+                hideLoader();
+            }, 300);
+        }
+
+        // Mostrar detalles de un producto
+        function showProductDetail(product) {
+            // Actualizar los datos en el panel de detalles
+            document.getElementById('detail-code').textContent = product.Codigo;
+            document.getElementById('detail-description').textContent = product.Descripcion;
+            document.getElementById('detail-supplier').textContent = product.Proveedor || 'No especificado';
+            
+            // Formatear el precio de venta
+            const price = typeof product.PrecioVenta === 'number' 
+                ? `$ ${product.PrecioVenta.toFixed(2)}` 
+                : product.PrecioVenta || 'No disponible';
+            document.getElementById('detail-price').textContent = price;
+            
+            // Guardar el producto seleccionado en el estado
+            state.selectedProduct = product;
+            
+            // Asegurarse de que el botón de agregar esté visible
+            document.getElementById('add-to-quote-btn').style.display = 'block';
+            
+            // Mostrar las existencias por almacén
+            showWarehouseList(product);
+            
+            // Actualizar el total del inventario para mostrar las piezas del producto seleccionado
+            const totalProductStock = product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0);
+            document.getElementById('total-inventory').textContent = totalProductStock.toLocaleString();
+        }
+        
+        // Mostrar lista de almacenes con existencias
+        function showWarehouseList(product) {
+            const warehouseListContainer = document.getElementById('warehouse-listing');
+            
+            // Ordenar los almacenes por existencias (de mayor a menor)
+            const sortedWarehouses = [...product.Almacenes]
+                .filter(wh => wh.Existencias > 0)
+                .sort((a, b) => b.Existencias - a.Existencias);
+            
+            if (sortedWarehouses.length === 0) {
+                warehouseListContainer.innerHTML = '<div class="text-muted">No hay existencias disponibles para este producto.</div>';
+                return;
+            }
+            
+            // Crear el HTML para mostrar los almacenes
+            // Verificar si hay más de 5 almacenes para aplicar la clase de scroll
+            const needsScroll = sortedWarehouses.length > 5;
+            
+            warehouseListContainer.innerHTML = `
+                <div class="warehouse-list-title">
+                    <i class="fas fa-warehouse"></i>
+                    Existencias por Almacén
+                </div>
+                <div class="${needsScroll ? 'warehouse-list-items' : ''}">
+                    ${sortedWarehouses.map(wh => `
+                        <div class="warehouse-item ${getStockClass(wh.Existencias)}">
+                            <div class="warehouse-name">
+                                <i class="fas fa-warehouse"></i>
+                                <span>${wh.Almacen}</span>
+                            </div>
+                            <span class="stock-number">
+                                ${wh.Existencias}
+                                ${wh.Existencias <= config.api.stockThresholds.low ? 
+                                    '<i class="fas fa-exclamation-circle ms-2 text-danger"></i>' : ''}
+                            </span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // Funciones para el mini cotizador
+        function addCurrentProductToQuoter() {
+            if (!state.selectedProduct) {
+                showToast('No hay producto seleccionado para agregar al cotizador', 'warning');
+                return;
+            }
+            
+            const product = state.selectedProduct;
+            
+            // Verificar si el producto ya está en el cotizador
+            const existingItemIndex = state.quoterItems.findIndex(item => item.code === product.Codigo);
+            
+            if (existingItemIndex >= 0) {
+                // Incrementar la cantidad si ya existe
+                state.quoterItems[existingItemIndex].quantity++;
+            } else {
+                // Determinar el precio (asegurarnos de que sea un número)
+                let numericPrice = 0;
+                if (typeof product.PrecioVenta === 'number') {
+                    numericPrice = product.PrecioVenta;
+                } else if (product.PrecioVenta) {
+                    // Extraer el valor numérico si es una cadena (por ejemplo "$75.00")
+                    const match = product.PrecioVenta.toString().match(/[\d.]+/g);
+                    if (match && match.length > 0) {
+                        numericPrice = parseFloat(match[0]);
+                    }
+                }
+                
+                // Calcular el stock total disponible
+                const totalStock = product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0);
+                
+                // Agregar el nuevo item
+                state.quoterItems.push({
+                    code: product.Codigo,
+                    description: product.Descripcion,
+                    price: numericPrice,
+                    originalPrice: numericPrice,
+                    quantity: 1,
+                    discount: 0,
+                    totalWarehouseStock: totalStock
+                });
+            }
+            
+            // Actualizar la UI del cotizador
+            renderQuoter();
+            
+            // Mostrar mensaje de éxito
+            showToast(`"${product.Descripcion}" agregado al cotizador`, 'success');
+        }
+        
+        function renderQuoter() {
+            const quoterItemsContainer = document.getElementById('quoter-items');
+            
+            if (!state.quoterItems || state.quoterItems.length === 0) {
+                // No hay elementos, mostrar mensaje
+                quoterItemsContainer.innerHTML = `
+                    <div class="text-center p-4 text-muted">
+                        <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
+                        <p>El cotizador está vacío</p>
+                        <p class="small">Busque y agregue productos para empezar</p>
+                    </div>
+                `;
+                
+                // Actualizar totales a cero
+                document.getElementById('subtotal-amount').textContent = '$0.00';
+                document.getElementById('discount-amount').textContent = '-$0.00';
+                document.getElementById('total-amount').textContent = '$0.00';
+                return;
+            }
+            
+            // Mostrar los items del cotizador
+            quoterItemsContainer.innerHTML = state.quoterItems.map((item, index) => {
+                // Cortar el título si es muy largo
+                const truncatedTitle = item.description.length > 30
+                    ? item.description.substring(0, 30) + '...'
+                    : item.description;
+                    
+                return `
+                    <div class="quoter-item">
+                        <div class="quoter-item-detail">
+                            <div class="quoter-item-title" title="${item.description}">${truncatedTitle}</div>
+                            <div class="quoter-item-subtitle">${item.code}</div>
+                        </div>
+                        <div>
+                            <input type="number" min="1" max="${item.totalWarehouseStock}" value="${item.quantity}" 
+                                class="quantity-control" 
+                                onchange="updateQuoterItemQuantity(${index}, this.value)">
+                        </div>
+                        <div>
+                            <input type="number" min="0" step="0.01" value="${item.price.toFixed(2)}" 
+                                class="price-control" readonly>
+                        </div>
+                        <div>
+                            <input type="number" min="0" max="100" value="${item.discount}" 
+                                class="discount-control" 
+                                onchange="updateQuoterItemDiscount(${index}, this.value)">
+                        </div>
+                        <div class="remove-item" onclick="removeQuoterItem(${index})">
+                            <i class="fas fa-trash"></i>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Calcular totales
+            const { subtotal, discountAmount, total } = calculateQuoterTotals();
+            
+            // Actualizar el resumen
+            document.getElementById('subtotal-amount').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('discount-amount').textContent = `-$${discountAmount.toFixed(2)}`;
+            document.getElementById('total-amount').textContent = `$${total.toFixed(2)}`;
+        }
+        
+        function calculateItemTotal(item) {
+            const baseAmount = item.price * item.quantity;
+            const discountAmount = baseAmount * (item.discount / 100);
+            return baseAmount - discountAmount;
+        }
+        
+        function calculateQuoterTotals() {
+            // Subtotal (sin descuentos)
+            const subtotal = state.quoterItems.reduce((total, item) => {
+                return total + (item.price * item.quantity);
+            }, 0);
+            
+            // Total de descuentos
+            const discountAmount = state.quoterItems.reduce((total, item) => {
+                const itemTotal = item.price * item.quantity;
+                const itemDiscount = itemTotal * (item.discount / 100);
+                return total + itemDiscount;
+            }, 0);
+            
+            // Total final
+            const total = subtotal - discountAmount;
+            
+            return { subtotal, discountAmount, total };
+        }
+        
+        function updateQuoterItemQuantity(index, quantity) {
+            quantity = parseInt(quantity) || 1;
+            if (quantity < 1) quantity = 1;
+            
+            const item = state.quoterItems[index];
+            if (item) {
+                // Limitar a la cantidad disponible
+                if (quantity > item.totalWarehouseStock) {
+                    quantity = item.totalWarehouseStock;
+                    showToast(`Solo hay ${item.totalWarehouseStock} unidades disponibles.`, 'warning');
+                }
+                
+                item.quantity = quantity;
+                renderQuoter();
+            }
+        }
+        
+        function updateQuoterItemPrice(index, price) {
+            price = parseFloat(price) || 0;
+            if (price < 0) price = 0;
+            
+            const item = state.quoterItems[index];
+            if (item) {
+                item.price = price;
+                renderQuoter();
+            }
+        }
+        
+        function updateQuoterItemDiscount(index, discount) {
+            discount = parseFloat(discount) || 0;
+            if (discount < 0) discount = 0;
+            if (discount > 100) discount = 100;
+            
+            const item = state.quoterItems[index];
+            if (item) {
+                item.discount = discount;
+                renderQuoter();
+            }
+        }
+        
+        function removeQuoterItem(index) {
+            if (index >= 0 && index < state.quoterItems.length) {
+                const removedItem = state.quoterItems[index];
+                state.quoterItems.splice(index, 1);
+                renderQuoter();
+                showToast(`"${removedItem.description}" eliminado del cotizador`, 'success');
+            }
+        }
+        
+        function clearQuoter() {
+            if (state.quoterItems.length === 0) return;
+            
+            // Confirm utilizando un toast personalizado
+            const confirm = window.confirm('¿Está seguro de que desea vaciar el cotizador?');
+            if (confirm) {
+                state.quoterItems = [];
+                renderQuoter();
+                showToast('Cotizador limpiado correctamente', 'success');
+            }
+        }
+        
+        function generateQuote() {
+            if (state.quoterItems.length === 0) {
+                showToast('Agregue productos al cotizador para generar una cotización', 'warning');
+                return;
+            }
+            
+            // Obtener fecha actual formateada
+            const now = new Date();
+            const formattedDate = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+            
+            // Calcular totales
+            const { subtotal, discountAmount, total } = calculateQuoterTotals();
+            
+            // Crear texto de la cotización
+            let quoteText = `COTIZACIÓN\n`;
+            quoteText += `Fecha: ${formattedDate}\n\n`;
+            quoteText += `PRODUCTOS:\n`;
+            
+            state.quoterItems.forEach((item, index) => {
+                const itemTotal = calculateItemTotal(item);
+                quoteText += `${index + 1}. ${item.description} (${item.code})\n`;
+                quoteText += `   Cantidad: ${item.quantity}\n`;
+                quoteText += `   Precio: $${item.price.toFixed(2)}\n`;
+                if (item.discount > 0) {
+                    quoteText += `   Descuento: ${item.discount}%\n`;
+                }
+                quoteText += `   Subtotal: $${itemTotal.toFixed(2)}\n\n`;
+            });
+            
+            quoteText += `RESUMEN:\n`;
+            quoteText += `Subtotal: $${subtotal.toFixed(2)}\n`;
+            quoteText += `Descuento: -$${discountAmount.toFixed(2)}\n`;
+            quoteText += `TOTAL: $${total.toFixed(2)}\n\n`;
+            
+            // Crear un elemento textarea para copiar al portapapeles
+            const textArea = document.createElement('textarea');
+            textArea.value = quoteText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                // Copiar al portapapeles
+                document.execCommand('copy');
+                showToast('Cotización generada y copiada al portapapeles', 'success');
+            } catch (err) {
+                showToast('No se pudo copiar la cotización', 'error');
+                console.error('Error al copiar:', err);
+            }
+            
+            document.body.removeChild(textArea);
+            
+            // Mostrar la cotización en una alerta
+            alert(quoteText);
+        }
+
+        // Función para determinar la clase CSS de stock (bajo, medio, normal)
+        function getStockClass(stock) {
+            if (stock <= config.api.stockThresholds.low) return 'low-stock';
+            if (stock <= config.api.stockThresholds.medium) return 'medium-stock';
+            return '';
         }
 
         function showApp() {
@@ -682,438 +1693,6 @@
             document.getElementById('app-container').style.display = 'block';
         }
 
-        function logout() {
-            document.getElementById('app-container').style.display = 'none';
-            document.getElementById('login-container').style.display = 'block';
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-        }
-
-        // ==============================================
-        // INICIALIZACIÓN DE LA APLICACIÓN
-        // ==============================================
-        async function initializeApp() {
-            showLoader();
-            
-            try {
-                // Cargar datos iniciales (almacenes y productos destacados)
-                const response = await fetch(`${config.api.baseUrl}?action=init`);
-                const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                
-                // Actualizar estado
-                state.warehouses = data.warehouses || [];
-                state.featuredProducts = data.featuredProducts || [];
-                
-                // Actualizar UI
-                updateWarehouseFilter();
-                showFeaturedProducts();
-                
-                // Mostrar total de registros
-                document.getElementById('total-products').textContent = 
-                    `${data.totalRows.toLocaleString()} productos`;
-                
-                // Configurar event listeners
-                setupEventListeners();
-                
-                showToast('Sistema cargado correctamente', 'success');
-                
-            } catch (error) {
-                console.error('Error al inicializar:', error);
-                showToast('Error al cargar el sistema: ' + error.message, 'error');
-            } finally {
-                hideLoader();
-            }
-        }
-
-        function updateWarehouseFilter() {
-            const select = document.getElementById('warehouse-filter');
-            select.innerHTML = '<option value="">Todos los almacenes</option>';
-            
-            state.warehouses.forEach(warehouse => {
-                const option = document.createElement('option');
-                option.value = warehouse;
-                option.textContent = warehouse;
-                select.appendChild(option);
-            });
-        }
-
-        function showFeaturedProducts() {
-            const container = document.getElementById('featured-products-list');
-            
-            if (state.featuredProducts.length === 0) {
-                container.innerHTML = '<p class="text-muted">No hay productos destacados disponibles</p>';
-                return;
-            }
-            
-            container.innerHTML = state.featuredProducts.map(product => `
-                <div class="featured-product-item" onclick="selectProduct('${product.Codigo}')">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <strong>${product.Codigo}</strong> - ${product.Descripcion}
-                        </div>
-                        <span class="badge bg-success">${product.TotalExistencias} pzs</span>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // ==============================================
-        // CONFIGURACIÓN DE EVENT LISTENERS
-        // ==============================================
-        function setupEventListeners() {
-            const searchInput = document.getElementById('search-input');
-            const warehouseFilter = document.getElementById('warehouse-filter');
-            
-            // Búsqueda con debounce
-            searchInput.addEventListener('input', function(e) {
-                const term = e.target.value.trim();
-                
-                // Limpiar timeout anterior
-                if (state.searchTimeout) {
-                    clearTimeout(state.searchTimeout);
-                }
-                
-                // Si el término es muy corto, limpiar resultados
-                if (term.length < config.api.minSearchLength) {
-                    hideSearchResults();
-                    return;
-                }
-                
-                // Mostrar indicador de búsqueda
-                showSearchStatus(true);
-                
-                // Configurar nuevo timeout para búsqueda
-                state.searchTimeout = setTimeout(() => {
-                    performSearch(term);
-                }, config.api.searchDelay);
-            });
-            
-            // Cambio de almacén
-            warehouseFilter.addEventListener('change', function() {
-                const searchTerm = searchInput.value.trim();
-                if (searchTerm.length >= config.api.minSearchLength) {
-                    performSearch(searchTerm);
-                }
-            });
-            
-            // Cerrar resultados al hacer clic fuera
-            document.addEventListener('click', function(e) {
-                if (!e.target.closest('.search-container')) {
-                    hideSearchResults();
-                }
-            });
-        }
-
-        // ==============================================
-        // FUNCIONES DE BÚSQUEDA
-        // ==============================================
-        async function performSearch(term) {
-            if (state.isSearching) return;
-            
-            state.isSearching = true;
-            state.lastSearchTerm = term;
-            showSearchStatus(true);
-            
-            try {
-                const warehouse = document.getElementById('warehouse-filter').value;
-                const url = `${config.api.baseUrl}?action=search&q=${encodeURIComponent(term)}&warehouse=${encodeURIComponent(warehouse)}`;
-                
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                
-                state.searchResults = data.results || [];
-                showSearchResults();
-                
-            } catch (error) {
-                console.error('Error en búsqueda:', error);
-                showToast('Error al buscar: ' + error.message, 'error');
-            } finally {
-                state.isSearching = false;
-                showSearchStatus(false);
-            }
-        }
-
-        function showSearchResults() {
-            const container = document.getElementById('search-results');
-            
-            if (state.searchResults.length === 0) {
-                container.innerHTML = '<div class="no-results">No se encontraron resultados</div>';
-            } else {
-                container.innerHTML = state.searchResults.map(product => `
-                    <div class="search-result-item" onclick="selectProductFromSearch('${product.Codigo}')">
-                        <span class="result-stock">${product.TotalExistencias} pzs</span>
-                        <div>
-                            <div class="result-code">${product.Codigo}</div>
-                            <div class="result-description">${product.Descripcion}</div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-            
-            container.style.display = 'block';
-        }
-
-        function hideSearchResults() {
-            document.getElementById('search-results').style.display = 'none';
-        }
-
-        function showSearchStatus(show) {
-            document.getElementById('search-status').style.display = show ? 'inline' : 'none';
-        }
-
-        // ==============================================
-        // FUNCIONES DE PRODUCTO
-        // ==============================================
-        async function selectProduct(code) {
-            showLoader();
-            
-            try {
-                const url = `${config.api.baseUrl}?action=product&code=${encodeURIComponent(code)}`;
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                
-                state.selectedProduct = data.product;
-                showProductDetail(data.product);
-                hideSearchResults();
-                
-            } catch (error) {
-                console.error('Error al cargar producto:', error);
-                showToast('Error al cargar producto: ' + error.message, 'error');
-            } finally {
-                hideLoader();
-            }
-        }
-
-        async function selectProductFromSearch(code) {
-            // Buscar en los resultados actuales primero
-            const product = state.searchResults.find(p => p.Codigo === code);
-            
-            if (product) {
-                state.selectedProduct = product;
-                showProductDetail(product);
-                hideSearchResults();
-            } else {
-                // Si no está en cache, buscar en el servidor
-                await selectProduct(code);
-            }
-        }
-
-        function showProductDetail(product) {
-            // Ocultar mensaje de "no hay producto seleccionado"
-            document.getElementById('no-product-selected').style.display = 'none';
-            document.getElementById('product-detail').style.display = 'block';
-            
-            // Actualizar detalles
-            document.getElementById('detail-code').textContent = product.Codigo;
-            document.getElementById('detail-description').textContent = product.Descripcion;
-            document.getElementById('detail-supplier').textContent = product.Proveedor || 'No especificado';
-            
-            const price = typeof product.PrecioVenta === 'number' 
-                ? `${product.PrecioVenta.toFixed(2)}` 
-                : product.PrecioVenta || '$0.00';
-            document.getElementById('detail-price').textContent = price;
-            
-            // Mostrar almacenes
-            showWarehouseList(product);
-        }
-
-        function showWarehouseList(product) {
-            const container = document.getElementById('warehouse-listing');
-            
-            if (!product.Almacenes || product.Almacenes.length === 0) {
-                container.innerHTML = '<p class="text-muted">Sin existencias disponibles</p>';
-                return;
-            }
-            
-            // Ordenar por existencias
-            const sortedWarehouses = [...product.Almacenes]
-                .sort((a, b) => b.Existencias - a.Existencias);
-            
-            container.innerHTML = `
-                <h6 class="mt-4 mb-3"><i class="fas fa-warehouse me-2"></i>Existencias por Almacén</h6>
-                ${sortedWarehouses.map(wh => `
-                    <div class="warehouse-item">
-                        <span><i class="fas fa-warehouse me-2"></i>${wh.Almacen}</span>
-                        <span class="badge ${getStockBadgeClass(wh.Existencias)}">${wh.Existencias} pzs</span>
-                    </div>
-                `).join('')}
-            `;
-        }
-
-        function getStockBadgeClass(stock) {
-            if (stock <= 5) return 'bg-danger';
-            if (stock <= 10) return 'bg-warning';
-            return 'bg-success';
-        }
-
-        // ==============================================
-        // FUNCIONES DEL COTIZADOR
-        // ==============================================
-        function addCurrentProductToQuoter() {
-            if (!state.selectedProduct) {
-                showToast('No hay producto seleccionado', 'warning');
-                return;
-            }
-            
-            const product = state.selectedProduct;
-            
-            // Verificar si ya existe
-            const existingIndex = state.quoterItems.findIndex(item => item.code === product.Codigo);
-            
-            if (existingIndex >= 0) {
-                state.quoterItems[existingIndex].quantity++;
-                showToast('Cantidad actualizada en el cotizador', 'info');
-            } else {
-                // Calcular precio numérico
-                let price = 0;
-                if (typeof product.PrecioVenta === 'number') {
-                    price = product.PrecioVenta;
-                } else if (product.PrecioVenta) {
-                    const match = product.PrecioVenta.toString().match(/[\d.]+/);
-                    if (match) price = parseFloat(match[0]);
-                }
-                
-                state.quoterItems.push({
-                    code: product.Codigo,
-                    description: product.Descripcion,
-                    price: price,
-                    quantity: 1,
-                    maxStock: product.TotalExistencias || 
-                              (product.Almacenes ? product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0) : 0)
-                });
-                
-                showToast('Producto agregado al cotizador', 'success');
-            }
-            
-            renderQuoter();
-        }
-
-        function renderQuoter() {
-            const container = document.getElementById('quoter-items');
-            
-            if (state.quoterItems.length === 0) {
-                container.innerHTML = `
-                    <div class="text-center p-4 text-muted">
-                        <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
-                        <p>El cotizador está vacío</p>
-                    </div>
-                `;
-                updateQuoterTotals(0, 0);
-                return;
-            }
-            
-            container.innerHTML = state.quoterItems.map((item, index) => `
-                <div class="p-3 border-bottom">
-                    <div class="d-flex justify-content-between align-items-start">
-                        <div style="flex: 1;">
-                            <strong>${item.code}</strong><br>
-                            <small class="text-muted">${item.description}</small>
-                        </div>
-                        <button class="btn btn-sm btn-outline-danger" onclick="removeFromQuoter(${index})">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                    <div class="d-flex gap-2 mt-2">
-                        <input type="number" class="form-control form-control-sm" 
-                               value="${item.quantity}" min="1" max="${item.maxStock}"
-                               onchange="updateQuoterQuantity(${index}, this.value)"
-                               style="width: 80px;">
-                        <span class="align-self-center">× ${item.price.toFixed(2)}</span>
-                        <span class="align-self-center ms-auto">
-                            <strong>${(item.quantity * item.price).toFixed(2)}</strong>
-                        </span>
-                    </div>
-                </div>
-            `).join('');
-            
-            // Calcular totales
-            const subtotal = state.quoterItems.reduce((sum, item) => 
-                sum + (item.quantity * item.price), 0);
-            
-            updateQuoterTotals(subtotal, subtotal);
-        }
-
-        function updateQuoterTotals(subtotal, total) {
-            document.getElementById('subtotal-amount').textContent = `${subtotal.toFixed(2)}`;
-            document.getElementById('total-amount').textContent = `${total.toFixed(2)}`;
-        }
-
-        function updateQuoterQuantity(index, value) {
-            const quantity = parseInt(value) || 1;
-            const item = state.quoterItems[index];
-            
-            if (quantity > item.maxStock) {
-                showToast(`Solo hay ${item.maxStock} unidades disponibles`, 'warning');
-                item.quantity = item.maxStock;
-            } else if (quantity < 1) {
-                item.quantity = 1;
-            } else {
-                item.quantity = quantity;
-            }
-            
-            renderQuoter();
-        }
-
-        function removeFromQuoter(index) {
-            state.quoterItems.splice(index, 1);
-            renderQuoter();
-            showToast('Producto eliminado del cotizador', 'info');
-        }
-
-        function generateQuote() {
-            if (state.quoterItems.length === 0) {
-                showToast('El cotizador está vacío', 'warning');
-                return;
-            }
-            
-            const date = new Date().toLocaleDateString('es-MX');
-            let quoteText = `COTIZACIÓN - ${date}\n`;
-            quoteText += '='.repeat(40) + '\n\n';
-            
-            let total = 0;
-            state.quoterItems.forEach((item, i) => {
-                const subtotal = item.quantity * item.price;
-                total += subtotal;
-                quoteText += `${i + 1}. ${item.code} - ${item.description}\n`;
-                quoteText += `   Cantidad: ${item.quantity} × ${item.price.toFixed(2)} = ${subtotal.toFixed(2)}\n\n`;
-            });
-            
-            quoteText += '='.repeat(40) + '\n';
-            quoteText += `TOTAL: ${total.toFixed(2)}\n`;
-            
-            // Copiar al portapapeles
-            navigator.clipboard.writeText(quoteText).then(() => {
-                showToast('Cotización copiada al portapapeles', 'success');
-                
-                // Mostrar también en alert
-                alert(quoteText);
-                
-                // Limpiar cotizador
-                if (confirm('¿Desea limpiar el cotizador?')) {
-                    state.quoterItems = [];
-                    renderQuoter();
-                }
-            }).catch(() => {
-                // Fallback si no se puede copiar
-                alert(quoteText);
-            });
-        }
-
-        // ==============================================
-        // UTILIDADES
-        // ==============================================
         function showLoader() {
             document.getElementById('loader').style.display = 'flex';
         }
@@ -1122,41 +1701,83 @@
             document.getElementById('loader').style.display = 'none';
         }
 
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
+        // Función para mostrar notificaciones toast
+        function showToast(message, type) {
+            const toastContainer = document.getElementById('toast-container');
             
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             
-            const icons = {
-                success: 'fa-check-circle',
-                error: 'fa-exclamation-circle',
-                warning: 'fa-exclamation-triangle',
-                info: 'fa-info-circle'
-            };
+            // Icono según el tipo
+            let icon;
+            switch (type) {
+                case 'success':
+                    icon = 'fa-check-circle';
+                    break;
+                case 'warning':
+                    icon = 'fa-exclamation-triangle';
+                    break;
+                case 'error':
+                    icon = 'fa-exclamation-circle';
+                    break;
+                default:
+                    icon = 'fa-info-circle';
+            }
             
             toast.innerHTML = `
-                <i class="fas ${icons[type] || icons.info}"></i>
-                <span>${message}</span>
+                <div class="toast-icon">
+                    <i class="fas ${icon}"></i>
+                </div>
+                <div class="toast-content">
+                    ${message}
+                </div>
+                <div class="toast-close" onclick="closeToast(this.parentNode)">
+                    <i class="fas fa-times"></i>
+                </div>
             `;
             
-            container.appendChild(toast);
+            toastContainer.appendChild(toast);
+            
+            // Eliminar la toast después de 4 segundos
+            setTimeout(() => {
+                closeToast(toast);
+            }, 4000);
+        }
+        
+        function closeToast(toast) {
+            if (!toast) return;
+            
+            toast.classList.add('slideOut');
             
             setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+            }, 300);
+        }
+        
+        // Alternador de tema claro/oscuro
+        function toggleTheme() {
+            const root = document.documentElement;
+            const themeIcon = document.getElementById('theme-icon');
+            
+            if (state.theme === 'light') {
+                root.setAttribute('data-theme', 'dark');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
+                state.theme = 'dark';
+            } else {
+                root.removeAttribute('data-theme');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
+                state.theme = 'light';
+            }
         }
 
-        // ==============================================
-        // INICIALIZACIÓN AL CARGAR
-        // ==============================================
+        // Inicializar la aplicación cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', () => {
-            // Focus en el campo de usuario al cargar
-            document.getElementById('username').focus();
-            
-            // Para desarrollo: descomentar la siguiente línea para saltar el login
-            // showApp(); initializeApp();
+            // Si quieres saltar la pantalla de login para desarrollo, descomentar la siguiente línea
+            // showApp(); loadInventoryData();
         });
     </script>
 </body>
