@@ -933,7 +933,8 @@
             cache: new Map(),
             cacheTimestamps: new Map(),
             searchTimeout: null,
-            allData: null
+            allData: null,
+            warehouses: new Set()
         };
 
         // ===== SISTEMA DE CACHÉ =====
@@ -965,7 +966,7 @@
             }
         }
 
-        // ===== API FUNCTIONS =====
+        // ===== API FUNCTIONS CON FILTRO INTELIGENTE =====
         async function searchProduct(query) {
             const startTime = performance.now();
             
@@ -980,52 +981,19 @@
 
                 console.log('🔍 Buscando:', query);
 
-                // Intentar API optimizada
-                try {
-                    const params = new URLSearchParams({
-                        action: 'search',
-                        query: query,
-                        limit: 1
-                    });
-
-                    const response = await fetch(`${CONFIG.api.baseUrl}?${params}`, {
-                        signal: AbortSignal.timeout(8000)
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (data.results && data.results.length > 0) {
-                            console.log('✅ API optimizada');
-                            Cache.set(cacheKey, data.results[0]);
-                            updateSearchTime(performance.now() - startTime);
-                            return data.results[0];
-                        }
-                    }
-                } catch (e) {
-                    console.log('⚠️ API optimizada no disponible');
-                }
-
-                // Fallback: cargar todo y buscar
-                console.log('🔄 Usando fallback');
+                // NUEVO: Asegurar que tenemos todos los datos cargados para filtro inteligente
                 if (!state.allData) {
-                    const response = await fetch(CONFIG.api.fallbackUrl, {
-                        signal: AbortSignal.timeout(30000)
-                    });
-                    if (!response.ok) throw new Error('Error cargando datos');
-                    state.allData = await response.json();
-                    console.log('✅ Datos cargados:', state.allData.length, 'productos');
+                    console.log('📥 Cargando datos completos para filtro inteligente...');
+                    await loadAllInventoryData();
                 }
 
-                // Buscar en datos locales
-                const found = state.allData.find(item => 
-                    item.Codigo.toLowerCase().includes(query.toLowerCase()) ||
-                    item.Descripcion.toLowerCase().includes(query.toLowerCase())
-                );
-
-                if (found) {
-                    Cache.set(cacheKey, found);
+                // Aplicar filtro inteligente (como el código original)
+                const matchingProduct = findProductIntelligent(query);
+                
+                if (matchingProduct) {
+                    Cache.set(cacheKey, matchingProduct);
                     updateSearchTime(performance.now() - startTime);
-                    return found;
+                    return matchingProduct;
                 }
 
                 return null;
@@ -1035,6 +1003,65 @@
                 updateSearchTime(performance.now() - startTime);
                 throw error;
             }
+        }
+
+        // NUEVO: Cargar todos los datos de inventario (como el código original)
+        async function loadAllInventoryData() {
+            try {
+                console.log('🔄 Cargando inventario completo...');
+                const response = await fetch(CONFIG.api.fallbackUrl, {
+                    signal: AbortSignal.timeout(30000)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Error HTTP: ${response.status}`);
+                }
+                
+                state.allData = await response.json();
+                
+                if (!Array.isArray(state.allData)) {
+                    throw new Error("Formato de datos inválido");
+                }
+                
+                console.log('✅ Datos cargados:', state.allData.length, 'productos');
+                
+                // Inicializar almacenes
+                initializeWarehouses();
+                
+                return state.allData;
+                
+            } catch (error) {
+                console.error('Error cargando datos:', error);
+                throw error;
+            }
+        }
+
+        // NUEVO: Función de filtro inteligente (del código original)
+        function findProductIntelligent(searchTerm) {
+            if (!state.allData || !searchTerm) return null;
+            
+            const term = searchTerm.toLowerCase().trim();
+            
+            // Buscar productos que coincidan con el término de búsqueda
+            const matchingProduct = state.allData.find(item => 
+                (item.Codigo && item.Codigo.toLowerCase().includes(term)) || 
+                (item.Descripcion && item.Descripcion.toLowerCase().includes(term))
+            );
+            
+            return matchingProduct || null;
+        }
+
+        // NUEVO: Inicializar almacenes (del código original)
+        function initializeWarehouses() {
+            if (!state.allData) return;
+            
+            state.warehouses = new Set(
+                state.allData.flatMap(item => 
+                    item.Almacenes ? item.Almacenes.map(wh => wh.Almacen) : []
+                )
+            );
+            
+            console.log('🏪 Almacenes inicializados:', state.warehouses.size);
         }
 
         function updateSearchTime(time) {
