@@ -3,597 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anfo Stock - Sistema Minimalista</title>
+    <title>Sistema de Gestión de Inventario - Versión Optimizada</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --primary-color: #4f46e5;
+            --primary-light: #6366f1;
+            --primary-dark: #4338ca;
+            --secondary-color: #0ea5e9;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f8fafc;
+            --dark-bg: #0f172a;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            --transition-speed: 0.3s;
+            --border-radius: 1rem;
         }
 
-        :root {
-            --primary: #2563eb;
-            --primary-light: #3b82f6;
-            --primary-dark: #1d4ed8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-400: #9ca3af;
-            --gray-500: #6b7280;
-            --gray-600: #4b5563;
-            --gray-700: #374151;
-            --gray-800: #1f2937;
-            --gray-900: #111827;
-            --white: #ffffff;
-            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --radius: 0.5rem;
-            --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        [data-theme="dark"] {
+            --background-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #cbd5e1;
+            --border-color: #334155;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
-            color: var(--gray-800);
-            line-height: 1.6;
+            background-color: var(--background-color);
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            transition: background-color var(--transition-speed) ease;
             min-height: 100vh;
         }
 
-        /* ===== HEADER ===== */
-        .header {
-            background: var(--white);
-            border-bottom: 1px solid var(--gray-200);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            backdrop-filter: blur(10px);
-        }
-
-        .header-content {
+        .app-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            padding: 1rem;
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
+        @media (min-width: 768px) {
+            .app-container {
+                padding: 2rem;
+            }
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            color: var(--gray-600);
-            font-size: 0.875rem;
+        .card-item {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            transition: all var(--transition-speed) ease;
+            border: 1px solid var(--border-color);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
         }
 
-        .user-avatar {
-            width: 2rem;
-            height: 2rem;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--white);
-            font-weight: 600;
-        }
-
-        /* ===== MAIN CONTAINER ===== */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        /* ===== SEARCH SECTION ===== */
-        .search-section {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .search-title {
-            font-size: 1.125rem;
-            font-weight: 600;
-            color: var(--gray-800);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        .card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
         .search-container {
             position: relative;
+            margin-bottom: 1rem;
         }
 
         .search-input {
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
             width: 100%;
-            padding: 0.875rem 1rem 0.875rem 3rem;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: var(--transition);
-            background: var(--gray-50);
+            transition: all 0.2s ease;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 0.95rem;
         }
 
         .search-input:focus {
             outline: none;
-            border-color: var(--primary);
-            background: var(--white);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
         }
 
         .search-icon {
             position: absolute;
-            left: 1rem;
+            left: 0.75rem;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--gray-400);
+            color: var(--text-muted);
+            font-size: 1rem;
         }
 
-        .search-stats {
-            margin-top: 0.75rem;
-            display: flex;
-            gap: 1rem;
-            font-size: 0.875rem;
-            color: var(--gray-500);
+        .search-status {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-size: 0.9rem;
         }
 
-        .stat {
-            display: flex;
-            align-items: center;
-            gap: 0.25rem;
-        }
-
-        /* ===== RESULTS SECTION ===== */
-        .results-section {
-            display: grid;
-            grid-template-columns: 1fr 400px;
-            gap: 2rem;
-        }
-
-        @media (max-width: 1024px) {
-            .results-section {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* ===== PRODUCT CARD ===== */
-        .product-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            transition: var(--transition);
-        }
-
-        .product-card:hover {
-            box-shadow: var(--shadow-lg);
-            transform: translateY(-2px);
-        }
-
-        .product-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            color: var(--white);
-            padding: 1.5rem;
-        }
-
-        .product-code {
-            font-size: 0.875rem;
-            opacity: 0.9;
-            margin-bottom: 0.25rem;
-        }
-
-        .product-name {
-            font-size: 1.25rem;
-            font-weight: 600;
-            line-height: 1.4;
-        }
-
-        .product-body {
-            padding: 1.5rem;
-        }
-
-        .product-info {
-            display: grid;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.75rem 0;
-            border-bottom: 1px solid var(--gray-100);
-        }
-
-        .info-row:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            font-weight: 500;
-            color: var(--gray-600);
-        }
-
-        .info-value {
-            font-weight: 600;
-            color: var(--gray-800);
-        }
-
-        .price {
-            font-size: 1.5rem;
-            color: var(--primary);
-            background: rgba(37, 99, 235, 0.1);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
-        }
-
-        /* ===== WAREHOUSES ===== */
-        .warehouses {
-            margin-top: 1.5rem;
-        }
-
-        .warehouses-title {
-            font-weight: 600;
-            color: var(--gray-800);
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .warehouse-list {
-            display: grid;
-            gap: 0.75rem;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .warehouse-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.875rem;
-            background: var(--gray-50);
-            border-radius: var(--radius);
-            border-left: 4px solid var(--gray-300);
-            transition: var(--transition);
-        }
-
-        .warehouse-item:hover {
-            background: var(--gray-100);
-        }
-
-        .warehouse-item.low-stock {
-            border-left-color: var(--danger);
-            background: rgba(239, 68, 68, 0.05);
-        }
-
-        .warehouse-item.medium-stock {
-            border-left-color: var(--warning);
-            background: rgba(245, 158, 11, 0.05);
-        }
-
-        .warehouse-item.high-stock {
-            border-left-color: var(--success);
-            background: rgba(16, 185, 129, 0.05);
-        }
-
-        .warehouse-name {
-            font-weight: 500;
-            color: var(--gray-700);
-        }
-
-        .warehouse-stock {
-            font-weight: 700;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            background: var(--white);
-            box-shadow: var(--shadow);
-        }
-
-        .low-stock .warehouse-stock {
-            color: var(--danger);
-        }
-
-        .medium-stock .warehouse-stock {
-            color: var(--warning);
-        }
-
-        .high-stock .warehouse-stock {
-            color: var(--success);
-        }
-
-        /* ===== COTIZADOR ===== */
-        .quoter {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            position: sticky;
-            top: 6rem;
-            max-height: calc(100vh - 8rem);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .quoter-header {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-            color: var(--white);
-            padding: 1.25rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .quoter-body {
-            flex: 1;
-            overflow-y: auto;
-            min-height: 200px;
-        }
-
-        .quoter-items {
-            padding: 1rem;
-        }
-
-        .quoter-item {
-            display: grid;
-            grid-template-columns: 1fr auto auto auto;
-            gap: 0.75rem;
-            align-items: center;
-            padding: 0.875rem;
-            border-bottom: 1px solid var(--gray-100);
-            transition: var(--transition);
-        }
-
-        .quoter-item:hover {
-            background: var(--gray-50);
-        }
-
-        .item-info {
-            min-width: 0;
-        }
-
-        .item-name {
-            font-weight: 500;
-            color: var(--gray-800);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .item-code {
-            font-size: 0.75rem;
-            color: var(--gray-500);
-        }
-
-        .item-control {
-            width: 60px;
-            padding: 0.375rem;
-            border: 1px solid var(--gray-200);
-            border-radius: 0.375rem;
-            text-align: center;
-            font-size: 0.875rem;
-        }
-
-        .item-control:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        .item-price {
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 0.875rem;
-        }
-
-        .remove-btn {
-            background: none;
-            border: none;
-            color: var(--danger);
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 0.25rem;
-            transition: var(--transition);
-        }
-
-        .remove-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
-        }
-
-        .quoter-empty {
-            padding: 3rem 1rem;
-            text-align: center;
-            color: var(--gray-500);
-        }
-
-        .quoter-empty i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        .quoter-footer {
-            border-top: 1px solid var(--gray-200);
-            padding: 1.25rem;
-            background: var(--gray-50);
-        }
-
-        .quoter-summary {
-            margin-bottom: 1rem;
-        }
-
-        .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-        }
-
-        .summary-row.total {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--primary);
-            border-top: 1px solid var(--gray-200);
-            padding-top: 0.5rem;
-            margin-top: 0.75rem;
-        }
-
-        .quoter-actions {
-            display: grid;
-            gap: 0.5rem;
-        }
-
-        /* ===== BUTTONS ===== */
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: var(--radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            background: var(--gray-200);
-            color: var(--gray-700);
-        }
-
-        .btn-secondary:hover {
-            background: var(--gray-300);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: var(--white);
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .add-product-btn {
-            width: 100%;
-            margin-top: 1rem;
-        }
-
-        /* ===== LOADING & STATES ===== */
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem;
-            color: var(--gray-500);
-        }
-
-        .spinner {
-            width: 2rem;
-            height: 2rem;
-            border: 2px solid var(--gray-200);
-            border-top: 2px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-right: 0.75rem;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: var(--gray-500);
-        }
-
-        .empty-state i {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.3;
-        }
-
-        /* ===== NOTIFICATIONS ===== */
-        .notification {
-            position: fixed;
-            top: 1rem;
-            right: 1rem;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius);
-            background: var(--white);
-            box-shadow: var(--shadow-lg);
-            border-left: 4px solid var(--primary);
-            z-index: 1000;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.success {
-            border-left-color: var(--success);
-        }
-
-        .notification.warning {
-            border-left-color: var(--warning);
-        }
-
-        .notification.error {
-            border-left-color: var(--danger);
-        }
-
-        /* ===== LOGIN ===== */
         .login-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 1rem;
+            max-width: 400px;
+            margin: 4rem auto;
         }
 
         .login-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-lg);
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
             padding: 2rem;
-            width: 100%;
-            max-width: 400px;
         }
 
         .login-header {
@@ -601,557 +127,854 @@
             margin-bottom: 2rem;
         }
 
-        .login-title {
-            font-size: 1.5rem;
+        .login-header h3 {
+            color: var(--primary-color);
             font-weight: 700;
-            color: var(--primary);
             margin-bottom: 0.5rem;
         }
 
-        .login-subtitle {
-            color: var(--gray-600);
+        .form-control {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--border-color);
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            transition: all 0.2s ease;
         }
 
-        .form-group {
-            margin-bottom: 1.25rem;
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
         }
 
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
             font-weight: 500;
-            color: var(--gray-700);
+            transition: all 0.2s ease;
         }
 
-        .form-input {
+        .btn-primary {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, var(--primary-dark), var(--primary-color));
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            padding: 0.875rem;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: var(--transition);
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1050;
+            backdrop-filter: blur(5px);
         }
 
-        .form-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        .loader-content {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: var(--card-shadow);
         }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .container {
-                padding: 1rem;
-            }
-
-            .search-section {
-                padding: 1rem;
-            }
-
-            .product-card {
-                margin-bottom: 1rem;
-            }
-
-            .quoter {
-                position: static;
-                max-height: none;
-            }
-
-            .quoter-item {
-                grid-template-columns: 1fr;
-                gap: 0.5rem;
-                text-align: left;
-            }
-
-            .item-control {
-                width: 80px;
-            }
+        .loader-spinner {
+            width: 3rem;
+            height: 3rem;
+            border: 3px solid rgba(79, 70, 229, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s infinite linear;
         }
 
-        /* ===== UTILITIES ===== */
-        .hidden {
-            display: none !important;
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
-        .text-success {
-            color: var(--success);
+        /* Search results dropdown */
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            margin-top: 0.5rem;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: var(--card-shadow);
         }
 
-        .text-warning {
-            color: var(--warning);
+        .search-result-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background-color 0.2s ease;
         }
 
-        .text-danger {
-            color: var(--danger);
+        .search-result-item:hover {
+            background-color: rgba(79, 70, 229, 0.05);
         }
 
-        .fade-in {
-            animation: fadeIn 0.3s ease-out;
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .result-code {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .result-description {
+            color: var(--text-color);
+            font-size: 0.9rem;
+        }
+
+        .result-stock {
+            float: right;
+            background: var(--success-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+        }
+
+        .no-results {
+            padding: 2rem;
+            text-align: center;
+            color: var(--text-muted);
+        }
+
+        /* Product detail styles */
+        .product-detail {
+            animation: fadeIn 0.4s ease-out;
         }
 
         @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info-row {
+            display: flex;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .info-label {
+            width: 120px;
+            font-weight: 500;
+            color: var(--text-muted);
+        }
+
+        .info-value {
+            flex: 1;
+            font-weight: 600;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.5rem;
+            background: rgba(79, 70, 229, 0.1);
+        }
+
+        /* Mini quoter styles */
+        .mini-quoter {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            max-height: 600px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .quoter-header {
+            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
+            color: white;
+            padding: 1rem;
+            font-weight: 600;
+        }
+
+        .quoter-items-container {
+            flex: 1;
+            overflow-y: auto;
+            min-height: 100px;
+            max-height: 300px;
+            padding: 1rem;
+        }
+
+        .quoter-summary {
+            padding: 1rem;
+            background-color: rgba(79, 70, 229, 0.05);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .summary-row.total {
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .toast {
+            padding: 1rem 1.25rem;
+            border-radius: 0.75rem;
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 300px;
+            max-width: 400px;
+            animation: slideIn 0.3s forwards;
+            border-left: 4px solid;
+        }
+
+        .toast.toast-success {
+            border-left-color: var(--success-color);
+        }
+
+        .toast.toast-warning {
+            border-left-color: var(--warning-color);
+        }
+
+        .toast.toast-error {
+            border-left-color: var(--danger-color);
+        }
+
+        .toast.toast-info {
+            border-left-color: var(--primary-color);
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            box-shadow: var(--card-shadow);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: var(--border-radius);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-color);
+        }
+
+        .logo {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .main-container {
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            background: var(--card-bg);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .warehouse-item {
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
+            background: rgba(79, 70, 229, 0.03);
+            border-radius: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .warehouse-item:hover {
+            background: rgba(79, 70, 229, 0.08);
+            transform: translateX(5px);
+        }
+
+        .featured-products {
+            margin-top: 1rem;
+        }
+
+        .featured-product-item {
+            padding: 0.75rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .featured-product-item:hover {
+            background: rgba(79, 70, 229, 0.05);
+            border-color: var(--primary-color);
+        }
+
+        .loading-skeleton {
+            background: linear-gradient(90deg, 
+                var(--border-color) 25%, 
+                rgba(79, 70, 229, 0.1) 50%, 
+                var(--border-color) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 0.25rem;
+            height: 20px;
+            margin: 0.5rem 0;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
     </style>
 </head>
-
 <body>
-    <!-- LOGIN SCREEN -->
-    <div id="login-screen" class="login-container">
-        <div class="login-card fade-in">
+    <!-- Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Login -->
+    <div id="login-container" class="login-container">
+        <div class="login-card">
             <div class="login-header">
-                <div class="login-title">
-                    <i class="fas fa-cubes"></i>
-                    Anfo Stock
-                </div>
-                <div class="login-subtitle">Sistema de Inventario Minimalista</div>
+                <h3><i class="fas fa-cube me-2"></i>Sistema de Inventario</h3>
+                <p class="text-muted">Versión Optimizada</p>
             </div>
-
-            <form id="login-form">
-                <div class="form-group">
-                    <label class="form-label" for="username">Usuario</label>
-                    <input type="text" id="username" class="form-input" placeholder="Ingrese su usuario" required>
+            <form id="login-form" onsubmit="handleLogin(event)">
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-user"></i></span>
+                        <input type="text" id="username" class="form-control" placeholder="Usuario" required>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="password">Contraseña</label>
-                    <input type="password" id="password" class="form-input" placeholder="Ingrese su contraseña" required>
+                <div class="mb-3">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary" style="width: 100%;">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Ingresar
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-sign-in-alt me-2"></i>Ingresar
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- MAIN APPLICATION -->
-    <div id="main-app" class="hidden">
-        <!-- HEADER -->
-        <header class="header">
-            <div class="header-content">
-                <div class="logo">
-                    <i class="fas fa-cubes"></i>
-                    Anfo Stock
+    <!-- Main App -->
+    <div id="app-container" class="app-container" style="display: none;">
+        <!-- Navbar -->
+        <div class="navbar">
+            <div class="logo">
+                <i class="fas fa-cubes"></i>
+                <span>Anfo Stock EcommPro</span>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span id="total-products" class="badge bg-primary">0 productos</span>
+                <button class="btn btn-sm btn-outline-danger" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </div>
+
+        <div class="main-container">
+            <!-- Search Bar -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="search-container">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="search" id="search-input" class="search-input" 
+                               placeholder="Buscar por código o descripción (mínimo 2 caracteres)..."
+                               autocomplete="off">
+                        <span id="search-status" class="search-status" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </span>
+                        <!-- Search Results Dropdown -->
+                        <div id="search-results" class="search-results" style="display: none;"></div>
+                    </div>
                 </div>
-                <div class="user-info">
-                    <div class="user-avatar">A</div>
-                    <span>Admin</span>
+                <div class="col-md-4">
+                    <select id="warehouse-filter" class="form-control">
+                        <option value="">Todos los almacenes</option>
+                    </select>
                 </div>
             </div>
-        </header>
 
-        <!-- MAIN CONTENT -->
-        <main class="container">
-            <!-- SEARCH SECTION -->
-            <section class="search-section">
-                <div class="search-title">
-                    <i class="fas fa-search"></i>
-                    Búsqueda Inteligente
+            <!-- Quick Access / Featured Products -->
+            <div id="featured-section" class="featured-products mt-4">
+                <h6 class="mb-3"><i class="fas fa-fire me-2"></i>Productos Destacados</h6>
+                <div id="featured-products-list">
+                    <div class="loading-skeleton"></div>
+                    <div class="loading-skeleton"></div>
+                    <div class="loading-skeleton"></div>
+                </div>
+            </div>
+
+            <!-- Product Details & Mini Quoter -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div id="product-detail" class="product-detail" style="display: none;">
+                        <h5 class="mb-4"><i class="fas fa-info-circle text-primary me-2"></i>Detalles del Producto</h5>
+                        <div class="product-info">
+                            <div class="info-row">
+                                <div class="info-label">Código:</div>
+                                <div class="info-value" id="detail-code">-</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Descripción:</div>
+                                <div class="info-value" id="detail-description">-</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Proveedor:</div>
+                                <div class="info-value" id="detail-supplier">-</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Precio:</div>
+                                <div class="info-value price" id="detail-price">$0.00</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary w-100 mt-3" onclick="addCurrentProductToQuoter()">
+                            <i class="fas fa-cart-plus me-2"></i>Agregar al Cotizador
+                        </button>
+                        
+                        <!-- Warehouse List -->
+                        <div id="warehouse-listing" class="mt-4"></div>
+                    </div>
+                    
+                    <div id="no-product-selected" class="text-center p-5 text-muted">
+                        <i class="fas fa-search" style="font-size: 3rem;"></i>
+                        <p class="mt-3">Busque un producto para ver sus detalles</p>
+                    </div>
                 </div>
                 
-                <div class="search-container">
-                    <i class="fas fa-search search-icon"></i>
-                    <input 
-                        type="text" 
-                        id="search-input" 
-                        class="search-input" 
-                        placeholder="Buscar por código (M00...) o descripción del producto..."
-                        autocomplete="off"
-                    >
-                </div>
-
-                <div class="search-stats">
-                    <div class="stat">
-                        <i class="fas fa-clock"></i>
-                        <span id="search-time">0ms</span>
-                    </div>
-                    <div class="stat">
-                        <i class="fas fa-database"></i>
-                        <span id="cache-status">Caché: 0 productos</span>
-                    </div>
-                    <div class="stat">
-                        <i class="fas fa-boxes"></i>
-                        <span>Total: 17,535 productos</span>
-                    </div>
-                </div>
-            </section>
-
-            <!-- RESULTS SECTION -->
-            <section class="results-section">
-                <!-- PRODUCT DISPLAY -->
-                <div>
-                    <!-- LOADING STATE -->
-                    <div id="loading-state" class="product-card hidden">
-                        <div class="loading">
-                            <div class="spinner"></div>
-                            Buscando producto...
+                <div class="col-md-6">
+                    <div class="mini-quoter">
+                        <div class="quoter-header">
+                            <i class="fas fa-calculator me-2"></i>Mini Cotizador
                         </div>
-                    </div>
-
-                    <!-- EMPTY STATE -->
-                    <div id="empty-state" class="product-card">
-                        <div class="empty-state">
-                            <i class="fas fa-search"></i>
-                            <h3>Buscar Producto</h3>
-                            <p>Escriba el código o descripción de un producto para comenzar</p>
-                            <div style="margin-top: 1rem; font-size: 0.875rem; color: var(--gray-400);">
-                                Ejemplos: "M00230016", "Bowl", "Coctelera"
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- PRODUCT CARD -->
-                    <div id="product-card" class="product-card hidden">
-                        <div class="product-header">
-                            <div class="product-code" id="product-code">-</div>
-                            <div class="product-name" id="product-name">-</div>
-                        </div>
-
-                        <div class="product-body">
-                            <div class="product-info">
-                                <div class="info-row">
-                                    <span class="info-label">Proveedor</span>
-                                    <span class="info-value" id="product-supplier">-</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Precio de Venta</span>
-                                    <span class="info-value price" id="product-price">-</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Stock Total</span>
-                                    <span class="info-value" id="product-total-stock">-</span>
-                                </div>
-                            </div>
-
-                            <button class="btn btn-primary add-product-btn" onclick="addToQuoter()">
-                                <i class="fas fa-cart-plus"></i>
-                                Agregar al Cotizador
-                            </button>
-
-                            <div class="warehouses">
-                                <div class="warehouses-title">
-                                    <i class="fas fa-warehouse"></i>
-                                    Existencias por Almacén
-                                </div>
-                                <div id="warehouse-list" class="warehouse-list">
-                                    <!-- Warehouse items will be populated here -->
+                        <div class="quoter-items-container">
+                            <div id="quoter-items">
+                                <div class="text-center p-4 text-muted">
+                                    <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
+                                    <p>El cotizador está vacío</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- COTIZADOR -->
-                <div class="quoter">
-                    <div class="quoter-header">
-                        <span>
-                            <i class="fas fa-calculator"></i>
-                            Mini Cotizador
-                        </span>
-                        <span id="quoter-count">0 items</span>
-                    </div>
-
-                    <div class="quoter-body">
-                        <!-- EMPTY STATE -->
-                        <div id="quoter-empty" class="quoter-empty">
-                            <i class="fas fa-shopping-cart"></i>
-                            <div>Cotizador vacío</div>
-                            <div style="font-size: 0.875rem; margin-top: 0.5rem;">
-                                Busque y agregue productos
-                            </div>
-                        </div>
-
-                        <!-- ITEMS -->
-                        <div id="quoter-items" class="quoter-items hidden">
-                            <!-- Items will be populated here -->
-                        </div>
-                    </div>
-
-                    <div class="quoter-footer">
                         <div class="quoter-summary">
                             <div class="summary-row">
-                                <span>Subtotal:</span>
-                                <span id="subtotal">$0.00</span>
-                            </div>
-                            <div class="summary-row">
-                                <span>Descuento:</span>
-                                <span id="discount">-$0.00</span>
+                                <div>Subtotal:</div>
+                                <div id="subtotal-amount">$0.00</div>
                             </div>
                             <div class="summary-row total">
-                                <span>Total:</span>
-                                <span id="total">$0.00</span>
+                                <div>Total:</div>
+                                <div id="total-amount">$0.00</div>
                             </div>
-                        </div>
-
-                        <div class="quoter-actions">
-                            <button class="btn btn-primary" onclick="generateQuote()">
-                                <i class="fas fa-file-invoice-dollar"></i>
-                                Generar Cotización
-                            </button>
-                            <button class="btn btn-danger" onclick="clearQuoter()">
-                                <i class="fas fa-trash"></i>
-                                Limpiar
+                            <button class="btn btn-primary w-100 mt-3" onclick="generateQuote()">
+                                <i class="fas fa-file-invoice-dollar me-2"></i>Generar Cotización
                             </button>
                         </div>
                     </div>
                 </div>
-            </section>
-        </main>
+            </div>
+        </div>
     </div>
 
-    <!-- NOTIFICATION -->
-    <div id="notification" class="notification">
-        <div id="notification-content"></div>
+    <!-- Loader -->
+    <div id="loader" class="loader" style="display: none;">
+        <div class="loader-content">
+            <div class="loader-spinner"></div>
+            <div class="loader-text">Cargando...</div>
+        </div>
     </div>
 
     <script>
-        // ===== CONFIGURACIÓN =====
-        const CONFIG = {
-            credentials: { username: 'admin', password: '12345' },
-            api: {
-                baseUrl: 'https://script.google.com/macros/s/AKfycbxnFFZY6eCQCmuGe8U7sNRbkTjzTjdNPDr2wMzSjzFuHwhUQazDkbdgPEcxsV-7-5XCCw/exec',
-                fallbackUrl: 'https://script.google.com/macros/s/AKfycbw50VrxPKh7lHCClyGZWA_hjOYpnnqM7VSee7b1f3rS0HBpFQyUdXcIgWcuFVg/exec',
-                cacheTimeout: 5 * 60 * 1000,
-                searchDelay: 250
+        // ==============================================
+        // CONFIGURACIÓN Y ESTADO
+        // ==============================================
+        const config = {
+            credentials: {
+                username: 'admin',
+                password: '12345'
             },
-            stockThresholds: { low: 5, medium: 20 }
+            api: {
+                baseUrl: 'https://script.google.com/macros/s/AKfycbyIKNc6o4c2ICJqnznaAuOYHBS6TEJA2Fm50emiH9wZb-eaR7VKE4qdeBBn02xWr2xmwA/exec',
+                minSearchLength: 2,
+                searchDelay: 500 // milisegundos
+            }
         };
 
-        // ===== ESTADO GLOBAL =====
-        const state = {
-            currentProduct: null,
+        let state = {
+            selectedProduct: null,
             quoterItems: [],
-            cache: new Map(),
-            cacheTimestamps: new Map(),
+            warehouses: [],
+            searchResults: [],
+            featuredProducts: [],
             searchTimeout: null,
-            allData: null,
-            warehouses: new Set()
+            lastSearchTerm: '',
+            isSearching: false
         };
 
-        // ===== SISTEMA DE CACHÉ =====
-        class Cache {
-            static set(key, value) {
-                state.cache.set(key, value);
-                state.cacheTimestamps.set(key, Date.now());
-                this.updateCacheStatus();
-            }
-
-            static get(key) {
-                const timestamp = state.cacheTimestamps.get(key);
-                if (timestamp && (Date.now() - timestamp) > CONFIG.api.cacheTimeout) {
-                    this.delete(key);
-                    return null;
-                }
-                return state.cache.get(key) || null;
-            }
-
-            static delete(key) {
-                state.cache.delete(key);
-                state.cacheTimestamps.delete(key);
-                this.updateCacheStatus();
-            }
-
-            static updateCacheStatus() {
-                document.getElementById('cache-status').textContent = 
-                    `Caché: ${state.cache.size} productos`;
+        // ==============================================
+        // FUNCIONES DE AUTENTICACIÓN
+        // ==============================================
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === config.credentials.username && 
+                password === config.credentials.password) {
+                showApp();
+                initializeApp();
+            } else {
+                showToast('Credenciales incorrectas', 'error');
             }
         }
 
-        // ===== API FUNCTIONS CON FILTRO INTELIGENTE =====
-        async function searchProduct(query) {
-            const startTime = performance.now();
+        function showApp() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('app-container').style.display = 'block';
+        }
+
+        function logout() {
+            document.getElementById('app-container').style.display = 'none';
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // ==============================================
+        // INICIALIZACIÓN DE LA APLICACIÓN
+        // ==============================================
+        async function initializeApp() {
+            showLoader();
             
             try {
-                // Verificar caché
-                const cacheKey = `search_${query.toLowerCase()}`;
-                const cached = Cache.get(cacheKey);
-                if (cached) {
-                    updateSearchTime(performance.now() - startTime);
-                    return cached;
-                }
-
-                console.log('🔍 Buscando:', query);
-
-                // NUEVO: Asegurar que tenemos todos los datos cargados para filtro inteligente
-                if (!state.allData) {
-                    console.log('📥 Cargando datos completos para filtro inteligente...');
-                    await loadAllInventoryData();
-                }
-
-                // Aplicar filtro inteligente (como el código original)
-                const matchingProduct = findProductIntelligent(query);
+                // Cargar datos iniciales (almacenes y productos destacados)
+                const response = await fetch(`${config.api.baseUrl}?action=init`);
+                const data = await response.json();
                 
-                if (matchingProduct) {
-                    Cache.set(cacheKey, matchingProduct);
-                    updateSearchTime(performance.now() - startTime);
-                    return matchingProduct;
+                if (data.error) {
+                    throw new Error(data.error);
                 }
-
-                return null;
-
+                
+                // Actualizar estado
+                state.warehouses = data.warehouses || [];
+                state.featuredProducts = data.featuredProducts || [];
+                
+                // Actualizar UI
+                updateWarehouseFilter();
+                showFeaturedProducts();
+                
+                // Mostrar total de registros
+                document.getElementById('total-products').textContent = 
+                    `${data.totalRows.toLocaleString()} productos`;
+                
+                // Configurar event listeners
+                setupEventListeners();
+                
+                showToast('Sistema cargado correctamente', 'success');
+                
             } catch (error) {
-                console.error('Error en búsqueda:', error);
-                updateSearchTime(performance.now() - startTime);
-                throw error;
+                console.error('Error al inicializar:', error);
+                showToast('Error al cargar el sistema: ' + error.message, 'error');
+            } finally {
+                hideLoader();
             }
         }
 
-        // NUEVO: Cargar todos los datos de inventario (como el código original)
-        async function loadAllInventoryData() {
-            try {
-                console.log('🔄 Cargando inventario completo...');
-                const response = await fetch(CONFIG.api.fallbackUrl, {
-                    signal: AbortSignal.timeout(30000)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
-                }
-                
-                state.allData = await response.json();
-                
-                if (!Array.isArray(state.allData)) {
-                    throw new Error("Formato de datos inválido");
-                }
-                
-                console.log('✅ Datos cargados:', state.allData.length, 'productos');
-                
-                // Inicializar almacenes
-                initializeWarehouses();
-                
-                return state.allData;
-                
-            } catch (error) {
-                console.error('Error cargando datos:', error);
-                throw error;
-            }
-        }
-
-        // NUEVO: Función de filtro inteligente (del código original)
-        function findProductIntelligent(searchTerm) {
-            if (!state.allData || !searchTerm) return null;
+        function updateWarehouseFilter() {
+            const select = document.getElementById('warehouse-filter');
+            select.innerHTML = '<option value="">Todos los almacenes</option>';
             
-            const term = searchTerm.toLowerCase().trim();
-            
-            // Buscar productos que coincidan con el término de búsqueda
-            const matchingProduct = state.allData.find(item => 
-                (item.Codigo && item.Codigo.toLowerCase().includes(term)) || 
-                (item.Descripcion && item.Descripcion.toLowerCase().includes(term))
-            );
-            
-            return matchingProduct || null;
-        }
-
-        // NUEVO: Inicializar almacenes (del código original)
-        function initializeWarehouses() {
-            if (!state.allData) return;
-            
-            state.warehouses = new Set(
-                state.allData.flatMap(item => 
-                    item.Almacenes ? item.Almacenes.map(wh => wh.Almacen) : []
-                )
-            );
-            
-            console.log('🏪 Almacenes inicializados:', state.warehouses.size);
-        }
-
-        function updateSearchTime(time) {
-            document.getElementById('search-time').textContent = `${Math.round(time)}ms`;
-        }
-
-        // ===== FUNCIONES DE UI =====
-        function showState(state) {
-            const states = ['loading-state', 'empty-state', 'product-card'];
-            states.forEach(s => {
-                document.getElementById(s).classList.toggle('hidden', s !== state);
+            state.warehouses.forEach(warehouse => {
+                const option = document.createElement('option');
+                option.value = warehouse;
+                option.textContent = warehouse;
+                select.appendChild(option);
             });
         }
 
-        function displayProduct(product) {
-            if (!product) {
-                showState('empty-state');
+        function showFeaturedProducts() {
+            const container = document.getElementById('featured-products-list');
+            
+            if (state.featuredProducts.length === 0) {
+                container.innerHTML = '<p class="text-muted">No hay productos destacados disponibles</p>';
                 return;
             }
-
-            state.currentProduct = product;
             
-            // Actualizar información del producto
-            document.getElementById('product-code').textContent = product.Codigo;
-            document.getElementById('product-name').textContent = product.Descripcion;
-            document.getElementById('product-supplier').textContent = product.Proveedor || 'No especificado';
-            
-            // Formatear precio
-            const price = typeof product.PrecioVenta === 'number' 
-                ? `${product.PrecioVenta.toFixed(2)}`
-                : product.PrecioVenta || 'No disponible';
-            document.getElementById('product-price').textContent = price;
-
-            // Calcular stock total
-            const totalStock = product.Almacenes ? 
-                product.Almacenes.reduce((sum, w) => sum + (w.Existencias || 0), 0) : 0;
-            document.getElementById('product-total-stock').textContent = totalStock.toLocaleString();
-
-            // Mostrar almacenes
-            displayWarehouses(product.Almacenes || []);
-            
-            showState('product-card');
-        }
-
-        function displayWarehouses(warehouses) {
-            const container = document.getElementById('warehouse-list');
-            
-            if (!warehouses.length) {
-                container.innerHTML = '<div style="text-align: center; color: var(--gray-400); padding: 1rem;">Sin información de almacenes</div>';
-                return;
-            }
-
-            // Filtrar y ordenar almacenes con stock
-            const warehousesWithStock = warehouses
-                .filter(w => w.Existencias > 0)
-                .sort((a, b) => b.Existencias - a.Existencias);
-
-            if (!warehousesWithStock.length) {
-                container.innerHTML = '<div style="text-align: center; color: var(--gray-400); padding: 1rem;">Sin existencias disponibles</div>';
-                return;
-            }
-
-            container.innerHTML = warehousesWithStock.map(warehouse => {
-                const stock = warehouse.Existencias;
-                let stockClass = 'high-stock';
-                if (stock <= CONFIG.stockThresholds.low) stockClass = 'low-stock';
-                else if (stock <= CONFIG.stockThresholds.medium) stockClass = 'medium-stock';
-
-                return `
-                    <div class="warehouse-item ${stockClass}">
-                        <div class="warehouse-name">${warehouse.Almacen}</div>
-                        <div class="warehouse-stock">${stock}</div>
+            container.innerHTML = state.featuredProducts.map(product => `
+                <div class="featured-product-item" onclick="selectProduct('${product.Codigo}')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>${product.Codigo}</strong> - ${product.Descripcion}
+                        </div>
+                        <span class="badge bg-success">${product.TotalExistencias} pzs</span>
                     </div>
-                `;
-            }).join('');
+                </div>
+            `).join('');
         }
 
-        // ===== COTIZADOR =====
-        function addToQuoter() {
-            if (!state.currentProduct) {
-                showNotification('No hay producto seleccionado', 'warning');
+        // ==============================================
+        // CONFIGURACIÓN DE EVENT LISTENERS
+        // ==============================================
+        function setupEventListeners() {
+            const searchInput = document.getElementById('search-input');
+            const warehouseFilter = document.getElementById('warehouse-filter');
+            
+            // Búsqueda con debounce
+            searchInput.addEventListener('input', function(e) {
+                const term = e.target.value.trim();
+                
+                // Limpiar timeout anterior
+                if (state.searchTimeout) {
+                    clearTimeout(state.searchTimeout);
+                }
+                
+                // Si el término es muy corto, limpiar resultados
+                if (term.length < config.api.minSearchLength) {
+                    hideSearchResults();
+                    return;
+                }
+                
+                // Mostrar indicador de búsqueda
+                showSearchStatus(true);
+                
+                // Configurar nuevo timeout para búsqueda
+                state.searchTimeout = setTimeout(() => {
+                    performSearch(term);
+                }, config.api.searchDelay);
+            });
+            
+            // Cambio de almacén
+            warehouseFilter.addEventListener('change', function() {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm.length >= config.api.minSearchLength) {
+                    performSearch(searchTerm);
+                }
+            });
+            
+            // Cerrar resultados al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.search-container')) {
+                    hideSearchResults();
+                }
+            });
+        }
+
+        // ==============================================
+        // FUNCIONES DE BÚSQUEDA
+        // ==============================================
+        async function performSearch(term) {
+            if (state.isSearching) return;
+            
+            state.isSearching = true;
+            state.lastSearchTerm = term;
+            showSearchStatus(true);
+            
+            try {
+                const warehouse = document.getElementById('warehouse-filter').value;
+                const url = `${config.api.baseUrl}?action=search&q=${encodeURIComponent(term)}&warehouse=${encodeURIComponent(warehouse)}`;
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                state.searchResults = data.results || [];
+                showSearchResults();
+                
+            } catch (error) {
+                console.error('Error en búsqueda:', error);
+                showToast('Error al buscar: ' + error.message, 'error');
+            } finally {
+                state.isSearching = false;
+                showSearchStatus(false);
+            }
+        }
+
+        function showSearchResults() {
+            const container = document.getElementById('search-results');
+            
+            if (state.searchResults.length === 0) {
+                container.innerHTML = '<div class="no-results">No se encontraron resultados</div>';
+            } else {
+                container.innerHTML = state.searchResults.map(product => `
+                    <div class="search-result-item" onclick="selectProductFromSearch('${product.Codigo}')">
+                        <span class="result-stock">${product.TotalExistencias} pzs</span>
+                        <div>
+                            <div class="result-code">${product.Codigo}</div>
+                            <div class="result-description">${product.Descripcion}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            container.style.display = 'block';
+        }
+
+        function hideSearchResults() {
+            document.getElementById('search-results').style.display = 'none';
+        }
+
+        function showSearchStatus(show) {
+            document.getElementById('search-status').style.display = show ? 'inline' : 'none';
+        }
+
+        // ==============================================
+        // FUNCIONES DE PRODUCTO
+        // ==============================================
+        async function selectProduct(code) {
+            showLoader();
+            
+            try {
+                const url = `${config.api.baseUrl}?action=product&code=${encodeURIComponent(code)}`;
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+                
+                state.selectedProduct = data.product;
+                showProductDetail(data.product);
+                hideSearchResults();
+                
+            } catch (error) {
+                console.error('Error al cargar producto:', error);
+                showToast('Error al cargar producto: ' + error.message, 'error');
+            } finally {
+                hideLoader();
+            }
+        }
+
+        async function selectProductFromSearch(code) {
+            // Buscar en los resultados actuales primero
+            const product = state.searchResults.find(p => p.Codigo === code);
+            
+            if (product) {
+                state.selectedProduct = product;
+                showProductDetail(product);
+                hideSearchResults();
+            } else {
+                // Si no está en cache, buscar en el servidor
+                await selectProduct(code);
+            }
+        }
+
+        function showProductDetail(product) {
+            // Ocultar mensaje de "no hay producto seleccionado"
+            document.getElementById('no-product-selected').style.display = 'none';
+            document.getElementById('product-detail').style.display = 'block';
+            
+            // Actualizar detalles
+            document.getElementById('detail-code').textContent = product.Codigo;
+            document.getElementById('detail-description').textContent = product.Descripcion;
+            document.getElementById('detail-supplier').textContent = product.Proveedor || 'No especificado';
+            
+            const price = typeof product.PrecioVenta === 'number' 
+                ? `${product.PrecioVenta.toFixed(2)}` 
+                : product.PrecioVenta || '$0.00';
+            document.getElementById('detail-price').textContent = price;
+            
+            // Mostrar almacenes
+            showWarehouseList(product);
+        }
+
+        function showWarehouseList(product) {
+            const container = document.getElementById('warehouse-listing');
+            
+            if (!product.Almacenes || product.Almacenes.length === 0) {
+                container.innerHTML = '<p class="text-muted">Sin existencias disponibles</p>';
                 return;
             }
+            
+            // Ordenar por existencias
+            const sortedWarehouses = [...product.Almacenes]
+                .sort((a, b) => b.Existencias - a.Existencias);
+            
+            container.innerHTML = `
+                <h6 class="mt-4 mb-3"><i class="fas fa-warehouse me-2"></i>Existencias por Almacén</h6>
+                ${sortedWarehouses.map(wh => `
+                    <div class="warehouse-item">
+                        <span><i class="fas fa-warehouse me-2"></i>${wh.Almacen}</span>
+                        <span class="badge ${getStockBadgeClass(wh.Existencias)}">${wh.Existencias} pzs</span>
+                    </div>
+                `).join('')}
+            `;
+        }
 
-            const product = state.currentProduct;
+        function getStockBadgeClass(stock) {
+            if (stock <= 5) return 'bg-danger';
+            if (stock <= 10) return 'bg-warning';
+            return 'bg-success';
+        }
+
+        // ==============================================
+        // FUNCIONES DEL COTIZADOR
+        // ==============================================
+        function addCurrentProductToQuoter() {
+            if (!state.selectedProduct) {
+                showToast('No hay producto seleccionado', 'warning');
+                return;
+            }
+            
+            const product = state.selectedProduct;
+            
+            // Verificar si ya existe
             const existingIndex = state.quoterItems.findIndex(item => item.code === product.Codigo);
-
+            
             if (existingIndex >= 0) {
                 state.quoterItems[existingIndex].quantity++;
-                showNotification('Cantidad incrementada', 'success');
+                showToast('Cantidad actualizada en el cotizador', 'info');
             } else {
                 // Calcular precio numérico
                 let price = 0;
@@ -1161,241 +984,179 @@
                     const match = product.PrecioVenta.toString().match(/[\d.]+/);
                     if (match) price = parseFloat(match[0]);
                 }
-
-                // Calcular stock total
-                const totalStock = product.Almacenes ? 
-                    product.Almacenes.reduce((sum, w) => sum + (w.Existencias || 0), 0) : 0;
-
+                
                 state.quoterItems.push({
                     code: product.Codigo,
-                    name: product.Descripcion,
+                    description: product.Descripcion,
                     price: price,
                     quantity: 1,
-                    discount: 0,
-                    totalStock: totalStock
+                    maxStock: product.TotalExistencias || 
+                              (product.Almacenes ? product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0) : 0)
                 });
-
-                showNotification(`"${product.Descripcion}" agregado`, 'success');
+                
+                showToast('Producto agregado al cotizador', 'success');
             }
-
-            updateQuoter();
+            
+            renderQuoter();
         }
 
-        function updateQuoter() {
-            const hasItems = state.quoterItems.length > 0;
+        function renderQuoter() {
+            const container = document.getElementById('quoter-items');
             
-            // Actualizar contador
-            document.getElementById('quoter-count').textContent = 
-                `${state.quoterItems.length} ${state.quoterItems.length === 1 ? 'item' : 'items'}`;
-
-            // Mostrar/ocultar contenido
-            document.getElementById('quoter-empty').classList.toggle('hidden', hasItems);
-            document.getElementById('quoter-items').classList.toggle('hidden', !hasItems);
-
-            if (!hasItems) {
-                updateTotals(0, 0, 0);
+            if (state.quoterItems.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center p-4 text-muted">
+                        <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
+                        <p>El cotizador está vacío</p>
+                    </div>
+                `;
+                updateQuoterTotals(0, 0);
                 return;
             }
-
-            // Renderizar items
-            const container = document.getElementById('quoter-items');
+            
             container.innerHTML = state.quoterItems.map((item, index) => `
-                <div class="quoter-item">
-                    <div class="item-info">
-                        <div class="item-name" title="${item.name}">${item.name}</div>
-                        <div class="item-code">${item.code}</div>
+                <div class="p-3 border-bottom">
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div style="flex: 1;">
+                            <strong>${item.code}</strong><br>
+                            <small class="text-muted">${item.description}</small>
+                        </div>
+                        <button class="btn btn-sm btn-outline-danger" onclick="removeFromQuoter(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </div>
-                    <input 
-                        type="number" 
-                        class="item-control" 
-                        value="${item.quantity}" 
-                        min="1" 
-                        max="${item.totalStock}"
-                        onchange="updateQuantity(${index}, this.value)"
-                    >
-                    <div class="item-price">${(item.price * item.quantity * (1 - item.discount / 100)).toFixed(2)}</div>
-                    <button class="remove-btn" onclick="removeItem(${index})">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <div class="d-flex gap-2 mt-2">
+                        <input type="number" class="form-control form-control-sm" 
+                               value="${item.quantity}" min="1" max="${item.maxStock}"
+                               onchange="updateQuoterQuantity(${index}, this.value)"
+                               style="width: 80px;">
+                        <span class="align-self-center">× ${item.price.toFixed(2)}</span>
+                        <span class="align-self-center ms-auto">
+                            <strong>${(item.quantity * item.price).toFixed(2)}</strong>
+                        </span>
+                    </div>
                 </div>
             `).join('');
-
+            
             // Calcular totales
-            calculateTotals();
+            const subtotal = state.quoterItems.reduce((sum, item) => 
+                sum + (item.quantity * item.price), 0);
+            
+            updateQuoterTotals(subtotal, subtotal);
         }
 
-        function updateQuantity(index, quantity) {
-            quantity = parseInt(quantity) || 1;
+        function updateQuoterTotals(subtotal, total) {
+            document.getElementById('subtotal-amount').textContent = `${subtotal.toFixed(2)}`;
+            document.getElementById('total-amount').textContent = `${total.toFixed(2)}`;
+        }
+
+        function updateQuoterQuantity(index, value) {
+            const quantity = parseInt(value) || 1;
             const item = state.quoterItems[index];
             
-            if (quantity > item.totalStock) {
-                quantity = item.totalStock;
-                showNotification(`Máximo disponible: ${item.totalStock}`, 'warning');
+            if (quantity > item.maxStock) {
+                showToast(`Solo hay ${item.maxStock} unidades disponibles`, 'warning');
+                item.quantity = item.maxStock;
+            } else if (quantity < 1) {
+                item.quantity = 1;
+            } else {
+                item.quantity = quantity;
             }
-
-            item.quantity = Math.max(1, quantity);
-            updateQuoter();
+            
+            renderQuoter();
         }
 
-        function removeItem(index) {
-            const item = state.quoterItems[index];
+        function removeFromQuoter(index) {
             state.quoterItems.splice(index, 1);
-            showNotification(`"${item.name}" eliminado`, 'success');
-            updateQuoter();
-        }
-
-        function calculateTotals() {
-            const subtotal = state.quoterItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const discountAmount = state.quoterItems.reduce((sum, item) => {
-                return sum + (item.price * item.quantity * item.discount / 100);
-            }, 0);
-            const total = subtotal - discountAmount;
-
-            updateTotals(subtotal, discountAmount, total);
-        }
-
-        function updateTotals(subtotal, discount, total) {
-            document.getElementById('subtotal').textContent = `${subtotal.toFixed(2)}`;
-            document.getElementById('discount').textContent = `-${discount.toFixed(2)}`;
-            document.getElementById('total').textContent = `${total.toFixed(2)}`;
-        }
-
-        function clearQuoter() {
-            if (state.quoterItems.length === 0) return;
-            
-            if (confirm('¿Vaciar el cotizador?')) {
-                state.quoterItems = [];
-                updateQuoter();
-                showNotification('Cotizador limpiado', 'success');
-            }
+            renderQuoter();
+            showToast('Producto eliminado del cotizador', 'info');
         }
 
         function generateQuote() {
             if (state.quoterItems.length === 0) {
-                showNotification('Agregue productos al cotizador', 'warning');
+                showToast('El cotizador está vacío', 'warning');
                 return;
             }
-
+            
             const date = new Date().toLocaleDateString('es-MX');
-            let quote = `COTIZACIÓN\nFecha: ${date}\n\nPRODUCTOS:\n`;
-
+            let quoteText = `COTIZACIÓN - ${date}\n`;
+            quoteText += '='.repeat(40) + '\n\n';
+            
+            let total = 0;
             state.quoterItems.forEach((item, i) => {
-                const itemTotal = item.price * item.quantity * (1 - item.discount / 100);
-                quote += `${i + 1}. ${item.name} (${item.code})\n`;
-                quote += `   Cantidad: ${item.quantity}\n`;
-                quote += `   Precio: ${item.price.toFixed(2)}\n`;
-                if (item.discount > 0) {
-                    quote += `   Descuento: ${item.discount}%\n`;
-                }
-                quote += `   Subtotal: ${itemTotal.toFixed(2)}\n\n`;
+                const subtotal = item.quantity * item.price;
+                total += subtotal;
+                quoteText += `${i + 1}. ${item.code} - ${item.description}\n`;
+                quoteText += `   Cantidad: ${item.quantity} × ${item.price.toFixed(2)} = ${subtotal.toFixed(2)}\n\n`;
             });
-
-            const subtotal = state.quoterItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-            const discountAmount = state.quoterItems.reduce((sum, item) => {
-                return sum + (item.price * item.quantity * item.discount / 100);
-            }, 0);
-            const total = subtotal - discountAmount;
-
-            quote += `RESUMEN:\nSubtotal: ${subtotal.toFixed(2)}\nDescuento: -${discountAmount.toFixed(2)}\nTOTAL: ${total.toFixed(2)}`;
-
+            
+            quoteText += '='.repeat(40) + '\n';
+            quoteText += `TOTAL: ${total.toFixed(2)}\n`;
+            
             // Copiar al portapapeles
-            navigator.clipboard.writeText(quote).then(() => {
-                showNotification('Cotización copiada al portapapeles', 'success');
+            navigator.clipboard.writeText(quoteText).then(() => {
+                showToast('Cotización copiada al portapapeles', 'success');
+                
+                // Mostrar también en alert
+                alert(quoteText);
+                
+                // Limpiar cotizador
+                if (confirm('¿Desea limpiar el cotizador?')) {
+                    state.quoterItems = [];
+                    renderQuoter();
+                }
             }).catch(() => {
-                showNotification('Error al copiar', 'error');
+                // Fallback si no se puede copiar
+                alert(quoteText);
             });
-
-            // Mostrar cotización
-            alert(quote);
         }
 
-        // ===== NOTIFICACIONES =====
-        function showNotification(message, type = 'info') {
-            const notification = document.getElementById('notification');
-            const content = document.getElementById('notification-content');
-            
-            notification.className = `notification ${type}`;
-            content.textContent = message;
-            notification.classList.add('show');
+        // ==============================================
+        // UTILIDADES
+        // ==============================================
+        function showLoader() {
+            document.getElementById('loader').style.display = 'flex';
+        }
 
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                warning: 'fa-exclamation-triangle',
+                info: 'fa-info-circle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type] || icons.info}"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
             setTimeout(() => {
-                notification.classList.remove('show');
+                toast.style.animation = 'slideOut 0.3s forwards';
+                setTimeout(() => toast.remove(), 300);
             }, 3000);
         }
 
-        // ===== EVENTOS =====
-        function handleSearch() {
-            const query = document.getElementById('search-input').value.trim();
-            
-            if (query.length < 2) {
-                showState('empty-state');
-                return;
-            }
-
-            clearTimeout(state.searchTimeout);
-            state.searchTimeout = setTimeout(async () => {
-                showState('loading-state');
-                
-                try {
-                    const product = await searchProduct(query);
-                    displayProduct(product);
-                    
-                    if (!product) {
-                        showNotification('Producto no encontrado', 'warning');
-                        showState('empty-state');
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    showNotification('Error en la búsqueda', 'error');
-                    showState('empty-state');
-                }
-            }, CONFIG.api.searchDelay);
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if (username === CONFIG.credentials.username && password === CONFIG.credentials.password) {
-                document.getElementById('login-screen').classList.add('hidden');
-                document.getElementById('main-app').classList.remove('hidden');
-                
-                // Focus en búsqueda
-                setTimeout(() => {
-                    document.getElementById('search-input').focus();
-                }, 100);
-                
-                showNotification('¡Bienvenido! Sistema optimizado listo', 'success');
-            } else {
-                showNotification('Credenciales incorrectas', 'error');
-            }
-        }
-
-        // ===== INICIALIZACIÓN =====
+        // ==============================================
+        // INICIALIZACIÓN AL CARGAR
+        // ==============================================
         document.addEventListener('DOMContentLoaded', () => {
-            // Login form
-            document.getElementById('login-form').addEventListener('submit', handleLogin);
+            // Focus en el campo de usuario al cargar
+            document.getElementById('username').focus();
             
-            // Search input
-            const searchInput = document.getElementById('search-input');
-            searchInput.addEventListener('input', handleSearch);
-            searchInput.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    clearTimeout(state.searchTimeout);
-                    handleSearch();
-                }
-            });
-
-            // Inicializar caché status
-            Cache.updateCacheStatus();
-            
-            console.log('🚀 Sistema minimalista cargado');
-            
-            // Para desarrollo rápido, descomenta:
-            // document.getElementById('login-screen').classList.add('hidden');
-            // document.getElementById('main-app').classList.remove('hidden');
+            // Para desarrollo: descomentar la siguiente línea para saltar el login
+            // showApp(); initializeApp();
         });
     </script>
 </body>
