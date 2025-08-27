@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Inventario Híbrido - OPTIMIZADO</title>
+    <title>Sistema de GestiÃ³n de Inventario</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -70,6 +70,18 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
 
+        .card-header {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
         .search-container {
             position: relative;
             margin-bottom: 1rem;
@@ -99,20 +111,6 @@
             transform: translateY(-50%);
             color: var(--text-muted);
             font-size: 1rem;
-        }
-
-        .search-loading {
-            position: absolute;
-            right: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-color);
-            font-size: 1rem;
-            animation: spin 1s infinite linear;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
         }
 
         .login-container {
@@ -236,6 +234,10 @@
             animation: spin 1s infinite linear;
         }
 
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         .loader-text {
             margin-top: 1rem;
             color: var(--text-color);
@@ -249,96 +251,6 @@
 
         .fade-in {
             animation: fadeIn 0.4s ease-out;
-        }
-
-        /* Lista de resultados de búsqueda */
-        .search-results {
-            background: var(--card-bg);
-            border-radius: var(--border-radius);
-            box-shadow: var(--card-shadow);
-            margin-bottom: 1.5rem;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-
-        .results-header {
-            background: linear-gradient(to right, var(--primary-color), var(--primary-light));
-            color: white;
-            padding: 1rem 1.5rem;
-            font-weight: 600;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .search-method-badge {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 0.25rem 0.5rem;
-            border-radius: 0.375rem;
-            font-size: 0.75rem;
-            font-weight: 500;
-        }
-
-        .result-item {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid var(--border-color);
-            cursor: pointer;
-            transition: background-color 0.2s ease;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .result-item:hover {
-            background: rgba(79, 70, 229, 0.05);
-        }
-
-        .result-item:last-child {
-            border-bottom: none;
-        }
-
-        .result-info {
-            flex: 1;
-        }
-
-        .result-code {
-            font-weight: 600;
-            color: var(--primary-color);
-            font-size: 0.9rem;
-        }
-
-        .result-description {
-            color: var(--text-color);
-            font-size: 0.95rem;
-            margin-top: 0.25rem;
-        }
-
-        .result-stock {
-            text-align: right;
-            font-weight: 600;
-        }
-
-        /* Performance indicator */
-        .performance-indicator {
-            background: rgba(16, 185, 129, 0.1);
-            color: var(--success-color);
-            padding: 0.5rem 1rem;
-            border-radius: 0.375rem;
-            font-size: 0.875rem;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .performance-indicator.slow {
-            background: rgba(245, 158, 11, 0.1);
-            color: var(--warning-color);
-        }
-
-        .performance-indicator.very-slow {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger-color);
         }
 
         /* Estilos para el panel detallado de producto */
@@ -393,7 +305,7 @@
             background: rgba(79, 70, 229, 0.1);
         }
 
-        /* Mini cotizador - estilos originales mantenidos */
+        /* Estilos para minicotizador - MEJORADO */
         .mini-quoter {
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
@@ -618,6 +530,36 @@
             margin-top: 0.25rem;
         }
 
+        .select-box {
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1rem;
+            width: 100%;
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .select-box:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+        }
+
+        .filter-row {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .filter-row {
+                flex-direction: row;
+            }
+        }
+
         .main-container {
             border-radius: var(--border-radius);
             box-shadow: var(--card-shadow);
@@ -685,6 +627,7 @@
             margin-top: 1.5rem;
         }
 
+        /* Nuevos estilos para la barra de desplazamiento en lista de almacenes */
         .warehouse-list-items {
             max-height: 300px;
             overflow-y: auto;
@@ -720,7 +663,18 @@
             color: var(--primary-color);
         }
 
-        /* Toast notifications */
+        .results-container {
+            margin-top: 1.5rem;
+        }
+
+        .price-control[readonly] {
+            background-color: rgba(79, 70, 229, 0.05);
+            color: var(--text-color);
+            cursor: not-allowed;
+            border-color: var(--border-color);
+        }
+
+        /* Estilos para notificaciones toast */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -807,7 +761,7 @@
             animation: slideOut 0.3s forwards;
         }
 
-        /* Theme toggle */
+        /* Tema oscuro */
         .theme-toggle {
             position: fixed;
             bottom: 20px;
@@ -830,7 +784,7 @@
             transform: rotate(30deg);
         }
 
-        /* Navbar */
+        /* Barra superior */
         .navbar {
             background: var(--card-bg);
             box-shadow: var(--card-shadow);
@@ -916,6 +870,34 @@
             }
         }
 
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background: rgba(79, 70, 229, 0.1);
+            color: var(--primary-color);
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning-color);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
         @media (max-width: 576px) {
             .price {
                 font-size: 1.25rem;
@@ -935,6 +917,7 @@
             }
         }
 
+        /* AnimaciÃ³n para elementos que entran en pantalla */
         .animate-in {
             opacity: 0;
             transform: translateY(20px);
@@ -961,7 +944,7 @@
         <div class="login-card animate-in visible">
             <div class="login-header">
                 <h3 class="mb-1"><i class="fas fa-cube me-2"></i>Sistema de Inventario</h3>
-                <p class="text-muted">Sistema Híbrido - Búsqueda exacta + coincidencias optimizada</p>
+                <p class="text-muted">Ingrese sus credenciales</p>
             </div>
             <form id="login-form" onsubmit="handleLogin(event)">
                 <div class="login-input">
@@ -973,7 +956,7 @@
                 <div class="login-input">
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
+                        <input type="password" id="password" class="form-control" placeholder="ContraseÃ±a" required>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">
@@ -990,7 +973,6 @@
             <div class="logo">
                 <i class="fas fa-cubes"></i>
                 <span>Anfo Stock EcommPro</span>
-                <span class="badge badge-success ms-2">HÍBRIDO</span>
             </div>
             <div class="nav-links d-none d-md-flex">
                 <a href="#" class="nav-link active">
@@ -1018,11 +1000,11 @@
             <div class="col-md-6 mb-3 mb-md-0">
                 <div class="inventory-card animate-in">
                     <div class="inventory-icon">
-                        <i class="fas fa-database"></i>
+                        <i class="fas fa-boxes"></i>
                     </div>
                     <div class="inventory-info">
-                        <div class="inventory-total" id="total-products">-</div>
-                        <div class="inventory-title">Productos Estimados</div>
+                        <div class="inventory-total" id="total-inventory">-</div>
+                        <div class="inventory-title">Existencias Totales</div>
                     </div>
                 </div>
             </div>
@@ -1032,7 +1014,7 @@
                         <i class="fas fa-tags"></i>
                     </div>
                     <div class="inventory-info">
-                        <div class="inventory-total"> Mini Cotizador</div>
+                        <div class="inventory-total" id="cotizador-title"> Mini Cotizador</div>
                         <div class="inventory-title">Herramienta de precios</div>
                     </div>
                 </div>
@@ -1040,19 +1022,20 @@
         </div>
         
         <div class="main-container animate-in" style="animation-delay: 0.2s;">
-            <!-- Search Bar -->
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="search" id="search-input" class="search-input" 
-                       placeholder="Buscar por código exacto (M00150116) o descripción (barril)..." autocomplete="off">
-                <i id="search-loading" class="fas fa-spinner search-loading" style="display: none;"></i>
+            <!-- Search and Filter Bar -->
+            <div class="filter-row">
+                <div class="search-container" style="flex: 2;">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="search" id="search-input" class="search-input" 
+                           placeholder="Buscar por cÃ³digo o descripciÃ³n..." list="suggestions">
+                    <datalist id="suggestions"></datalist>
+                </div>
+                <div style="flex: 1;">
+                    <select id="warehouse-filter" class="select-box">
+                        <option value="">Todos los almacenes</option>
+                    </select>
+                </div>
             </div>
-
-            <!-- Performance Indicator -->
-            <div id="performance-indicator" style="display: none;"></div>
-
-            <!-- Search Results -->
-            <div id="search-results" style="display: none;"></div>
 
             <!-- Main Content - Product Details & Mini Quoter -->
             <div class="row mt-4">
@@ -1063,24 +1046,41 @@
                             <i class="fas fa-info-circle text-primary"></i>
                             Detalles del Producto
                         </h5>
-                        <div id="product-info-content">
-                            <div class="text-center p-4 text-muted">
-                                <i class="fas fa-search mb-2" style="font-size: 2rem;"></i>
-                                <p>Use la búsqueda para encontrar productos</p>
-                                <p class="small">
-                                    <strong>Código exacto:</strong> búsqueda rápida (1-3s)<br>
-                                    <strong>Descripción parcial:</strong> búsqueda optimizada (3-8s)
-                                </p>
+                        <div class="product-info">
+                            <div class="info-row">
+                                <div class="info-label">CÃ³digo:</div>
+                                <div class="info-value" id="detail-code"></div>
                             </div>
+                            <div class="info-row">
+                                <div class="info-label">DescripciÃ³n:</div>
+                                <div class="info-value" id="detail-description"></div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Unidades:</div>
+                                <div class="info-value">PZA</div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Proveedor:</div>
+                                <div class="info-value" id="detail-supplier"></div>
+                            </div>
+                            <div class="info-row">
+                                <div class="info-label">Precio de Venta:</div>
+                                <div class="info-value price" id="detail-price"></div>
+                            </div>
+                            
+                            <!-- BotÃ³n para agregar al cotizador -->
+                            <button id="add-to-quote-btn" class="btn btn-primary w-100 mt-3" onclick="addCurrentProductToQuoter()">
+                                <i class="fas fa-cart-plus me-2"></i>Agregar al Cotizador
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Warehouse Listing -->
+                    <!-- Warehouse Listing (para mostrar las existencias) -->
                     <div id="warehouse-listing" class="warehouse-list mt-4 animate-in" style="animation-delay: 0.4s;"></div>
                 </div>
                 
                 <div class="col-md-6">
-                    <!-- Mini Quoter Content -->
+                    <!-- Mini Quoter Content - VERSIÃ“N MEJORADA -->
                     <div class="mini-quoter animate-in" style="animation-delay: 0.5s;">
                         <div class="quoter-header">
                             <i class="fas fa-calculator me-2"></i>Mini Cotizador
@@ -1093,18 +1093,14 @@
                             <div></div>
                         </div>
                         
-                        <!-- Quoter Items -->
+                        <!-- Quoter Items - Con scroll -->
                         <div class="quoter-items-container">
                             <div id="quoter-items">
-                                <div class="text-center p-4 text-muted">
-                                    <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
-                                    <p>El cotizador está vacío</p>
-                                    <p class="small">Busque y agregue productos para empezar</p>
-                                </div>
+                                <!-- Items will be generated dynamically -->
                             </div>
                         </div>
                         
-                        <!-- Quoter Summary -->
+                        <!-- Quoter Summary - Fijo en la parte inferior -->
                         <div id="quoter-summary" class="quoter-summary">
                             <div class="summary-row">
                                 <div>Subtotal:</div>
@@ -1121,7 +1117,7 @@
                             
                             <!-- Action Buttons -->
                             <button class="btn btn-primary action-button" onclick="generateQuote()">
-                                <i class="fas fa-file-invoice-dollar me-2"></i>Generar Cotización
+                                <i class="fas fa-file-invoice-dollar me-2"></i>Generar CotizaciÃ³n
                             </button>
                             <button class="btn btn-outline-danger action-button mt-2" onclick="clearQuoter()">
                                 <i class="fas fa-trash-alt me-2"></i>Limpiar Cotizador
@@ -1142,15 +1138,15 @@
     </div>
     
     <script>
-        // Configuración
+        // ConfiguraciÃ³n
         const config = {
             credentials: {
                 username: 'admin',
                 password: '12345'
             },
             api: {
-                // CAMBIAR POR TU URL de Google Apps Script actualizada
-                url: 'https://script.google.com/macros/s/AKfycbxqY4wAWKI60LewE-lR3pCHpHrN6QgvINGB3mMd7yc10zaHckP3AU01ru1W96JrXDF3PA/exec',
+                // URL del script de Google Apps Script
+                url: 'https://script.google.com/macros/s/AKfycbwnpdGRT0yuD1J41L9buYUmKoloR-kKUp-JcsBjfMkgzq5NloaEteWSQB8Jlyi_QuF5pQ/exec',
                 stockThresholds: {
                     low: 5,
                     medium: 10
@@ -1158,20 +1154,20 @@
             }
         };
 
-        // Gestión del estado
+        // GestiÃ³n del estado
         let state = {
-            searchResults: [],
+            inventory: [],
+            filteredInventory: [],
+            warehouses: new Set(),
             selectedProduct: null,
             quoterItems: [],
             statistics: {
-                totalProducts: 0,
-                warehouses: []
+                totalInventory: 0
             },
-            theme: 'light',
-            searchTimeout: null
+            theme: 'light'
         };
 
-        // Manejo de login
+        // Manejadores de eventos
         function handleLogin(event) {
             event.preventDefault();
             
@@ -1181,14 +1177,23 @@
             if (username === config.credentials.username && 
                 password === config.credentials.password) {
                 showApp();
-                loadInitialData();
+                loadInventoryData();
             } else {
                 showToast('Credenciales incorrectas', 'error');
             }
         }
+        
+        // FunciÃ³n para manejar el clic en un producto
+        function handleProductClick(productCode) {
+            const product = state.inventory.find(item => item.Codigo === productCode);
+            if (product) {
+                state.selectedProduct = product;
+                showProductDetail(product);
+            }
+        }
 
-        // Carga inicial rápida
-        async function loadInitialData() {
+        // Carga de datos
+        async function loadInventoryData() {
             try {
                 showLoader();
                 
@@ -1200,299 +1205,209 @@
                 
                 const data = await response.json();
                 
-                if (data.error) {
-                    throw new Error(data.error);
+                if (!Array.isArray(data)) {
+                    throw new Error("Formato de datos invÃ¡lido");
                 }
                 
-                // Actualizar estadísticas
-                state.statistics.totalProducts = data.estimatedProducts || data.totalRows || 0;
-                state.statistics.warehouses = data.warehouses || [];
+                state.inventory = data;
+                initializeUI();
                 
-                // Actualizar UI
-                document.getElementById('total-products').textContent = state.statistics.totalProducts.toLocaleString();
-                
-                // Configurar búsqueda
-                setupSearch();
-                
-                // Inicializar cotizador
-                renderQuoter();
-                
-                // Mostrar mensaje de bienvenida
-                showToast(`Sistema híbrido listo - ${state.statistics.totalProducts.toLocaleString()} productos disponibles`, 'success');
+                // Seleccionar automÃ¡ticamente el primer producto disponible
+                if (state.inventory.length > 0) {
+                    // Buscar el primer producto con existencias
+                    const productWithStock = state.inventory.find(item => 
+                        item.Almacenes && item.Almacenes.some(wh => wh.Existencias > 0)
+                    );
+                    
+                    if (productWithStock) {
+                        state.selectedProduct = productWithStock;
+                        showProductDetail(productWithStock);
+                    }
+                }
                 
                 // Iniciar animaciones
                 animateElements();
                 
             } catch(error) {
-                console.error('Error al cargar datos iniciales:', error);
-                showToast('Error al cargar el sistema: ' + error.message, 'error');
+                console.error('Error al cargar datos:', error);
+                showToast('Error al cargar los datos: ' + error.message, 'error');
             } finally {
                 hideLoader();
             }
         }
 
-        // Configurar búsqueda dinámica
-        function setupSearch() {
-            const searchInput = document.getElementById('search-input');
+        // InicializaciÃ³n de la UI
+        function initializeUI() {
+            initializeWarehouses();
+            initializeSuggestions();
+            setupEventListeners();
+            updateInventoryTotal();
             
-            searchInput.addEventListener('input', function() {
-                const searchTerm = this.value.trim();
-                
-                // Limpiar timeout anterior
-                if (state.searchTimeout) {
-                    clearTimeout(state.searchTimeout);
-                }
-                
-                if (searchTerm.length === 0) {
-                    hideSearchResults();
-                    hideProductDetail();
-                    hidePerformanceIndicator();
-                    return;
-                }
-                
-                // Búsqueda con debounce - más tiempo para coincidencias parciales
-                const isLikelyExactCode = /^[A-Z0-9]+$/.test(searchTerm.toUpperCase()) && searchTerm.length >= 6;
-                const debounceTime = isLikelyExactCode ? 300 : 800; // Código exacto más rápido
-                
-                state.searchTimeout = setTimeout(() => {
-                    performSearch(searchTerm);
-                }, debounceTime);
+            // Inicializar el mini-cotizador
+            renderQuoter();
+        }
+
+        function updateInventoryTotal() {
+            // Calcula el total del inventario (suma de todas las existencias)
+            const totalInventory = state.inventory.reduce((total, item) => {
+                return total + item.Almacenes.reduce((sum, wh) => {
+                    return sum + (wh.Existencias || 0);
+                }, 0);
+            }, 0);
+            
+            document.getElementById('total-inventory').textContent = totalInventory.toLocaleString();
+        }
+
+        function initializeWarehouses() {
+            state.warehouses = new Set(
+                state.inventory.flatMap(item => 
+                    item.Almacenes.map(wh => wh.Almacen)
+                )
+            );
+            
+            const warehouseFilter = document.getElementById('warehouse-filter');
+            warehouseFilter.innerHTML = '<option value="">Todos los almacenes</option>';
+            
+            [...state.warehouses].sort().forEach(warehouse => {
+                const option = document.createElement('option');
+                option.value = warehouse;
+                option.textContent = warehouse;
+                warehouseFilter.appendChild(option);
             });
         }
 
-        // Realizar búsqueda híbrida
-        async function performSearch(searchTerm) {
-            try {
-                const startTime = performance.now();
-                showSearchLoading(true);
-                
-                const response = await fetch(`${config.api.url}?search=${encodeURIComponent(searchTerm)}`);
-                
-                if (!response.ok) {
-                    throw new Error(`Error HTTP: ${response.status}`);
+        function initializeSuggestions() {
+            const suggestions = new Set();
+            state.inventory.forEach(item => {
+                suggestions.add(item.Codigo);
+                suggestions.add(item.Descripcion);
+            });
+            
+            const datalist = document.getElementById('suggestions');
+            datalist.innerHTML = '';
+            suggestions.forEach(text => {
+                const option = document.createElement('option');
+                option.value = text;
+                datalist.appendChild(option);
+            });
+        }
+
+        function setupEventListeners() {
+            // Asociamos el evento de bÃºsqueda al campo de entrada
+            document.getElementById('search-input').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    handleFilter();
                 }
-                
-                const data = await response.json();
-                
-                if (data.error) {
-                    throw new Error(data.error);
-                }
-                
-                const endTime = performance.now();
-                const searchDuration = endTime - startTime;
-                
-                state.searchResults = data.results || [];
-                
-                // Mostrar indicador de rendimiento
-                showPerformanceIndicator(data.method, searchDuration, data.searchTime);
-                
-                if (state.searchResults.length === 0) {
-                    showToast('No se encontraron productos', 'warning');
-                    hideSearchResults();
-                    hideProductDetail();
-                } else {
-                    displaySearchResults(data);
-                    
-                    // Si hay solo un resultado, seleccionarlo automáticamente
-                    if (state.searchResults.length === 1) {
-                        selectProduct(state.searchResults[0]);
+            });
+            
+            // TambiÃ©n hacer bÃºsqueda cuando cambia el almacÃ©n seleccionado
+            document.getElementById('warehouse-filter').addEventListener('change', handleFilter);
+            
+            // Observador de intersecciÃ³n para animaciones
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
                     }
+                });
+            }, { threshold: 0.1 });
+            
+            // Aplicar observador a elementos con clase animate-in
+            document.querySelectorAll('.animate-in').forEach(el => {
+                observer.observe(el);
+            });
+        }
+
+        // FunciÃ³n para animar elementos cuando entran en viewport
+        function animateElements() {
+            const elements = document.querySelectorAll('.animate-in:not(.visible)');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.classList.add('visible');
+                }, 100 * index);
+            });
+        }
+
+        // Filtrado
+        function handleFilter() {
+            const searchTerm = document.getElementById('search-input').value.toLowerCase();
+            const selectedWarehouse = document.getElementById('warehouse-filter').value;
+            
+            showLoader();
+            
+            setTimeout(() => {
+                // Buscar productos que coincidan con el tÃ©rmino de bÃºsqueda
+                const matchingProduct = state.inventory.find(item => 
+                    (item.Codigo.toLowerCase().includes(searchTerm) || 
+                     item.Descripcion.toLowerCase().includes(searchTerm)) &&
+                    // Verificar que tenga existencias en el almacÃ©n seleccionado (si hay selecciÃ³n)
+                    (!selectedWarehouse || item.Almacenes.some(wh => 
+                        wh.Almacen === selectedWarehouse && wh.Existencias > 0
+                    ))
+                );
+                
+                if (matchingProduct) {
+                    state.selectedProduct = matchingProduct;
+                    showProductDetail(matchingProduct);
+                } else {
+                    // No se encontraron resultados
+                    showToast('No se encontraron productos que coincidan con su bÃºsqueda', 'warning');
                 }
                 
-            } catch(error) {
-                console.error('Error en búsqueda:', error);
-                showToast('Error al buscar: ' + error.message, 'error');
-            } finally {
-                showSearchLoading(false);
-            }
+                hideLoader();
+            }, 300);
         }
 
-        // Mostrar indicador de rendimiento
-        function showPerformanceIndicator(method, clientTime, serverTime) {
-            const indicator = document.getElementById('performance-indicator');
-            
-            let methodText = '';
-            let className = '';
-            let icon = '';
-            
-            switch(method) {
-                case 'exact_match':
-                    methodText = 'Coincidencia Exacta';
-                    className = '';
-                    icon = 'fa-bolt';
-                    break;
-                case 'partial_match':
-                    methodText = 'Búsqueda por Coincidencias';
-                    className = serverTime > 5000 ? 'slow' : '';
-                    icon = 'fa-search';
-                    break;
-                default:
-                    methodText = 'Sin Resultados';
-                    className = 'very-slow';
-                    icon = 'fa-times';
-            }
-            
-            indicator.className = `performance-indicator ${className}`;
-            indicator.innerHTML = `
-                <i class="fas ${icon}"></i>
-                <span>
-                    <strong>${methodText}</strong> - 
-                    Servidor: ${serverTime}ms | Cliente: ${Math.round(clientTime)}ms
-                </span>
-            `;
-            indicator.style.display = 'flex';
-        }
-
-        // Ocultar indicador de rendimiento
-        function hidePerformanceIndicator() {
-            document.getElementById('performance-indicator').style.display = 'none';
-        }
-
-        // Mostrar/ocultar indicador de carga de búsqueda
-        function showSearchLoading(show) {
-            const loadingIcon = document.getElementById('search-loading');
-            loadingIcon.style.display = show ? 'block' : 'none';
-        }
-
-        // Mostrar resultados de búsqueda
-        function displaySearchResults(data) {
-            const resultsContainer = document.getElementById('search-results');
-            
-            if (data.results.length === 1) {
-                // Un solo resultado - seleccionar automáticamente
-                hideSearchResults();
-                return;
-            }
-            
-            // Múltiples resultados - mostrar lista
-            resultsContainer.innerHTML = `
-                <div class="search-results">
-                    <div class="results-header">
-                        <div>
-                            <i class="fas fa-list me-2"></i>
-                            ${data.message || `${data.results.length} productos encontrados`}
-                        </div>
-                        <div class="search-method-badge">
-                            ${data.method === 'exact_match' ? 'Exacta' : 'Coincidencias'}
-                        </div>
-                    </div>
-                    ${data.results.map(product => {
-                        const totalStock = product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0);
-                        return `
-                            <div class="result-item" onclick="selectProduct(${JSON.stringify(product).replace(/"/g, '&quot;')})">
-                                <div class="result-info">
-                                    <div class="result-code">${product.Codigo}</div>
-                                    <div class="result-description">${product.Descripcion}</div>
-                                </div>
-                                <div class="result-stock">
-                                    ${totalStock} <small>unidades</small>
-                                </div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
-            `;
-            
-            resultsContainer.style.display = 'block';
-        }
-
-        // Ocultar resultados de búsqueda
-        function hideSearchResults() {
-            document.getElementById('search-results').style.display = 'none';
-        }
-
-        // Seleccionar un producto específico
-        function selectProduct(product) {
-            state.selectedProduct = product;
-            hideSearchResults();
-            showProductDetail(product);
-        }
-
-        // Mostrar detalles del producto
+        // Mostrar detalles de un producto
         function showProductDetail(product) {
-            const productInfoContent = document.getElementById('product-info-content');
+            // Actualizar los datos en el panel de detalles
+            document.getElementById('detail-code').textContent = product.Codigo;
+            document.getElementById('detail-description').textContent = product.Descripcion;
+            document.getElementById('detail-supplier').textContent = product.Proveedor || 'No especificado';
             
-            // Formatear precio
+            // Formatear el precio de venta
             const price = typeof product.PrecioVenta === 'number' 
-                ? `$${product.PrecioVenta.toFixed(2)}` 
+                ? `$ ${product.PrecioVenta.toFixed(2)}` 
                 : product.PrecioVenta || 'No disponible';
+            document.getElementById('detail-price').textContent = price;
             
-            productInfoContent.innerHTML = `
-                <div class="product-info">
-                    <div class="info-row">
-                        <div class="info-label">Código:</div>
-                        <div class="info-value">${product.Codigo}</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">Descripción:</div>
-                        <div class="info-value">${product.Descripcion}</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">Unidades:</div>
-                        <div class="info-value">PZA</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">Proveedor:</div>
-                        <div class="info-value">${product.Proveedor || 'No especificado'}</div>
-                    </div>
-                    <div class="info-row">
-                        <div class="info-label">Precio de Venta:</div>
-                        <div class="info-value price">${price}</div>
-                    </div>
-                    
-                    <button class="btn btn-primary w-100 mt-3" onclick="addCurrentProductToQuoter()">
-                        <i class="fas fa-cart-plus me-2"></i>Agregar al Cotizador
-                    </button>
-                </div>
-            `;
+            // Guardar el producto seleccionado en el estado
+            state.selectedProduct = product;
             
+            // Asegurarse de que el botÃ³n de agregar estÃ© visible
+            document.getElementById('add-to-quote-btn').style.display = 'block';
+            
+            // Mostrar las existencias por almacÃ©n
             showWarehouseList(product);
-        }
-
-        // Ocultar detalles del producto
-        function hideProductDetail() {
-            const productInfoContent = document.getElementById('product-info-content');
-            productInfoContent.innerHTML = `
-                <div class="text-center p-4 text-muted">
-                    <i class="fas fa-search mb-2" style="font-size: 2rem;"></i>
-                    <p>Use la búsqueda para encontrar productos</p>
-                    <p class="small">
-                        <strong>Código exacto:</strong> búsqueda rápida (1-3s)<br>
-                        <strong>Descripción parcial:</strong> búsqueda optimizada (3-8s)
-                    </p>
-                </div>
-            `;
             
-            // Limpiar lista de almacenes
-            document.getElementById('warehouse-listing').innerHTML = '';
-            state.selectedProduct = null;
+            // Actualizar el total del inventario para mostrar las piezas del producto seleccionado
+            const totalProductStock = product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0);
+            document.getElementById('total-inventory').textContent = totalProductStock.toLocaleString();
         }
-
-        // Mostrar lista de almacenes
+        
+        // Mostrar lista de almacenes con existencias
         function showWarehouseList(product) {
             const warehouseListContainer = document.getElementById('warehouse-listing');
             
+            // Ordenar los almacenes por existencias (de mayor a menor)
             const sortedWarehouses = [...product.Almacenes]
                 .filter(wh => wh.Existencias > 0)
                 .sort((a, b) => b.Existencias - a.Existencias);
             
             if (sortedWarehouses.length === 0) {
-                warehouseListContainer.innerHTML = `
-                    <div class="warehouse-list-title">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        Sin Existencias
-                    </div>
-                    <div class="text-muted">No hay existencias disponibles para este producto.</div>
-                `;
+                warehouseListContainer.innerHTML = '<div class="text-muted">No hay existencias disponibles para este producto.</div>';
                 return;
             }
             
+            // Crear el HTML para mostrar los almacenes
+            // Verificar si hay mÃ¡s de 5 almacenes para aplicar la clase de scroll
             const needsScroll = sortedWarehouses.length > 5;
             
             warehouseListContainer.innerHTML = `
                 <div class="warehouse-list-title">
                     <i class="fas fa-warehouse"></i>
-                    Existencias por Almacén
+                    Existencias por AlmacÃ©n
                 </div>
                 <div class="${needsScroll ? 'warehouse-list-items' : ''}">
                     ${sortedWarehouses.map(wh => `
@@ -1512,7 +1427,7 @@
             `;
         }
 
-        // Funciones del mini cotizador (mantener las originales)
+        // Funciones para el mini cotizador
         function addCurrentProductToQuoter() {
             if (!state.selectedProduct) {
                 showToast('No hay producto seleccionado para agregar al cotizador', 'warning');
@@ -1521,23 +1436,29 @@
             
             const product = state.selectedProduct;
             
+            // Verificar si el producto ya estÃ¡ en el cotizador
             const existingItemIndex = state.quoterItems.findIndex(item => item.code === product.Codigo);
             
             if (existingItemIndex >= 0) {
+                // Incrementar la cantidad si ya existe
                 state.quoterItems[existingItemIndex].quantity++;
             } else {
+                // Determinar el precio (asegurarnos de que sea un nÃºmero)
                 let numericPrice = 0;
                 if (typeof product.PrecioVenta === 'number') {
                     numericPrice = product.PrecioVenta;
                 } else if (product.PrecioVenta) {
+                    // Extraer el valor numÃ©rico si es una cadena (por ejemplo "$75.00")
                     const match = product.PrecioVenta.toString().match(/[\d.]+/g);
                     if (match && match.length > 0) {
                         numericPrice = parseFloat(match[0]);
                     }
                 }
                 
+                // Calcular el stock total disponible
                 const totalStock = product.Almacenes.reduce((sum, wh) => sum + wh.Existencias, 0);
                 
+                // Agregar el nuevo item
                 state.quoterItems.push({
                     code: product.Codigo,
                     description: product.Descripcion,
@@ -1549,7 +1470,10 @@
                 });
             }
             
+            // Actualizar la UI del cotizador
             renderQuoter();
+            
+            // Mostrar mensaje de Ã©xito
             showToast(`"${product.Descripcion}" agregado al cotizador`, 'success');
         }
         
@@ -1557,21 +1481,25 @@
             const quoterItemsContainer = document.getElementById('quoter-items');
             
             if (!state.quoterItems || state.quoterItems.length === 0) {
+                // No hay elementos, mostrar mensaje
                 quoterItemsContainer.innerHTML = `
                     <div class="text-center p-4 text-muted">
                         <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
-                        <p>El cotizador está vacío</p>
+                        <p>El cotizador estÃ¡ vacÃ­o</p>
                         <p class="small">Busque y agregue productos para empezar</p>
                     </div>
                 `;
                 
+                // Actualizar totales a cero
                 document.getElementById('subtotal-amount').textContent = '$0.00';
                 document.getElementById('discount-amount').textContent = '-$0.00';
                 document.getElementById('total-amount').textContent = '$0.00';
                 return;
             }
             
+            // Mostrar los items del cotizador
             quoterItemsContainer.innerHTML = state.quoterItems.map((item, index) => {
+                // Cortar el tÃ­tulo si es muy largo
                 const truncatedTitle = item.description.length > 30
                     ? item.description.substring(0, 30) + '...'
                     : item.description;
@@ -1603,8 +1531,10 @@
                 `;
             }).join('');
             
+            // Calcular totales
             const { subtotal, discountAmount, total } = calculateQuoterTotals();
             
+            // Actualizar el resumen
             document.getElementById('subtotal-amount').textContent = `$${subtotal.toFixed(2)}`;
             document.getElementById('discount-amount').textContent = `-$${discountAmount.toFixed(2)}`;
             document.getElementById('total-amount').textContent = `$${total.toFixed(2)}`;
@@ -1617,16 +1547,19 @@
         }
         
         function calculateQuoterTotals() {
+            // Subtotal (sin descuentos)
             const subtotal = state.quoterItems.reduce((total, item) => {
                 return total + (item.price * item.quantity);
             }, 0);
             
+            // Total de descuentos
             const discountAmount = state.quoterItems.reduce((total, item) => {
                 const itemTotal = item.price * item.quantity;
                 const itemDiscount = itemTotal * (item.discount / 100);
                 return total + itemDiscount;
             }, 0);
             
+            // Total final
             const total = subtotal - discountAmount;
             
             return { subtotal, discountAmount, total };
@@ -1638,12 +1571,24 @@
             
             const item = state.quoterItems[index];
             if (item) {
+                // Limitar a la cantidad disponible
                 if (quantity > item.totalWarehouseStock) {
                     quantity = item.totalWarehouseStock;
                     showToast(`Solo hay ${item.totalWarehouseStock} unidades disponibles.`, 'warning');
                 }
                 
                 item.quantity = quantity;
+                renderQuoter();
+            }
+        }
+        
+        function updateQuoterItemPrice(index, price) {
+            price = parseFloat(price) || 0;
+            if (price < 0) price = 0;
+            
+            const item = state.quoterItems[index];
+            if (item) {
+                item.price = price;
                 renderQuoter();
             }
         }
@@ -1672,7 +1617,8 @@
         function clearQuoter() {
             if (state.quoterItems.length === 0) return;
             
-            const confirm = window.confirm('¿Está seguro de que desea vaciar el cotizador?');
+            // Confirm utilizando un toast personalizado
+            const confirm = window.confirm('Â¿EstÃ¡ seguro de que desea vaciar el cotizador?');
             if (confirm) {
                 state.quoterItems = [];
                 renderQuoter();
@@ -1682,16 +1628,19 @@
         
         function generateQuote() {
             if (state.quoterItems.length === 0) {
-                showToast('Agregue productos al cotizador para generar una cotización', 'warning');
+                showToast('Agregue productos al cotizador para generar una cotizaciÃ³n', 'warning');
                 return;
             }
             
+            // Obtener fecha actual formateada
             const now = new Date();
             const formattedDate = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
             
+            // Calcular totales
             const { subtotal, discountAmount, total } = calculateQuoterTotals();
             
-            let quoteText = `COTIZACIÓN\n`;
+            // Crear texto de la cotizaciÃ³n
+            let quoteText = `COTIZACIÃ“N\n`;
             quoteText += `Fecha: ${formattedDate}\n\n`;
             quoteText += `PRODUCTOS:\n`;
             
@@ -1711,24 +1660,28 @@
             quoteText += `Descuento: -$${discountAmount.toFixed(2)}\n`;
             quoteText += `TOTAL: $${total.toFixed(2)}\n\n`;
             
+            // Crear un elemento textarea para copiar al portapapeles
             const textArea = document.createElement('textarea');
             textArea.value = quoteText;
             document.body.appendChild(textArea);
             textArea.select();
             
             try {
+                // Copiar al portapapeles
                 document.execCommand('copy');
-                showToast('Cotización generada y copiada al portapapeles', 'success');
+                showToast('CotizaciÃ³n generada y copiada al portapapeles', 'success');
             } catch (err) {
-                showToast('No se pudo copiar la cotización', 'error');
+                showToast('No se pudo copiar la cotizaciÃ³n', 'error');
                 console.error('Error al copiar:', err);
             }
             
             document.body.removeChild(textArea);
+            
+            // Mostrar la cotizaciÃ³n en una alerta
             alert(quoteText);
         }
 
-        // Funciones de utilidad
+        // FunciÃ³n para determinar la clase CSS de stock (bajo, medio, normal)
         function getStockClass(stock) {
             if (stock <= config.api.stockThresholds.low) return 'low-stock';
             if (stock <= config.api.stockThresholds.medium) return 'medium-stock';
@@ -1748,12 +1701,14 @@
             document.getElementById('loader').style.display = 'none';
         }
 
+        // FunciÃ³n para mostrar notificaciones toast
         function showToast(message, type) {
             const toastContainer = document.getElementById('toast-container');
             
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             
+            // Icono segÃºn el tipo
             let icon;
             switch (type) {
                 case 'success':
@@ -1783,6 +1738,7 @@
             
             toastContainer.appendChild(toast);
             
+            // Eliminar la toast despuÃ©s de 4 segundos
             setTimeout(() => {
                 closeToast(toast);
             }, 4000);
@@ -1800,6 +1756,7 @@
             }, 300);
         }
         
+        // Alternador de tema claro/oscuro
         function toggleTheme() {
             const root = document.documentElement;
             const themeIcon = document.getElementById('theme-icon');
@@ -1817,14 +1774,11 @@
             }
         }
 
-        function animateElements() {
-            const elements = document.querySelectorAll('.animate-in:not(.visible)');
-            elements.forEach((el, index) => {
-                setTimeout(() => {
-                    el.classList.add('visible');
-                }, 100 * index);
-            });
-        }
+        // Inicializar la aplicaciÃ³n cuando el DOM estÃ© cargado
+        document.addEventListener('DOMContentLoaded', () => {
+            // Si quieres saltar la pantalla de login para desarrollo, descomentar la siguiente lÃ­nea
+            // showApp(); loadInventoryData();
+        });
     </script>
 </body>
 </html>
