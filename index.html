@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de GestiÃ³n de Inventario</title>
+    <title>Sistema de Gestión de Inventario</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -917,7 +917,7 @@
             }
         }
 
-        /* AnimaciÃ³n para elementos que entran en pantalla */
+        /* Animación para elementos que entran en pantalla */
         .animate-in {
             opacity: 0;
             transform: translateY(20px);
@@ -956,7 +956,7 @@
                 <div class="login-input">
                     <div class="input-group">
                         <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input type="password" id="password" class="form-control" placeholder="ContraseÃ±a" required>
+                        <input type="password" id="password" class="form-control" placeholder="Contraseña" required>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary w-100">
@@ -1027,7 +1027,7 @@
                 <div class="search-container" style="flex: 2;">
                     <i class="fas fa-search search-icon"></i>
                     <input type="search" id="search-input" class="search-input" 
-                           placeholder="Buscar por cÃ³digo o descripciÃ³n..." list="suggestions">
+                           placeholder="Buscar por código o descripción..." list="suggestions">
                     <datalist id="suggestions"></datalist>
                 </div>
                 <div style="flex: 1;">
@@ -1048,11 +1048,11 @@
                         </h5>
                         <div class="product-info">
                             <div class="info-row">
-                                <div class="info-label">CÃ³digo:</div>
+                                <div class="info-label">Código:</div>
                                 <div class="info-value" id="detail-code"></div>
                             </div>
                             <div class="info-row">
-                                <div class="info-label">DescripciÃ³n:</div>
+                                <div class="info-label">Descripción:</div>
                                 <div class="info-value" id="detail-description"></div>
                             </div>
                             <div class="info-row">
@@ -1068,7 +1068,7 @@
                                 <div class="info-value price" id="detail-price"></div>
                             </div>
                             
-                            <!-- BotÃ³n para agregar al cotizador -->
+                            <!-- Botón para agregar al cotizador -->
                             <button id="add-to-quote-btn" class="btn btn-primary w-100 mt-3" onclick="addCurrentProductToQuoter()">
                                 <i class="fas fa-cart-plus me-2"></i>Agregar al Cotizador
                             </button>
@@ -1080,7 +1080,7 @@
                 </div>
                 
                 <div class="col-md-6">
-                    <!-- Mini Quoter Content - VERSIÃ“N MEJORADA -->
+                    <!-- Mini Quoter Content - VERSIÓN MEJORADA -->
                     <div class="mini-quoter animate-in" style="animation-delay: 0.5s;">
                         <div class="quoter-header">
                             <i class="fas fa-calculator me-2"></i>Mini Cotizador
@@ -1117,7 +1117,7 @@
                             
                             <!-- Action Buttons -->
                             <button class="btn btn-primary action-button" onclick="generateQuote()">
-                                <i class="fas fa-file-invoice-dollar me-2"></i>Generar CotizaciÃ³n
+                                <i class="fas fa-file-invoice-dollar me-2"></i>Generar Cotización
                             </button>
                             <button class="btn btn-outline-danger action-button mt-2" onclick="clearQuoter()">
                                 <i class="fas fa-trash-alt me-2"></i>Limpiar Cotizador
@@ -1138,7 +1138,7 @@
     </div>
     
     <script>
-        // ConfiguraciÃ³n
+        // Configuración
         const config = {
             credentials: {
                 username: 'admin',
@@ -1146,7 +1146,7 @@
             },
             api: {
                 // URL del script de Google Apps Script
-                url: 'https://script.google.com/macros/s/AKfycbwnpdGRT0yuD1J41L9buYUmKoloR-kKUp-JcsBjfMkgzq5NloaEteWSQB8Jlyi_QuF5pQ/exec',
+                url: 'https://script.google.com/macros/s/AKfycbxaBnlkjbgTpwJ_7iJEqQvY7ftJWYSMgGklPBsIVfi8Y4qdqpQYvghL8jT8UdpIa2p5KQ/exec',
                 stockThresholds: {
                     low: 5,
                     medium: 10
@@ -1154,7 +1154,7 @@
             }
         };
 
-        // GestiÃ³n del estado
+        // Gestión del estado
         let state = {
             inventory: [],
             filteredInventory: [],
@@ -1183,7 +1183,7 @@
             }
         }
         
-        // FunciÃ³n para manejar el clic en un producto
+        // Función para manejar el clic en un producto
         function handleProductClick(productCode) {
             const product = state.inventory.find(item => item.Codigo === productCode);
             if (product) {
@@ -1206,13 +1206,13 @@
                 const data = await response.json();
                 
                 if (!Array.isArray(data)) {
-                    throw new Error("Formato de datos invÃ¡lido");
+                    throw new Error("Formato de datos inválido");
                 }
                 
                 state.inventory = data;
                 initializeUI();
                 
-                // Seleccionar automÃ¡ticamente el primer producto disponible
+                // Seleccionar automáticamente el primer producto disponible
                 if (state.inventory.length > 0) {
                     // Buscar el primer producto con existencias
                     const productWithStock = state.inventory.find(item => 
@@ -1236,7 +1236,7 @@
             }
         }
 
-        // InicializaciÃ³n de la UI
+        // Inicialización de la UI
         function initializeUI() {
             initializeWarehouses();
             initializeSuggestions();
@@ -1293,17 +1293,17 @@
         }
 
         function setupEventListeners() {
-            // Asociamos el evento de bÃºsqueda al campo de entrada
+            // Asociamos el evento de búsqueda al campo de entrada
             document.getElementById('search-input').addEventListener('keyup', function(event) {
                 if (event.key === 'Enter') {
                     handleFilter();
                 }
             });
             
-            // TambiÃ©n hacer bÃºsqueda cuando cambia el almacÃ©n seleccionado
+            // También hacer búsqueda cuando cambia el almacén seleccionado
             document.getElementById('warehouse-filter').addEventListener('change', handleFilter);
             
-            // Observador de intersecciÃ³n para animaciones
+            // Observador de intersección para animaciones
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1319,7 +1319,7 @@
             });
         }
 
-        // FunciÃ³n para animar elementos cuando entran en viewport
+        // Función para animar elementos cuando entran en viewport
         function animateElements() {
             const elements = document.querySelectorAll('.animate-in:not(.visible)');
             elements.forEach((el, index) => {
@@ -1337,11 +1337,11 @@
             showLoader();
             
             setTimeout(() => {
-                // Buscar productos que coincidan con el tÃ©rmino de bÃºsqueda
+                // Buscar productos que coincidan con el término de búsqueda
                 const matchingProduct = state.inventory.find(item => 
                     (item.Codigo.toLowerCase().includes(searchTerm) || 
                      item.Descripcion.toLowerCase().includes(searchTerm)) &&
-                    // Verificar que tenga existencias en el almacÃ©n seleccionado (si hay selecciÃ³n)
+                    // Verificar que tenga existencias en el almacén seleccionado (si hay selección)
                     (!selectedWarehouse || item.Almacenes.some(wh => 
                         wh.Almacen === selectedWarehouse && wh.Existencias > 0
                     ))
@@ -1352,7 +1352,7 @@
                     showProductDetail(matchingProduct);
                 } else {
                     // No se encontraron resultados
-                    showToast('No se encontraron productos que coincidan con su bÃºsqueda', 'warning');
+                    showToast('No se encontraron productos que coincidan con su búsqueda', 'warning');
                 }
                 
                 hideLoader();
@@ -1375,10 +1375,10 @@
             // Guardar el producto seleccionado en el estado
             state.selectedProduct = product;
             
-            // Asegurarse de que el botÃ³n de agregar estÃ© visible
+            // Asegurarse de que el botón de agregar esté visible
             document.getElementById('add-to-quote-btn').style.display = 'block';
             
-            // Mostrar las existencias por almacÃ©n
+            // Mostrar las existencias por almacén
             showWarehouseList(product);
             
             // Actualizar el total del inventario para mostrar las piezas del producto seleccionado
@@ -1401,13 +1401,13 @@
             }
             
             // Crear el HTML para mostrar los almacenes
-            // Verificar si hay mÃ¡s de 5 almacenes para aplicar la clase de scroll
+            // Verificar si hay más de 5 almacenes para aplicar la clase de scroll
             const needsScroll = sortedWarehouses.length > 5;
             
             warehouseListContainer.innerHTML = `
                 <div class="warehouse-list-title">
                     <i class="fas fa-warehouse"></i>
-                    Existencias por AlmacÃ©n
+                    Existencias por Almacén
                 </div>
                 <div class="${needsScroll ? 'warehouse-list-items' : ''}">
                     ${sortedWarehouses.map(wh => `
@@ -1436,19 +1436,19 @@
             
             const product = state.selectedProduct;
             
-            // Verificar si el producto ya estÃ¡ en el cotizador
+            // Verificar si el producto ya está en el cotizador
             const existingItemIndex = state.quoterItems.findIndex(item => item.code === product.Codigo);
             
             if (existingItemIndex >= 0) {
                 // Incrementar la cantidad si ya existe
                 state.quoterItems[existingItemIndex].quantity++;
             } else {
-                // Determinar el precio (asegurarnos de que sea un nÃºmero)
+                // Determinar el precio (asegurarnos de que sea un número)
                 let numericPrice = 0;
                 if (typeof product.PrecioVenta === 'number') {
                     numericPrice = product.PrecioVenta;
                 } else if (product.PrecioVenta) {
-                    // Extraer el valor numÃ©rico si es una cadena (por ejemplo "$75.00")
+                    // Extraer el valor numérico si es una cadena (por ejemplo "$75.00")
                     const match = product.PrecioVenta.toString().match(/[\d.]+/g);
                     if (match && match.length > 0) {
                         numericPrice = parseFloat(match[0]);
@@ -1473,7 +1473,7 @@
             // Actualizar la UI del cotizador
             renderQuoter();
             
-            // Mostrar mensaje de Ã©xito
+            // Mostrar mensaje de éxito
             showToast(`"${product.Descripcion}" agregado al cotizador`, 'success');
         }
         
@@ -1485,7 +1485,7 @@
                 quoterItemsContainer.innerHTML = `
                     <div class="text-center p-4 text-muted">
                         <i class="fas fa-shopping-cart mb-2" style="font-size: 2rem;"></i>
-                        <p>El cotizador estÃ¡ vacÃ­o</p>
+                        <p>El cotizador está vacío</p>
                         <p class="small">Busque y agregue productos para empezar</p>
                     </div>
                 `;
@@ -1499,7 +1499,7 @@
             
             // Mostrar los items del cotizador
             quoterItemsContainer.innerHTML = state.quoterItems.map((item, index) => {
-                // Cortar el tÃ­tulo si es muy largo
+                // Cortar el título si es muy largo
                 const truncatedTitle = item.description.length > 30
                     ? item.description.substring(0, 30) + '...'
                     : item.description;
@@ -1618,7 +1618,7 @@
             if (state.quoterItems.length === 0) return;
             
             // Confirm utilizando un toast personalizado
-            const confirm = window.confirm('Â¿EstÃ¡ seguro de que desea vaciar el cotizador?');
+            const confirm = window.confirm('¿Está seguro de que desea vaciar el cotizador?');
             if (confirm) {
                 state.quoterItems = [];
                 renderQuoter();
@@ -1628,7 +1628,7 @@
         
         function generateQuote() {
             if (state.quoterItems.length === 0) {
-                showToast('Agregue productos al cotizador para generar una cotizaciÃ³n', 'warning');
+                showToast('Agregue productos al cotizador para generar una cotización', 'warning');
                 return;
             }
             
@@ -1639,8 +1639,8 @@
             // Calcular totales
             const { subtotal, discountAmount, total } = calculateQuoterTotals();
             
-            // Crear texto de la cotizaciÃ³n
-            let quoteText = `COTIZACIÃ“N\n`;
+            // Crear texto de la cotización
+            let quoteText = `COTIZACIÓN\n`;
             quoteText += `Fecha: ${formattedDate}\n\n`;
             quoteText += `PRODUCTOS:\n`;
             
@@ -1669,19 +1669,19 @@
             try {
                 // Copiar al portapapeles
                 document.execCommand('copy');
-                showToast('CotizaciÃ³n generada y copiada al portapapeles', 'success');
+                showToast('Cotización generada y copiada al portapapeles', 'success');
             } catch (err) {
-                showToast('No se pudo copiar la cotizaciÃ³n', 'error');
+                showToast('No se pudo copiar la cotización', 'error');
                 console.error('Error al copiar:', err);
             }
             
             document.body.removeChild(textArea);
             
-            // Mostrar la cotizaciÃ³n en una alerta
+            // Mostrar la cotización en una alerta
             alert(quoteText);
         }
 
-        // FunciÃ³n para determinar la clase CSS de stock (bajo, medio, normal)
+        // Función para determinar la clase CSS de stock (bajo, medio, normal)
         function getStockClass(stock) {
             if (stock <= config.api.stockThresholds.low) return 'low-stock';
             if (stock <= config.api.stockThresholds.medium) return 'medium-stock';
@@ -1701,14 +1701,14 @@
             document.getElementById('loader').style.display = 'none';
         }
 
-        // FunciÃ³n para mostrar notificaciones toast
+        // Función para mostrar notificaciones toast
         function showToast(message, type) {
             const toastContainer = document.getElementById('toast-container');
             
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             
-            // Icono segÃºn el tipo
+            // Icono según el tipo
             let icon;
             switch (type) {
                 case 'success':
@@ -1738,7 +1738,7 @@
             
             toastContainer.appendChild(toast);
             
-            // Eliminar la toast despuÃ©s de 4 segundos
+            // Eliminar la toast después de 4 segundos
             setTimeout(() => {
                 closeToast(toast);
             }, 4000);
@@ -1774,9 +1774,9 @@
             }
         }
 
-        // Inicializar la aplicaciÃ³n cuando el DOM estÃ© cargado
+        // Inicializar la aplicación cuando el DOM esté cargado
         document.addEventListener('DOMContentLoaded', () => {
-            // Si quieres saltar la pantalla de login para desarrollo, descomentar la siguiente lÃ­nea
+            // Si quieres saltar la pantalla de login para desarrollo, descomentar la siguiente línea
             // showApp(); loadInventoryData();
         });
     </script>
